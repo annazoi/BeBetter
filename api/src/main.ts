@@ -13,8 +13,8 @@ async function bootstrap() {
     })
   );
   const config = new DocumentBuilder()
-    .setTitle("e-Closet API")
-    .setDescription("The e-Closet API description")
+    .setTitle("BeBetter API")
+    .setDescription("The BeBetter API description")
     .setVersion("1.0")
     .build();
 

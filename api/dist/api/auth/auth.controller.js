@@ -15,14 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const create_auth_dto_1 = require("./dto/create-auth.dto");
-const update_auth_dto_1 = require("./dto/update-auth.dto");
+const signup_dto_1 = require("./dto/signup.dto");
+const signin_dto_1 = require("./dto/signin.dto");
+const swagger_1 = require("@nestjs/swagger");
+const user_schema_1 = require("../../schemas/user.schema");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    create(createAuthDto) {
-        return this.authService.create(createAuthDto);
+    async signup(signupDto) {
+        return this.authService.signup(signupDto);
+    }
+    signin(signinDto) {
+        return this.authService.signin(signinDto);
     }
     findAll() {
         return this.authService.findAll();
@@ -39,12 +44,22 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)("signup"),
+    (0, swagger_1.ApiOkResponse)({ type: user_schema_1.User }),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_auth_dto_1.CreateAuthDto]),
+    __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signup", null);
+__decorate([
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, common_1.Post)("signin"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [signin_dto_1.SigninDto]),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "create", null);
+], AuthController.prototype, "signin", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -63,7 +78,7 @@ __decorate([
     __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_auth_dto_1.UpdateAuthDto]),
+    __metadata("design:paramtypes", [String, signin_dto_1.SigninDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "update", null);
 __decorate([
@@ -75,6 +90,7 @@ __decorate([
 ], AuthController.prototype, "remove", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)("auth"),
+    (0, swagger_1.ApiTags)("Auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

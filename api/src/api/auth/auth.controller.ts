@@ -6,20 +6,31 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { CreateAuthDto } from "./dto/create-auth.dto";
-import { UpdateAuthDto } from "./dto/update-auth.dto";
+import { SignupDto } from "./dto/signup.dto";
+import { SigninDto } from "./dto/signin.dto";
 import { ApiTags, ApiOkResponse } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { User } from "src/schemas/user.schema";
 
 @Controller("auth")
+@ApiTags("Auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Post("signup")
+  @ApiOkResponse({ type: User })
+  @HttpCode(HttpStatus.CREATED)
+  async signup(@Body() signupDto: SignupDto) {
+    return this.authService.signup(signupDto);
+  }
+  @HttpCode(HttpStatus.OK)
+  @Post("signin")
+  signin(@Body() signinDto: SigninDto) {
+    return this.authService.signin(signinDto);
   }
 
   @Get()
@@ -33,7 +44,7 @@ export class AuthController {
   }
 
   @Patch(":id")
-  update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  update(@Param("id") id: string, @Body() updateAuthDto: SigninDto) {
     return this.authService.update(+id, updateAuthDto);
   }
 
