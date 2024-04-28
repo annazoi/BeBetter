@@ -29,18 +29,6 @@ let AuthController = class AuthController {
     signin(signinDto) {
         return this.authService.signin(signinDto);
     }
-    findAll() {
-        return this.authService.findAll();
-    }
-    findOne(id) {
-        return this.authService.findOne(+id);
-    }
-    update(id, updateAuthDto) {
-        return this.authService.update(+id, updateAuthDto);
-    }
-    remove(id) {
-        return this.authService.remove(+id);
-    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -60,34 +48,6 @@ __decorate([
     __metadata("design:paramtypes", [signin_dto_1.SigninDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signin", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, signin_dto_1.SigninDto]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "remove", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)("auth"),
     (0, swagger_1.ApiTags)("Auth"),

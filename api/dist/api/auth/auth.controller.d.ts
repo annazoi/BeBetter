@@ -45,8 +45,4 @@ export declare class AuthController {
             _id: import("mongoose").Types.ObjectId;
         };
     }>;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateAuthDto: SigninDto): string;
-    remove(id: string): string;
 }

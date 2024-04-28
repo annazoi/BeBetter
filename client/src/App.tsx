@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/home";
 // import "./App.css";
 import "semantic-ui-css/semantic.min.css";
-import Signup from "./pages/Auth/Signup";
-import Signin from "./pages/Auth/Signin";
+import Signup from "./pages/auth/Signup";
+import Signin from "./pages/auth/Signin";
 import NavigationBar from "./components/NavigationBar";
-import Profile from "./pages/Profile";
-import Calendar from "./pages/Calendar";
+import Profile from "./pages/profile";
+import Calendar from "./pages/calendar";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <BrowserRouter>

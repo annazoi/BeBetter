@@ -1,15 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { SignupDto } from "./../auth/dto/signup.dto";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { User } from "src/schemas/user.schema";
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
-
-  findAll() {
-    return `This action returns all users`;
+  constructor(
+    @InjectModel(User.name)
+    private userModel: Model<User>
+  ) {}
+  async findAll(query: any = {}) {
+    try {
+      let users = await this.userModel.find(query, { password: 0 });
+      return users;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 
   findOne(id: number) {

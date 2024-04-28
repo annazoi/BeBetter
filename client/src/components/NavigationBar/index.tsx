@@ -13,7 +13,7 @@ interface NavigationBarProps {
 }
 
 const NavigationBar = ({ children }: NavigationBarProps) => {
-  const router = useNavigate();
+  const navigate = useNavigate();
 
   const links = [
     {
@@ -42,7 +42,7 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
             {links.map((link: any) => (
               <MenuItem
                 name={link.name}
-                onClick={() => router(link.path)}
+                onClick={() => navigate(link.path)}
                 style={{ marginBottom: "5px" }}
               ></MenuItem>
             ))}
