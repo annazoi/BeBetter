@@ -58,56 +58,70 @@ const Home: FC = () => {
   ];
   return (
     <>
-      <Segment
-        textAlign="center"
+      <Grid
         style={{
-          display: "grid",
-          gap: "20px",
+          justifyContent: "center",
         }}
       >
-        <Header style={{ marginTop: "10px", letterSpacing: "3px" }}>
-          You can Add a new Feature
-        </Header>
-        <Input placeholder="Enter a New Feature" />
         <Form>
-          <TextArea
-            placeholder="Description"
+          <Segment
+            textAlign="center"
             style={{
-              minHeight: 80,
+              display: "grid",
+              gap: "20px",
+              maxWidth: "500px",
+              margin: "10px auto",
             }}
-          />
+          >
+            <Header style={{ marginTop: "10px", letterSpacing: "3px" }}>
+              You can Add a new Feature
+            </Header>
+            <Input placeholder="Enter a New Feature" />
+            <TextArea
+              placeholder="Description"
+              style={{
+                minHeight: 80,
+              }}
+            />
+            <Button
+              style={{
+                letterSpacing: "2px",
+              }}
+              color="olive"
+            >
+              Add Feature
+            </Button>
+          </Segment>
         </Form>
-        <Button
+        {/* <Divider vertical></Divider> */}
+        <Segment
+          placeholder
           style={{
-            letterSpacing: "2px",
+            maxWidth: "700px",
+            margin: "10px auto",
           }}
         >
-          Add Feature
-        </Button>
-      </Segment>
-      <Segment placeholder>
-        <Header
-          style={{
-            letterSpacing: "2px",
-          }}
-        >
-          My Features
-        </Header>
-        <Grid>
-          <GridRow stretched>
+          <Header
+            style={{
+              letterSpacing: "2px",
+            }}
+          >
+            My Features
+          </Header>
+          <Grid>
             <GridColumn>
               {cards.map((card: any, index: number) => (
-                <Segment key={index}>
+                <Card key={index} style={{ padding: "5px" }}>
                   <Header sub as="h2">
                     {card.name}
                     <HeaderSubHeader>{card.percent}</HeaderSubHeader>
                   </Header>
-                </Segment>
+                </Card>
               ))}
             </GridColumn>
-          </GridRow>
-        </Grid>
-      </Segment>
+          </Grid>
+        </Segment>
+      </Grid>
     </>
   );
 };

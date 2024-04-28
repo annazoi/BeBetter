@@ -1,7 +1,24 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import {
+  DateInput,
+  TimeInput,
+  DateTimeInput,
+  DatesRangeInput,
+} from "semantic-ui-calendar-react";
 
 const Calendar: FC = () => {
-  return <div>calendar</div>;
+  const [value, setValue] = useState<any>();
+
+  const handleDateChange = (e: any) => {
+    setValue(e.target.vaue);
+    console.log(e.target.value);
+  };
+
+  return (
+    <>
+      <DateInput inline name="date" value={value} onChange={handleDateChange} />
+    </>
+  );
 };
 
 export default Calendar;
