@@ -24,7 +24,7 @@ const Signin: FC = () => {
           margin: "0 auto",
         }}
       >
-        <Header style={{ letterSpacing: "2px", textAlign: "center" }}>
+        <Header style={{ letterSpacing: "6px", textAlign: "center" }}>
           SIGN IN
         </Header>
         <Form>
@@ -55,7 +55,7 @@ const Signin: FC = () => {
                 icon="signup"
                 onClick={() => navigate("/signup")}
               />
-              <Button content="Sign in" color="olive" icon="signup" />
+              <Button content="Sign in" color="olive" icon="sign-in" />
             </ButtonGroup>
           </Grid>
         </Form>

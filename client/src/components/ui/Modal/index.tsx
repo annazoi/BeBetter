@@ -27,8 +27,8 @@ const Modal: FC<ModalProps> = ({ onOpen, onClose, children, image, name }) => {
         <ModalDescription padded>{children}</ModalDescription>
       </ModalContent>
       <ModalActions>
-        <Button onClick={onClose} content="cancel"></Button>
-        <Button color="olive">update</Button>
+        <Button onClick={onClose} content="Close"></Button>
+        {/* <Button color="olive">update</Button> */}
       </ModalActions>
     </SemanticModal>
   );

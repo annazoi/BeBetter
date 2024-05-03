@@ -7,7 +7,7 @@ import Signup from "./pages/auth/Signup";
 import Signin from "./pages/auth/Signin";
 import NavigationBar from "./components/NavigationBar";
 import Profile from "./pages/profile";
-import Calendar from "./pages/calendar";
+// import Calendar from "./pages/calendar";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/calendar" element={<Calendar />} />
+            {/* <Route path="/calendar" element={<Calendar />} /> */}
           </Routes>
         </NavigationBar>
       </BrowserRouter>
