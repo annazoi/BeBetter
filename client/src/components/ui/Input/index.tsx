@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FormInput } from "semantic-ui-react";
+import { FormField, Input } from "semantic-ui-react";
 
 type InputProps = {
   register?: any;
@@ -8,25 +8,38 @@ type InputProps = {
   iconPosition?: string;
   label?: string;
   placeholder?: string;
-} & React.ComponentProps<typeof FormInput>;
+  name?: any;
+  onBlur?: any;
+  type?: any;
+} & React.ComponentProps<typeof FormField>;
 
-const Input: FC<InputProps> = ({
-  register,
+const FormInput: FC<InputProps> = ({
   error,
   icon,
   iconPosition,
   label,
   placeholder,
+  name,
+  onBlur,
+  type,
 }) => {
   return (
-    <input
-      {...register}
-      {...error}
-      placeholder={placeholder}
+    <FormField
+      control={Input}
       label={label}
+      placeholder={placeholder}
+      name={name}
+      onBlur={onBlur}
       icon={icon}
       iconPosition={iconPosition}
-    ></input>
+      error={
+        error && {
+          content: error.message,
+          pointing: "below",
+        }
+      }
+      type={type}
+    ></FormField>
   );
 };
-export default Input;
+export default FormInput;

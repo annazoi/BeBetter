@@ -12,9 +12,11 @@ import {
 } from "semantic-ui-react";
 import user from "../../assets/user.png";
 import Modal from "../../components/ui/Modal";
+import { authStore } from "../../store/authStore";
 
 const Profile: FC = () => {
   const [openSetting, setOpenSetting] = useState(false);
+  const { username, fullName } = authStore((store) => store);
 
   const handleLogout = () => {
     console.log("logout");
@@ -33,7 +35,7 @@ const Profile: FC = () => {
                 letterSpacing: "2px",
               }}
             >
-              username
+              {fullName}
             </Header>
           </GridRow>
           <GridRow>

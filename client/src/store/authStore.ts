@@ -5,6 +5,7 @@ interface AuthState {
   isLoggedIn: boolean;
   token: string;
   username: string;
+  fullName: string;
   avatar: string;
   userId: string;
   exp: number;
@@ -16,6 +17,7 @@ const initialStateValues = {
   isLoggedIn: false,
   token: "",
   username: "",
+  fullName: "",
   userId: "",
   avatar: "",
   exp: 0,
@@ -35,6 +37,7 @@ export const authStore = create<AuthState>()(
           set({
             isLoggedIn: true,
             username: payload.username,
+            fullName: payload.fullName,
             token: payload.token,
             avatar: payload?.avatar,
             userId: payload.userId,

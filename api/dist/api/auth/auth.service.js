@@ -74,18 +74,6 @@ let AuthService = class AuthService {
             user: rest,
         };
     }
-    findAll() {
-        return `This action returns all auth`;
-    }
-    findOne(id) {
-        return `This action returns a #${id} auth`;
-    }
-    update(id, updateAuthDto) {
-        return `This action updates a #${id} auth`;
-    }
-    remove(id) {
-        return `This action removes a #${id} auth`;
-    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

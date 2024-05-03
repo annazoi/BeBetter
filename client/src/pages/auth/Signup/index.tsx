@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -15,38 +15,57 @@ import {
   GridRow,
   ButtonGroup,
   Header,
+  FormGroup,
+  FormField,
 } from "semantic-ui-react";
 import { SignupSchema } from "../../../validation-schemas/auth";
 import { useMutation } from "react-query";
 import { signup } from "../../../services/auth";
+import { authStore } from "../../../store/authStore";
 import Input from "../../../components/ui/Input";
 
 const Signup: FC = () => {
+  const { logIn } = authStore((store) => store);
   const navigate = useNavigate();
   const {
     handleSubmit,
-    register,
     reset,
+    setValue,
+    trigger,
+    register,
     // getValues,
     formState: { errors },
     // setValue,
   } = useForm({
     resolver: yupResolver(SignupSchema as any),
+    mode: "onBlur",
   });
 
-  const { mutate: signupMutate, isLoading: signupIsLoading } =
-    useMutation(signup);
+  const { mutate: signupMutate } = useMutation(signup);
 
-  function onSubmit(values: any) {
-    console.log("values", values);
+  const handleChange = (e: any) => {
+    e.persist();
+    setValue(e.target.name, e.target.value);
+    trigger(e.target.name);
+  };
+
+  const onSubmit = (values: any) => {
+    // console.log("values", values);
     signupMutate(values, {
       onSuccess: (data) => {
-        console.log("data", data);
+        logIn({
+          ...data.user,
+          token: data.token,
+          exp: data.exp,
+          userId: data.user._id,
+        });
+        // console.log("data", data);
         reset();
         navigate("/home");
       },
     });
-  }
+  };
+
   return (
     <>
       <Segment
@@ -62,31 +81,33 @@ const Signup: FC = () => {
 
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
-            register={register("username")}
-            error={errors.username?.message}
-            placeholder="Username"
             label="Username"
+            placeholder="Username"
+            name="username"
+            onBlur={handleChange}
             icon="user"
             iconPosition="left"
+            error={errors.username}
           ></Input>
           <Input
-            register={register("fullName")}
-            error={errors.fullName?.message}
-            placeholder="Full Name"
             label="Full Name"
+            placeholder="Full Name"
+            name="fullName"
+            onBlur={handleChange}
+            icon="user"
+            iconPosition="left"
+            error={errors.fullName}
+          ></Input>
+          <Input
+            label="Password"
+            placeholder="Password"
+            name="password"
+            type="password"
+            onBlur={handleChange}
             icon="lock"
             iconPosition="left"
+            error={errors.password}
           ></Input>
-          <Input
-            register={register("password")}
-            error={errors.password?.message}
-            placeholder="Password"
-            label="Password"
-            icon="user"
-            iconPosition="left"
-            type="password"
-          ></Input>
-
           <Grid
             style={{
               justifyContent: "center",

@@ -12,9 +12,52 @@ import {
   Header,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SigninSchema } from "../../../validation-schemas/auth";
+import Input from "../../../components/ui/Input";
+import { authStore } from "../../../store/authStore";
+import { signin } from "../../../services/auth";
+import { useMutation } from "react-query";
 
 const Signin: FC = () => {
+  const { logIn } = authStore((store) => store);
   const navigate = useNavigate();
+  const {
+    handleSubmit,
+    reset,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(SigninSchema as any),
+    mode: "onBlur",
+  });
+
+  const { mutate: signinMutate } = useMutation(signin);
+
+  const handleChange = (e: any) => {
+    e.persist();
+    setValue(e.target.name, e.target.value);
+    trigger(e.target.name);
+  };
+
+  const onSubmit = (values: any) => {
+    signinMutate(values, {
+      onSuccess(data: any) {
+        logIn({
+          ...data.user,
+          token: data.token,
+          exp: data.exp,
+          userId: data.user._id,
+        });
+        console.log(data);
+        reset();
+        navigate("/home");
+      },
+    });
+  };
+
   return (
     <>
       <Segment
@@ -27,19 +70,25 @@ const Signin: FC = () => {
         <Header style={{ letterSpacing: "6px", textAlign: "center" }}>
           SIGN IN
         </Header>
-        <Form>
-          <FormInput
-            icon="user"
-            iconPosition="left"
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Input
             label="Username"
             placeholder="Username"
-          />
-          <FormInput
-            icon="lock"
+            name="username"
+            onBlur={handleChange}
+            icon="user"
             iconPosition="left"
+            error={errors.username}
+          />
+          <Input
             label="Password"
             placeholder="Password"
+            name="password"
             type="password"
+            onBlur={handleChange}
+            icon="lock"
+            iconPosition="left"
+            error={errors.password}
           />
 
           <Grid
@@ -55,7 +104,12 @@ const Signin: FC = () => {
                 icon="signup"
                 onClick={() => navigate("/signup")}
               />
-              <Button content="Sign in" color="olive" icon="sign-in" />
+              <Button
+                content="Sign in"
+                color="olive"
+                icon="sign-in"
+                type="submit"
+              />
             </ButtonGroup>
           </Grid>
         </Form>

@@ -47,8 +47,4 @@ export declare class AuthService {
             _id: import("mongoose").Types.ObjectId;
         };
     }>;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateAuthDto: SigninDto): string;
-    remove(id: number): string;
 }
