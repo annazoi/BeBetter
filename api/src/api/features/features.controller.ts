@@ -10,13 +10,17 @@ import {
 import { FeatureService } from "./features.service";
 import { CreateFeatureDto } from "./dto/create-feature.dto";
 import { UpdateFeatureDto } from "./dto/update-feature.dto";
+import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import { Feature } from "src/schemas/feature.schema";
 
 @Controller("features")
+@ApiTags("Feautues")
 export class FeatureController {
-  constructor(private readonly featureService: FeatureService) {}
+  constructor(private featureService: FeatureService) {}
 
   @Post()
-  create(@Body() createFeatureDto: CreateFeatureDto) {
+  @ApiOkResponse({ type: Feature })
+  async create(@Body() createFeatureDto: CreateFeatureDto) {
     return this.featureService.create(createFeatureDto);
   }
 

@@ -9,19 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFeatureDto = void 0;
-const class_validator_1 = require("class-validator");
-class CreateFeatureDto {
-}
-exports.CreateFeatureDto = CreateFeatureDto;
+exports.FeatureSchema = exports.Feature = void 0;
+const mongoose_1 = require("@nestjs/mongoose");
+let Feature = class Feature {
+};
+exports.Feature = Feature;
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
-], CreateFeatureDto.prototype, "name", void 0);
+], Feature.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
-], CreateFeatureDto.prototype, "description", void 0);
-//# sourceMappingURL=create-feature.dto.js.map
+], Feature.prototype, "description", void 0);
+exports.Feature = Feature = __decorate([
+    (0, mongoose_1.Schema)({
+        timestamps: true,
+    })
+], Feature);
+exports.FeatureSchema = mongoose_1.SchemaFactory.createForClass(Feature);
+//# sourceMappingURL=feature.schema.js.map

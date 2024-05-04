@@ -23,18 +23,12 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-import { FeatureService } from "./features.service";
-import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
-import { Feature } from "src/schemas/feature.schema";
-export declare class FeatureController {
-    private featureService;
-    constructor(featureService: FeatureService);
-    create(createFeatureDto: CreateFeatureDto): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateFeatureDto: UpdateFeatureDto): string;
-    remove(id: string): string;
+export declare class Feature {
+    name: string;
+    description: string;
 }
+export declare const FeatureSchema: import("mongoose").Schema<Feature, import("mongoose").Model<Feature, any, any, any, import("mongoose").Document<unknown, any, Feature> & Feature & {
+    _id: import("mongoose").Types.ObjectId;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Feature, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Feature>> & import("mongoose").FlatRecord<Feature> & {
+    _id: import("mongoose").Types.ObjectId;
+}>;

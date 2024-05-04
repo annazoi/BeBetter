@@ -1,11 +1,28 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { CreateFeatureDto } from "./dto/create-feature.dto";
 import { UpdateFeatureDto } from "./dto/update-feature.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { Feature } from "src/schemas/feature.schema";
+import { Model, Error } from "mongoose";
 
 @Injectable()
 export class FeatureService {
-  create(createFeatureDto: CreateFeatureDto) {
-    return "This action adds a new feature";
+  constructor(
+    @InjectModel(Feature.name)
+    private featureModel: Model<Feature>
+  ) {}
+  async create(createFeatureDto: CreateFeatureDto) {
+    const existingFeature = await this.featureModel.findOne({
+      name: createFeatureDto.name,
+    });
+    if (existingFeature) {
+      throw new ConflictException("Feature is already exist");
+    }
+    const feature = new this.featureModel({
+      ...createFeatureDto,
+    });
+    await feature.save();
+    return feature;
   }
 
   findAll() {

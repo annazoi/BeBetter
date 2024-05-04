@@ -17,11 +17,13 @@ const common_1 = require("@nestjs/common");
 const features_service_1 = require("./features.service");
 const create_feature_dto_1 = require("./dto/create-feature.dto");
 const update_feature_dto_1 = require("./dto/update-feature.dto");
+const swagger_1 = require("@nestjs/swagger");
+const feature_schema_1 = require("../../schemas/feature.schema");
 let FeatureController = class FeatureController {
     constructor(featureService) {
         this.featureService = featureService;
     }
-    create(createFeatureDto) {
+    async create(createFeatureDto) {
         return this.featureService.create(createFeatureDto);
     }
     findAll() {
@@ -40,10 +42,11 @@ let FeatureController = class FeatureController {
 exports.FeatureController = FeatureController;
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_feature_dto_1.CreateFeatureDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], FeatureController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
@@ -75,6 +78,7 @@ __decorate([
 ], FeatureController.prototype, "remove", null);
 exports.FeatureController = FeatureController = __decorate([
     (0, common_1.Controller)("features"),
+    (0, swagger_1.ApiTags)("Feautues"),
     __metadata("design:paramtypes", [features_service_1.FeatureService])
 ], FeatureController);
 //# sourceMappingURL=features.controller.js.map
