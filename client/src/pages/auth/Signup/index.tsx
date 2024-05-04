@@ -7,22 +7,17 @@ import {
   Button,
   Divider,
   Form,
-  FormInput,
   Grid,
-  GridColumn,
   Segment,
-  Card,
-  GridRow,
   ButtonGroup,
-  Header,
-  FormGroup,
-  FormField,
+  Image,
 } from "semantic-ui-react";
 import { SignupSchema } from "../../../validation-schemas/auth";
 import { useMutation } from "react-query";
 import { signup } from "../../../services/auth";
 import { authStore } from "../../../store/authStore";
 import Input from "../../../components/ui/Input";
+import logo from "../../../assets/logo.png";
 
 const Signup: FC = () => {
   const { logIn } = authStore((store) => store);
@@ -75,9 +70,15 @@ const Signup: FC = () => {
           margin: "0 auto",
         }}
       >
-        <Header style={{ letterSpacing: "6px", textAlign: "center" }}>
+        <Image src={logo} size="small" centered />
+        <h2
+          style={{
+            letterSpacing: "6px",
+            textAlign: "center",
+          }}
+        >
           SIGN UP
-        </Header>
+        </h2>
 
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
@@ -112,7 +113,7 @@ const Signup: FC = () => {
             style={{
               justifyContent: "center",
               marginTop: "20px",
-              marginBottom: "10px",
+              marginBottom: "40px",
             }}
           >
             <ButtonGroup>

@@ -15,8 +15,8 @@ let UsersModule = class UsersModule {
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
-        controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService],
+        controllers: [users_controller_1.UserController],
+        providers: [users_service_1.UserService],
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

@@ -5,6 +5,9 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from "./api/auth/auth.module";
 import { UsersModule } from "./api/users/users.module";
+import { FeaturesModule } from './src/api/features/features.module';
+import { FeaturesModule } from './features/features.module';
+import { FeaturesModule } from './api/features/features.module';
 
 @Module({
   imports: [
@@ -20,6 +23,7 @@ import { UsersModule } from "./api/users/users.module";
     ]),
     MongooseModule.forRoot(process.env.DB_CONNECTION),
     AuthModule,
+    FeaturesModule,
     // UsersModule,
   ],
   providers: [

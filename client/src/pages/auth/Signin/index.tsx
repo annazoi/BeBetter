@@ -10,6 +10,7 @@ import {
   Card,
   ButtonGroup,
   Header,
+  Image,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ import Input from "../../../components/ui/Input";
 import { authStore } from "../../../store/authStore";
 import { signin } from "../../../services/auth";
 import { useMutation } from "react-query";
+import logo from "../../../assets/logo.png";
 
 const Signin: FC = () => {
   const { logIn } = authStore((store) => store);
@@ -65,11 +67,18 @@ const Signin: FC = () => {
         style={{
           maxWidth: "400px",
           margin: "0 auto",
+          // gap: "20px",
         }}
       >
-        <Header style={{ letterSpacing: "6px", textAlign: "center" }}>
+        <Image src={logo} size="small" centered />
+        <h2
+          style={{
+            letterSpacing: "6px",
+            textAlign: "center",
+          }}
+        >
           SIGN IN
-        </Header>
+        </h2>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Username"
@@ -95,7 +104,7 @@ const Signin: FC = () => {
             style={{
               justifyContent: "center",
               marginTop: "20px",
-              marginBottom: "10px",
+              marginBottom: "40px",
             }}
           >
             <ButtonGroup>

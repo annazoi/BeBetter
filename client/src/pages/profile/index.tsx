@@ -13,14 +13,18 @@ import {
 import user from "../../assets/user.png";
 import Modal from "../../components/ui/Modal";
 import { authStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const Profile: FC = () => {
   const [openSetting, setOpenSetting] = useState(false);
-  const { username, fullName } = authStore((store) => store);
+  const { username, fullName, logOut } = authStore((store) => store);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("logout");
+    logOut();
+    navigate("/signin");
   };
+
   return (
     <>
       <Segment placeholder color="olive">
@@ -58,7 +62,7 @@ const Profile: FC = () => {
               <Button animated="vertical" color="olive" onClick={handleLogout}>
                 <ButtonContent visible>Logout</ButtonContent>
                 <ButtonContent hidden>
-                  <Icon name="arrow right" />
+                  <Icon name="log out" />
                 </ButtonContent>
               </Button>
             </Grid>

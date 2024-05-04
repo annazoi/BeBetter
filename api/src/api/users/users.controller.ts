@@ -10,8 +10,7 @@ import {
   Query,
   Req,
 } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { CreateUserDto } from "./dto/create-user.dto";
+import { UserService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtGuard } from "../auth/guard";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
@@ -21,28 +20,28 @@ import { User } from "src/schemas/user.schema";
 @Controller("users")
 @ApiTags("User")
 @ApiBearerAuth()
-export class UsersController {
-  constructor(private usersService: UsersService) {}
+export class UserController {
+  constructor(private userService: UserService) {}
 
   @Get("")
   @ApiOkResponse({ type: [User] })
   @ApiBearerAuth()
   findAll(@Query() query: any) {
-    return this.usersService.findAll(query);
+    return this.userService.findAll(query);
   }
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.usersService.findOne(+id);
+    return this.userService.findOne(+id);
   }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.userService.update(+id, updateUserDto);
   }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
-    return this.usersService.remove(+id);
+    return this.userService.remove(+id);
   }
 }

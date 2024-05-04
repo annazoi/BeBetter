@@ -25,7 +25,7 @@
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Model } from "mongoose";
 import { User } from "src/schemas/user.schema";
-export declare class UsersService {
+export declare class UserService {
     private userModel;
     constructor(userModel: Model<User>);
     findAll(query?: any): Promise<(import("mongoose").Document<unknown, {}, User> & User & {

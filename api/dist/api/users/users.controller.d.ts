@@ -23,12 +23,12 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-import { UsersService } from "./users.service";
+import { UserService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "src/schemas/user.schema";
-export declare class UsersController {
-    private usersService;
-    constructor(usersService: UsersService);
+export declare class UserController {
+    private userService;
+    constructor(userService: UserService);
     findAll(query: any): Promise<(import("mongoose").Document<unknown, {}, User> & User & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
