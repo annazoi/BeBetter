@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -13,7 +13,7 @@ import {
 import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 import { useMutation, useQuery } from "react-query";
 import { createFeature, getFeatures } from "../../services/feature";
-import { NewFeature } from "../../interfaces/feature";
+import { Feature, NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 
 const Home: FC = () => {
@@ -25,7 +25,9 @@ const Home: FC = () => {
     queryKey: ["features"],
     queryFn: () => getFeatures({ userId }),
   });
-  console.log(data);
+  useEffect(() => {
+    console.log("Data", data);
+  }, [data]);
 
   const { mutate: createFeatureMutate, isLoading: createFeatureLoading } =
     useMutation({
@@ -35,37 +37,6 @@ const Home: FC = () => {
           description,
         }),
     });
-
-  const cards = [
-    {
-      name: "card 1",
-      percent: "100%",
-    },
-    {
-      name: "card 2",
-      percent: "100%",
-    },
-    {
-      name: "card 3",
-      percent: "89%",
-    },
-    {
-      name: "card 4",
-      percent: "10%",
-    },
-    {
-      name: "card 5",
-      percent: "30%",
-    },
-    {
-      name: "card 6",
-      percent: "60%",
-    },
-    {
-      name: "card 7",
-      percent: "40%",
-    },
-  ];
 
   const handleNewFeature = () => {
     if (name === "") {
@@ -157,11 +128,11 @@ const Home: FC = () => {
           </Header>
           <Grid>
             <GridColumn>
-              {cards.map((card: any, index: number) => (
+              {data?.map((feature: Feature, index: number) => (
                 <Card key={index} style={{ padding: "5px" }}>
                   <Header sub as="h2">
-                    {card.name}
-                    <HeaderSubHeader>{card.percent}</HeaderSubHeader>
+                    {feature.name}
+                    <HeaderSubHeader>100%</HeaderSubHeader>
                   </Header>
                 </Card>
               ))}
