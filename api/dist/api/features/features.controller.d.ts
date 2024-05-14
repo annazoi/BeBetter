@@ -30,10 +30,12 @@ import { Feature } from "src/schemas/feature.schema";
 export declare class FeatureController {
     private featureService;
     constructor(featureService: FeatureService);
-    create(createFeatureDto: CreateFeatureDto): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+    create(createFeatureDto: CreateFeatureDto, req: Express.Request): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAll(): string;
+    findAll(query: any, req: Express.Request): Promise<(import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
     findOne(id: string): string;
     update(id: string, updateFeatureDto: UpdateFeatureDto): string;
     remove(id: string): string;

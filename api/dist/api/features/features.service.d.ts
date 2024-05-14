@@ -29,10 +29,12 @@ import { Model } from "mongoose";
 export declare class FeatureService {
     private featureModel;
     constructor(featureModel: Model<Feature>);
-    create(createFeatureDto: CreateFeatureDto): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+    create(createFeatureDto: CreateFeatureDto, userId: string): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAll(): string;
+    findAll(query: any): Promise<(import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
     findOne(id: number): string;
     update(id: number, updateFeatureDto: UpdateFeatureDto): string;
     remove(id: number): string;

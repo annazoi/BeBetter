@@ -42,11 +42,11 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       <Grid>
         <GridColumn
           width={4}
-          // color="olive"
+          color="olive"
           // style={{ height: "100vh" }}
           style={{
             height: "100vh",
-            backgroundColor: "#739900",
+            // backgroundColor: "#9fc95b",
           }}
         >
           <Menu tabular vertical fluid>
@@ -58,7 +58,15 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                   onClick={() => navigate(link.path)}
                   style={{ marginBottom: "5px" }}
                 >
-                  <Button fluid>{link.name}</Button>
+                  <Button
+                    fluid
+                    style={{
+                      backgroundColor: "white",
+                      boxShadow: "1px 1px 0px 1px",
+                    }}
+                  >
+                    {link.name}
+                  </Button>
                 </MenuItem>
               </>
             ))}

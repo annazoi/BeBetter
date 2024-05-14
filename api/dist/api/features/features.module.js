@@ -20,6 +20,7 @@ exports.FeatureModule = FeatureModule = __decorate([
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: "Feature", schema: feature_schema_1.FeatureSchema }]),
         ],
+        exports: [features_service_1.FeatureService],
         controllers: [features_controller_1.FeatureController],
         providers: [features_service_1.FeatureService],
     })

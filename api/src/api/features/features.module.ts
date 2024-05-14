@@ -8,6 +8,7 @@ import { FeatureSchema } from "src/schemas/feature.schema";
   imports: [
     MongooseModule.forFeature([{ name: "Feature", schema: FeatureSchema }]),
   ],
+  exports: [FeatureService],
   controllers: [FeatureController],
   providers: [FeatureService],
 })

@@ -21,21 +21,39 @@ let FeatureService = class FeatureService {
     constructor(featureModel) {
         this.featureModel = featureModel;
     }
-    async create(createFeatureDto) {
-        const existingFeature = await this.featureModel.findOne({
-            name: createFeatureDto.name,
-        });
-        if (existingFeature) {
-            throw new common_1.ConflictException("Feature is already exist");
+    async create(createFeatureDto, userId) {
+        try {
+            const existingFeature = await this.featureModel.findOne({
+                name: createFeatureDto.name,
+            });
+            if (existingFeature) {
+                throw new common_1.ConflictException("Feature is already exist");
+            }
+            const feature = new this.featureModel({
+                ...createFeatureDto,
+                userId,
+            });
+            await feature.save();
+            return feature;
         }
-        const feature = new this.featureModel({
-            ...createFeatureDto,
-        });
-        await feature.save();
-        return feature;
+        catch (error) {
+            if (error instanceof mongoose_2.Error.ValidationError) {
+                throw new common_1.ForbiddenException(error.message);
+            }
+            throw error.response.data;
+        }
     }
-    findAll() {
-        return `This action returns all features`;
+    async findAll(query) {
+        try {
+            const features = await this.featureModel.find({ ...query });
+            if (!features) {
+                throw new mongoose_2.Error("No features found");
+            }
+            return features;
+        }
+        catch (error) {
+            throw new common_1.ForbiddenException(error.message);
+        }
     }
     findOne(id) {
         return `This action returns a #${id} feature`;

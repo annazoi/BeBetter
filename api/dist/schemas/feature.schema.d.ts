@@ -21,14 +21,15 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
-/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
+import { Types } from "mongoose";
 export declare class Feature {
     name: string;
     description: string;
+    userId: Types.ObjectId;
 }
 export declare const FeatureSchema: import("mongoose").Schema<Feature, import("mongoose").Model<Feature, any, any, any, import("mongoose").Document<unknown, any, Feature> & Feature & {
-    _id: import("mongoose").Types.ObjectId;
+    _id: Types.ObjectId;
 }, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Feature, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Feature>> & import("mongoose").FlatRecord<Feature> & {
-    _id: import("mongoose").Types.ObjectId;
+    _id: Types.ObjectId;
 }>;
