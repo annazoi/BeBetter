@@ -5,7 +5,7 @@ export interface NewFeature {
 export interface Feature {
   name: string;
   description?: string;
-  percent?: number;
+  percent?: string;
   id: string;
   [key: string]: any;
 }

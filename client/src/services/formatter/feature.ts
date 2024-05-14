@@ -6,7 +6,7 @@ export const formatFeature = (data: any): Feature => {
   return {
     name: data.name,
     description: data.description,
-    // percent: data.percent,
+    percent: data.percent,
     id: data._id,
     userId: formatUser(data.userId),
   };

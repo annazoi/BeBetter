@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateFeatureDto {
   @IsString()
@@ -8,4 +8,8 @@ export class CreateFeatureDto {
   @IsString()
   @IsOptional()
   description: string;
+
+  @IsOptional()
+  @IsArray()
+  history: string[];
 }

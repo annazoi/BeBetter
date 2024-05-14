@@ -9,9 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FeatureSchema = exports.Feature = void 0;
+exports.FeatureSchema = exports.Feature = exports.HistorySchema = exports.History = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+let History = class History {
+};
+exports.History = History;
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], History.prototype, "destription", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], History.prototype, "type", void 0);
+exports.History = History = __decorate([
+    (0, mongoose_1.Schema)({
+        timestamps: true,
+    })
+], History);
+exports.HistorySchema = mongoose_1.SchemaFactory.createForClass(History);
 let Feature = class Feature {
 };
 exports.Feature = Feature;
@@ -27,6 +44,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "User" }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Feature.prototype, "userId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [exports.HistorySchema] }),
+    __metadata("design:type", Array)
+], Feature.prototype, "history", void 0);
 exports.Feature = Feature = __decorate([
     (0, mongoose_1.Schema)({
         timestamps: true,
