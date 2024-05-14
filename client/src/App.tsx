@@ -8,18 +8,31 @@ import Signin from "./pages/auth/Signin";
 import NavigationBar from "./components/NavigationBar";
 import Profile from "./pages/profile";
 // import Calendar from "./pages/calendar";
+import { authStore } from "./store/authStore";
 
 function App() {
+  const { isLoggedIn } = authStore((store) => store);
   return (
     <>
       <BrowserRouter>
         <NavigationBar>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/profile" element={<Profile />} />
+            {isLoggedIn && (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/profile" element={<Profile />} />
+              </>
+            )}
+
+            {!isLoggedIn && (
+              <>
+                <Route path="/" element={<Signin />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/signin" element={<Signin />} />
+              </>
+            )}
+
             {/* <Route path="/calendar" element={<Calendar />} /> */}
           </Routes>
         </NavigationBar>

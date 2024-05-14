@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
+  Button,
   Container,
   Grid,
   GridColumn,
@@ -8,11 +9,13 @@ import {
   MenuItem,
   Segment,
 } from "semantic-ui-react";
+import { authStore } from "../../store/authStore";
 interface NavigationBarProps {
   children: any;
 }
 
 const NavigationBar = ({ children }: NavigationBarProps) => {
+  // const { isLoggedIn } = authStore;
   const navigate = useNavigate();
 
   const links = [
@@ -37,15 +40,27 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
     <>
       <Segment inverted>Be Better</Segment>
       <Grid>
-        <GridColumn width={4} color="olive" style={{ height: "100vh" }}>
+        <GridColumn
+          width={4}
+          // color="olive"
+          // style={{ height: "100vh" }}
+          style={{
+            height: "100vh",
+            backgroundColor: "#739900",
+          }}
+        >
           <Menu tabular vertical fluid>
             {links.map((link: any, index: number) => (
-              <MenuItem
-                key={index}
-                name={link.name}
-                onClick={() => navigate(link.path)}
-                style={{ marginBottom: "5px" }}
-              ></MenuItem>
+              <>
+                <MenuItem
+                  key={index}
+                  name={link.name}
+                  onClick={() => navigate(link.path)}
+                  style={{ marginBottom: "5px" }}
+                >
+                  <Button fluid>{link.name}</Button>
+                </MenuItem>
+              </>
             ))}
           </Menu>
         </GridColumn>
