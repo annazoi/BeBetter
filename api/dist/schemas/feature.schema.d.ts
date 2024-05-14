@@ -23,9 +23,10 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Types } from "mongoose";
+import { HistoryTypeEnums } from "src/enums/historyType";
 export declare class History {
-    destription: string;
-    type: string;
+    description?: string;
+    type: HistoryTypeEnums;
 }
 export declare const HistorySchema: import("mongoose").Schema<History, import("mongoose").Model<History, any, any, any, import("mongoose").Document<unknown, any, History> & History & {
     _id: Types.ObjectId;

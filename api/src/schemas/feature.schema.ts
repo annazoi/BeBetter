@@ -1,15 +1,16 @@
 import { Schema, SchemaFactory, Prop } from "@nestjs/mongoose";
 import { Types } from "mongoose";
+import { HistoryTypeEnums } from "src/enums/historyType";
 
 @Schema({
   timestamps: true,
 })
 export class History {
   @Prop()
-  destription: string;
+  description?: string;
 
-  @Prop()
-  type: string;
+  @Prop({ type: String, enum: HistoryTypeEnums })
+  type: HistoryTypeEnums;
 }
 export const HistorySchema = SchemaFactory.createForClass(History);
 

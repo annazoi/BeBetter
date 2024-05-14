@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFeatureDto = void 0;
+exports.CreateHistoryDto = exports.CreateFeatureDto = void 0;
 const class_validator_1 = require("class-validator");
+const historyType_1 = require("../../../enums/historyType");
 class CreateFeatureDto {
 }
 exports.CreateFeatureDto = CreateFeatureDto;
@@ -29,4 +30,17 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], CreateFeatureDto.prototype, "history", void 0);
+class CreateHistoryDto {
+}
+exports.CreateHistoryDto = CreateHistoryDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateHistoryDto.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateHistoryDto.prototype, "type", void 0);
 //# sourceMappingURL=create-feature.dto.js.map

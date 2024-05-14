@@ -1,4 +1,5 @@
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { HistoryTypeEnums } from "src/enums/historyType";
 
 export class CreateFeatureDto {
   @IsString()
@@ -12,4 +13,14 @@ export class CreateFeatureDto {
   @IsOptional()
   @IsArray()
   history: string[];
+}
+
+export class CreateHistoryDto {
+  @IsString()
+  @IsOptional()
+  description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  type: HistoryTypeEnums;
 }

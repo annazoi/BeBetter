@@ -7,7 +7,7 @@ import Signup from "./pages/auth/Signup";
 import Signin from "./pages/auth/Signin";
 import NavigationBar from "./components/NavigationBar";
 import Profile from "./pages/profile";
-// import Calendar from "./pages/calendar";
+import Calendar from "./pages/calendar";
 import { authStore } from "./store/authStore";
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/calendar" element={<Calendar />} />
               </>
             )}
 
@@ -32,8 +33,6 @@ function App() {
                 <Route path="/signin" element={<Signin />} />
               </>
             )}
-
-            {/* <Route path="/calendar" element={<Calendar />} /> */}
           </Routes>
         </NavigationBar>
       </BrowserRouter>

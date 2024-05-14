@@ -57,6 +57,20 @@ let FeatureService = class FeatureService {
             throw new common_1.ForbiddenException(error.message);
         }
     }
+    async createHistory(featureId, history) {
+        try {
+            const feature = await this.featureModel.findById(featureId);
+            if (!feature) {
+                throw new mongoose_2.Error("Feature not found");
+            }
+            feature.history.push(history);
+            await feature.save();
+            return feature;
+        }
+        catch (error) {
+            throw new common_1.ForbiddenException(error.message);
+        }
+    }
     findOne(id) {
         return `This action returns a #${id} feature`;
     }

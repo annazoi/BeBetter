@@ -3,7 +3,6 @@ import { Feature, NewFeature } from "../interfaces/feature";
 import { API_URL } from "../constants/api";
 import { formatFeature } from "./formatter/feature";
 import { getAuthHeaders } from "../utils/headers";
-import { get } from "react-hook-form";
 
 export const createFeature = async (payload: NewFeature) => {
   try {
@@ -30,6 +29,20 @@ export const getFeatures = async (
       return formatFeature(feature);
     });
     return formattedData;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const createHistory = async (featureId: string, history: any) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/features/${featureId}/history`,
+      history,
+      getAuthHeaders()
+    );
+    console.log("Response", response.data);
+    return response.data;
   } catch (error: any) {
     throw error.response.data;
   }

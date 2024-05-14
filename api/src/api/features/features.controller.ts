@@ -35,6 +35,12 @@ export class FeatureController {
     return this.featureService.create(createFeatureDto, userId);
   }
 
+  @Post(":id/history")
+  @ApiOkResponse({ type: Feature })
+  async createHistory(@Param("id") id: string, @Body() history: any) {
+    return this.featureService.createHistory(id, history);
+  }
+
   @Get()
   @ApiOkResponse({ type: Feature })
   async findAll(@Query() query: any) {

@@ -14,15 +14,22 @@ import {
 } from "semantic-ui-react";
 import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 import { useMutation, useQuery } from "react-query";
-import { createFeature, getFeatures } from "../../services/feature";
+import {
+  createFeature,
+  createHistory,
+  getFeatures,
+} from "../../services/feature";
 import { Feature, NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
+import { create } from "zustand";
+import { set } from "react-hook-form";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [historyPositions, setHistoryPositions] = useState<number[]>([0, 0]);
+  const [negativeHistory, setNegativeHistory] = useState<any[]>([]);
+  const [positiveHistory, setPositiveHistory] = useState<any[]>([]);
 
   const { data } = useQuery({
     queryKey: ["features"],
@@ -40,6 +47,11 @@ const Home: FC = () => {
           description,
         }),
     });
+
+  const { mutate: createHistoryMutate } = useMutation({
+    mutationFn: ({ featureId, history }: any) =>
+      createHistory(featureId, history),
+  });
 
   const handleNewFeature = () => {
     if (name === "") {
@@ -67,13 +79,33 @@ const Home: FC = () => {
     setDescription(e.target.value);
   };
 
-  const handleNegativeOption = () => {
+  const handleHistory = (featureId: string, history: any) => {
+    createHistoryMutate({
+      featureId: featureId,
+      history: history,
+    });
+    const negativesofFeature = negativeHistory.filter(
+      (item) => item.featureId === featureId
+    );
+  };
+
+  const handleNegativeOption = (featureId: string) => {
+    handleHistory(featureId, {
+      description: "Negative",
+      type: "NEGATIVE",
+    });
     console.log("Negative Option");
   };
 
-  const handlePositiveOption = () => {
+  const handlePositiveOption = (featureId: string) => {
+    handleHistory(featureId, {
+      description: "Positive",
+      type: "POSITIVE",
+    });
     console.log("Positive Option");
   };
+  console.log("Negative History", negativeHistory);
+  console.log("Positive History", positiveHistory);
   return (
     <>
       <Grid
@@ -158,12 +190,12 @@ const Home: FC = () => {
                       <Button
                         icon="minus"
                         color="red"
-                        onClick={handleNegativeOption}
+                        onClick={() => handleNegativeOption(feature.id)}
                       />
                       <Button
                         icon="plus"
                         color="green"
-                        onClick={handlePositiveOption}
+                        onClick={() => handlePositiveOption(feature.id)}
                       />
                     </div>
                   </div>

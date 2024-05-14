@@ -51,6 +51,20 @@ export class FeatureService {
     }
   }
 
+  async createHistory(featureId: string, history: any) {
+    try {
+      const feature = await this.featureModel.findById(featureId);
+      if (!feature) {
+        throw new Error("Feature not found");
+      }
+      feature.history.push(history);
+      await feature.save();
+      return feature;
+    } catch (error: any) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} feature`;
   }

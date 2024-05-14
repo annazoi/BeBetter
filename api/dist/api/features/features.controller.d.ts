@@ -33,6 +33,9 @@ export declare class FeatureController {
     create(createFeatureDto: CreateFeatureDto, req: Express.Request): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    createHistory(id: string, history: any): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     findAll(query: any): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }, never>[]>;

@@ -35,6 +35,9 @@ export declare class FeatureService {
     findAll(query: any): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }, never>[]>;
+    createHistory(featureId: string, history: any): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     findOne(id: number): string;
     update(id: number, updateFeatureDto: UpdateFeatureDto): string;
     remove(id: number): string;

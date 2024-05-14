@@ -28,6 +28,9 @@ let FeatureController = class FeatureController {
         const { userId } = req.user;
         return this.featureService.create(createFeatureDto, userId);
     }
+    async createHistory(id, history) {
+        return this.featureService.createHistory(id, history);
+    }
     async findAll(query) {
         return this.featureService.findAll(query);
     }
@@ -51,6 +54,15 @@ __decorate([
     __metadata("design:paramtypes", [create_feature_dto_1.CreateFeatureDto, Object]),
     __metadata("design:returntype", Promise)
 ], FeatureController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)(":id/history"),
+    (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], FeatureController.prototype, "createHistory", null);
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),

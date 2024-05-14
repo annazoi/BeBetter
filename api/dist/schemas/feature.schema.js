@@ -12,15 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeatureSchema = exports.Feature = exports.HistorySchema = exports.History = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const historyType_1 = require("../enums/historyType");
 let History = class History {
 };
 exports.History = History;
 __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
-], History.prototype, "destription", void 0);
+], History.prototype, "description", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ type: String, enum: historyType_1.HistoryTypeEnums }),
     __metadata("design:type", String)
 ], History.prototype, "type", void 0);
 exports.History = History = __decorate([
