@@ -7,4 +7,5 @@ export interface Feature {
   description?: string;
   percent?: number;
   id: string;
+  [key: string]: any;
 }

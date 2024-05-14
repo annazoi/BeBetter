@@ -45,7 +45,9 @@ let FeatureService = class FeatureService {
     }
     async findAll(query) {
         try {
-            const features = await this.featureModel.find({ ...query });
+            const features = await this.featureModel
+                .find({ ...query })
+                .populate("userId", "-password");
             if (!features) {
                 throw new mongoose_2.Error("No features found");
             }

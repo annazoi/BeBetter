@@ -32,9 +32,9 @@ export declare class FeatureService {
     create(createFeatureDto: CreateFeatureDto, userId: string): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAll(query: any): Promise<(import("mongoose").Document<unknown, {}, Feature> & Feature & {
+    findAll(query: any): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
-    })[]>;
+    }, never>[]>;
     findOne(id: number): string;
     update(id: number, updateFeatureDto: UpdateFeatureDto): string;
     remove(id: number): string;

@@ -26,7 +26,7 @@ export const getFeatures = async (
       `${API_URL}/features?${new URLSearchParams(query).toString()}`,
       getAuthHeaders()
     );
-    const formattedData = response.data.map((feature: any) => {
+    const formattedData = response.data.map((feature: Feature) => {
       formatFeature(feature);
     });
     return formattedData;

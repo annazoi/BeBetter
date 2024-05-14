@@ -37,7 +37,7 @@ export class FeatureController {
 
   @Get()
   @ApiOkResponse({ type: Feature })
-  async findAll(@Query() query: any, @Req() req: Express.Request) {
+  async findAll(@Query() query: any) {
     return this.featureService.findAll(query);
   }
 

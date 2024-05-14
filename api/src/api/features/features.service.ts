@@ -39,7 +39,9 @@ export class FeatureService {
 
   async findAll(query: any) {
     try {
-      const features = await this.featureModel.find({ ...query });
+      const features = await this.featureModel
+        .find({ ...query })
+        .populate("userId", "-password");
       if (!features) {
         throw new Error("No features found");
       }

@@ -28,7 +28,7 @@ let FeatureController = class FeatureController {
         const { userId } = req.user;
         return this.featureService.create(createFeatureDto, userId);
     }
-    async findAll(query, req) {
+    async findAll(query) {
         return this.featureService.findAll(query);
     }
     findOne(id) {
@@ -55,9 +55,8 @@ __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
     __param(0, (0, common_1.Query)()),
-    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], FeatureController.prototype, "findAll", null);
 __decorate([

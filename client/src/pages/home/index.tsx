@@ -17,13 +17,13 @@ import { NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 
 const Home: FC = () => {
-  const { userId } = authStore((store) => store);
+  const { userId } = authStore((state) => state);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
   const { data } = useQuery({
-    queryKey: "features",
-    queryFn: () => getFeatures({ userId: userId }),
+    queryKey: ["features"],
+    queryFn: () => getFeatures({ userId }),
   });
   console.log(data);
 
