@@ -2,17 +2,11 @@ import { FC, useEffect, useState } from "react";
 import {
   Button,
   Grid,
-  Header,
   Segment,
-  Card,
-  GridColumn,
   Form,
   Input,
   TextArea,
-  Icon,
-  GridRow,
 } from "semantic-ui-react";
-import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 import { useMutation, useQuery } from "react-query";
 import {
   createFeature,
@@ -21,8 +15,6 @@ import {
 } from "../../services/feature";
 import { Feature, NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
-import { create } from "zustand";
-import { set } from "react-hook-form";
 import Features from "../../components/Features";
 import { HistoryType } from "../../enums/historyType";
 
@@ -104,7 +96,7 @@ const Home: FC = () => {
 
   return (
     <Grid
-      centered={true}
+      centered
       style={{
         gap: "30px",
       }}

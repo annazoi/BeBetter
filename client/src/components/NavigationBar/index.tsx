@@ -114,6 +114,7 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                       }}
                       content={link.name}
                       icon={link.icon}
+                      onClick={() => navigate(link.path)}
                     >
                     </Button>
                   </MenuItem>
@@ -135,14 +136,12 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                       }}
                       content={link.name}
                       icon={link.icon}
-
                     >
                     </Button>
                   </MenuItem>
                 </div>
               ))}
           </Menu>
-      
         </Grid.Column>
 
         <Sidebar
@@ -160,7 +159,6 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
             <MenuItem as="a" onClick={()=>{
               navigate("/home");
               setIsVisibleMenu(false);
-            
             }}>
             <Icon name="home"  />
             Home
@@ -168,12 +166,14 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
           <MenuItem as="a" onClick={()=>{
               navigate("/profile");
               setIsVisibleMenu(false);
-            
             }}>
             <Icon name="user"  />
             Profile
           </MenuItem>
-          <MenuItem as="a">
+          <MenuItem as="a" onClick={()=> {
+            navigate("/calendar");
+            setIsVisibleMenu(false);
+          }}>
             <Icon name="calendar" />
             Calendar
           </MenuItem>
@@ -189,7 +189,6 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
           <MenuItem as="a" onClick={()=>{
               navigate("/signin");
               setIsVisibleMenu(false);
-            
             }}>
             <Icon name="sign in"  />
             Sign In
@@ -197,13 +196,11 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
           <MenuItem as="a" onClick={()=>{
               navigate("/signup");
               setIsVisibleMenu(false);
-            
             }}>
             <Icon name="signup"  />
             Sign Up
           </MenuItem>
           </>)}
-         
         </Sidebar>
 
         <Grid.Column computer={12} mobile={16} tablet={16}>
