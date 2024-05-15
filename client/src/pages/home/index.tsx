@@ -23,6 +23,8 @@ import { Feature, NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 import { create } from "zustand";
 import { set } from "react-hook-form";
+import Features from "../../components/Features";
+import { HistoryType } from "../../enums/historyType";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);
@@ -87,7 +89,7 @@ const Home: FC = () => {
   const handleNegativeOption = (featureId: string) => {
     handleHistory(featureId, {
       description: "Negative",
-      type: "NEGATIVE",
+      type: HistoryType.NEGATIVE,
     });
     console.log("Negative Option");
   };
@@ -95,31 +97,40 @@ const Home: FC = () => {
   const handlePositiveOption = (featureId: string) => {
     handleHistory(featureId, {
       description: "Positive",
-      type: "POSITIVE",
+      type: HistoryType.POSITIVE,
     });
     console.log("Positive Option");
   };
 
   return (
-    <>
-      <Grid
-        style={{
-          justifyContent: "center",
-        }}
-      >
+    <Grid
+      centered={true}
+      style={{
+        gap: "30px",
+      }}
+      padded
+    >
+      <div>
         <Form>
           <Segment
             textAlign="center"
             style={{
               display: "grid",
               gap: "20px",
-              maxWidth: "500px",
-              margin: "10px auto",
+              maxWidth: "300px",
+              minWidth: "300px",
             }}
           >
-            <Header style={{ marginTop: "10px", letterSpacing: "3px" }}>
+            <em
+              style={{
+                marginTop: "5px",
+                letterSpacing: "3px",
+                color: "olive",
+                fontSize: "16px",
+              }}
+            >
               You can Add a new Feature
-            </Header>
+            </em>
             <Input
               placeholder="Enter a New Feature"
               onChange={handleNameChange}
@@ -148,58 +159,16 @@ const Home: FC = () => {
             ></Button>
           </Segment>
         </Form>
-        {/* <Divider vertical></Divider> */}
-        <Segment
-          placeholder
-          style={{
-            maxWidth: "700px",
-            margin: "10px auto",
-          }}
-        >
-          <Header
-            style={{
-              letterSpacing: "2px",
-            }}
-          >
-            My Features
-          </Header>
-          <Grid>
-            <GridColumn>
-              {data?.map((feature: Feature, index: number) => (
-                <Card key={index} style={{ padding: "5px" }}>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Header sub as="h2">
-                      {feature.name}
-                      <HeaderSubHeader>{feature.percent}%</HeaderSubHeader>
-                    </Header>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gridColumnGap: "10px",
-                      }}
-                    >
-                      <Button
-                        icon="minus"
-                        color="red"
-                        onClick={() => handleNegativeOption(feature.id)}
-                      />
-                      <Button
-                        icon="plus"
-                        color="green"
-                        onClick={() => handlePositiveOption(feature.id)}
-                      />
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </GridColumn>
-          </Grid>
-        </Segment>
-      </Grid>
-    </>
+      </div>
+
+      <div>
+        <Features
+          data={data as Feature[]}
+          handleNegativeOption={handleNegativeOption}
+          handlePositiveOption={handlePositiveOption}
+        />
+      </div>
+    </Grid>
   );
 };
 

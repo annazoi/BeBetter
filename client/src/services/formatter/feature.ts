@@ -15,6 +15,10 @@ export const formatFeature = (data: any): Feature => {
 };
 
 const handlePercent = (data: any) => {
+  if (data.history.length === 0) {
+    data.percent = "0.00";
+    return data;
+  }
   const positiveLength = data?.history.filter(
     (history: History) => history.type === HistoryType.POSITIVE
   ).length;
