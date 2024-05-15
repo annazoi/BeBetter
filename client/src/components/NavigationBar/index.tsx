@@ -51,9 +51,8 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
         >
           <Menu tabular vertical fluid>
             {links.map((link: any, index: number) => (
-              <>
+              <div key={index}>
                 <MenuItem
-                  key={index}
                   name={link.name}
                   onClick={() => navigate(link.path)}
                   style={{ marginBottom: "5px" }}
@@ -68,7 +67,7 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                     {link.name}
                   </Button>
                 </MenuItem>
-              </>
+              </div>
             ))}
           </Menu>
         </GridColumn>

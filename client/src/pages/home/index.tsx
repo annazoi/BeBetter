@@ -28,8 +28,6 @@ const Home: FC = () => {
   const { userId } = authStore((state) => state);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [negativeHistory, setNegativeHistory] = useState<any[]>([]);
-  const [positiveHistory, setPositiveHistory] = useState<any[]>([]);
 
   const { data } = useQuery({
     queryKey: ["features"],
@@ -84,9 +82,6 @@ const Home: FC = () => {
       featureId: featureId,
       history: history,
     });
-    const negativesofFeature = negativeHistory.filter(
-      (item) => item.featureId === featureId
-    );
   };
 
   const handleNegativeOption = (featureId: string) => {
@@ -104,8 +99,7 @@ const Home: FC = () => {
     });
     console.log("Positive Option");
   };
-  console.log("Negative History", negativeHistory);
-  console.log("Positive History", positiveHistory);
+
   return (
     <>
       <Grid
@@ -178,7 +172,7 @@ const Home: FC = () => {
                   >
                     <Header sub as="h2">
                       {feature.name}
-                      <HeaderSubHeader>100%</HeaderSubHeader>
+                      <HeaderSubHeader>{feature.percent}%</HeaderSubHeader>
                     </Header>
                     <div
                       style={{

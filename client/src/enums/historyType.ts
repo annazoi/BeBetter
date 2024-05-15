@@ -1,4 +1,4 @@
 export enum HistoryType {
   POSITIVE = "POSITIVE",
-  NEGATIVE = "POSITIVE",
+  NEGATIVE = "NEGATIVE",
 }
