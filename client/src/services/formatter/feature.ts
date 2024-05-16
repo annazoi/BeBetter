@@ -28,6 +28,6 @@ const handlePercent = (data: any) => {
 
   data.percent = result.toFixed(2);
 
-  console.log("Data", data);
+  // console.log("Data", data);
   return data;
 };

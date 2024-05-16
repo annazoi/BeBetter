@@ -35,14 +35,14 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       icon: "user",
     },
     {
-      name: "Goals",
-      path: "/goals",
-      icon: "tasks",
-    },
-    {
       name: "Calendar",
       path: "/calendar",
       icon: "calendar",
+    },
+    {
+      name: "Goals",
+      path: "/goals",
+      icon: "tasks",
     },
   ];
 
