@@ -16,7 +16,6 @@ exports.FeatureController = void 0;
 const common_1 = require("@nestjs/common");
 const features_service_1 = require("./features.service");
 const create_feature_dto_1 = require("./dto/create-feature.dto");
-const update_feature_dto_1 = require("./dto/update-feature.dto");
 const swagger_1 = require("@nestjs/swagger");
 const feature_schema_1 = require("../../schemas/feature.schema");
 const guard_1 = require("../auth/guard");
@@ -28,17 +27,14 @@ let FeatureController = class FeatureController {
         const { userId } = req.user;
         return this.featureService.create(createFeatureDto, userId);
     }
-    async createHistory(id, history) {
-        return this.featureService.createHistory(id, history);
-    }
     async findAll(query) {
         return this.featureService.findAll(query);
     }
     findOne(id) {
-        return this.featureService.findOne(+id);
+        return this.featureService.findOne(id);
     }
-    update(id, updateFeatureDto) {
-        return this.featureService.update(+id, updateFeatureDto);
+    async createHistory(id, history) {
+        return this.featureService.createHistory(id, history);
     }
     remove(id) {
         return this.featureService.remove(+id);
@@ -55,15 +51,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FeatureController.prototype, "create", null);
 __decorate([
-    (0, common_1.Post)(":id/history"),
-    (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Promise)
-], FeatureController.prototype, "createHistory", null);
-__decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
     __param(0, (0, common_1.Query)()),
@@ -73,19 +60,21 @@ __decorate([
 ], FeatureController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
+    (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], FeatureController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(":id"),
+    (0, common_1.Post)(":id/history"),
+    (0, swagger_1.ApiOkResponse)({ type: feature_schema_1.Feature }),
     __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_feature_dto_1.UpdateFeatureDto]),
-    __metadata("design:returntype", void 0)
-], FeatureController.prototype, "update", null);
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], FeatureController.prototype, "createHistory", null);
 __decorate([
     (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Param)("id")),

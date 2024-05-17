@@ -36,9 +36,11 @@ const Modal: FC<ModalProps> = ({
       </ModalContent>
       <ModalActions>
         <Button onClick={onClose} content="Close"></Button>
-        <Button color="olive" onClick={onSave}>
-          update
-        </Button>
+        {onSave && (
+          <Button color="olive" onClick={onSave}>
+            update
+          </Button>
+        )}
       </ModalActions>
     </SemanticModal>
   );

@@ -3,13 +3,13 @@ export interface OptionItem {
   label: string;
 }
 
-export interface FeatureCalendarEvent {
+export interface historiesCalendarEvent {
   id: string;
   title: string;
   resourceId?: string;
   startEditable?: boolean;
   durationEditable?: boolean;
-  date?: Date;
+  date: Date;
   className?: string;
   start?: any;
   color?: string;

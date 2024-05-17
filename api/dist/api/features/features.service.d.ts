@@ -23,7 +23,6 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
 import { Feature } from "src/schemas/feature.schema";
 import { Model } from "mongoose";
 export declare class FeatureService {
@@ -35,10 +34,11 @@ export declare class FeatureService {
     findAll(query: any): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }, never>[]>;
+    findOne(featureId: string): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
     createHistory(featureId: string, history: any): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findOne(id: number): string;
-    update(id: number, updateFeatureDto: UpdateFeatureDto): string;
     remove(id: number): string;
 }

@@ -1,3 +1,4 @@
+import { create } from "zustand";
 import { HistoryType } from "../../enums/historyType";
 import { Feature, History } from "../../interfaces/feature";
 import { formatUser } from "./user";
@@ -10,7 +11,16 @@ export const formatFeature = (data: any): Feature => {
     percent: data.percent,
     id: data._id,
     userId: formatUser(data.userId),
-    history: data.history,
+    history: data.history.map((history: any) => formatHistory(history)),
+    date: data.createdAt,
+  };
+};
+
+export const formatHistory = (data: any): History => {
+  return {
+    description: data.description,
+    type: data.type,
+    id: data._id,
     date: data.createdAt,
   };
 };

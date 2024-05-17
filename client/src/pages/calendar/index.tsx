@@ -3,34 +3,51 @@ import { FC, useEffect, useMemo, useState } from "react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { authStore } from "../../store/authStore";
-import { getFeatures } from "../../services/feature";
-import { FeatureCalendarEvent } from "../../interfaces/components";
+import { getFeatures, getFeature, createFeature } from "../../services/feature";
+import { historiesCalendarEvent } from "../../interfaces/components";
 import Modal from "../../components/ui/Modal";
-import { Container } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Form,
+  Header,
+  Segment,
+  TextArea,
+} from "semantic-ui-react";
+import Input from "../../components/ui/Input";
+import { Feature, History, NewFeature } from "../../interfaces/feature";
+import { set } from "react-hook-form";
 
 const Calendar: FC = () => {
   const { userId } = authStore((state) => state);
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [events, setEvents] = useState<FeatureCalendarEvent[]>([]);
+  const [events, setEvents] = useState<historiesCalendarEvent[]>([]);
   const [selectedFeature, setSelectedFeature] = useState<any | null>(null);
+  const [selectedhistory, setSelectedHistory] = useState<History | null>(null);
 
   const { data: features, refetch } = useQuery({
     queryKey: ["features"],
     queryFn: () => getFeatures({ userId }),
+    onSuccess: (data) => {
+      console.log("features", data);
+    },
   });
 
   useEffect(() => {
-    const events: FeatureCalendarEvent[] =
-      features?.map((feature) => {
-        return {
-          title: feature.name,
-          id: feature.id,
-          date: new Date(feature.date),
-        };
+    const events: historiesCalendarEvent[] =
+      features?.flatMap((feature) => {
+        return feature.history.map((history) => {
+          return {
+            title: feature.name,
+            id: history.id,
+            date: new Date(history.date),
+            // backgroundColor: history.color,
+          };
+        });
       }) || [];
     setEvents(events);
     console.log("events", events);
@@ -38,9 +55,8 @@ const Calendar: FC = () => {
   }, [features]);
 
   const handleDateClick = (date: string) => {
-    if (new Date(date) < new Date()) return;
+    // if (new Date(date) < new Date()) return;
     setSelectedDate(date);
-    toggleModal();
   };
 
   const handleDateClick2 = (arg: any) => {
@@ -55,11 +71,24 @@ const Calendar: FC = () => {
   };
 
   const handleEventClick = (arg: any) => {
-    const featuresId = arg.event._def.publicId;
-    const feature = features?.find((features) => features.id === featuresId);
-    if (feature) {
-      setSelectedFeature(feature);
-    }
+    toggleModal();
+    const historyId = arg.event.id;
+    let selectedFeature: Feature | null = null;
+    let selectedHistory: History | null = null;
+
+    features?.map((feature) => {
+      feature.history.find((history) => {
+        if (history.id === historyId) {
+          selectedHistory = history;
+          selectedFeature = feature;
+        }
+      });
+    });
+
+    setSelectedHistory(selectedHistory);
+    setSelectedFeature(selectedFeature);
+    console.log("selectedHistory", selectedHistory);
+    console.log("selectedFeature", selectedFeature);
   };
 
   const handleDateChange = () => {
@@ -76,9 +105,15 @@ const Calendar: FC = () => {
       <Modal
         name={selectedFeature?.name}
         onOpen={isModalOpen}
-        onClose={() => setSelectedFeature(null)}
+        onClose={() => {
+          toggleModal();
+          setSelectedFeature(null);
+        }}
       >
-        <Container></Container>
+        <div>
+          <Header as="h2">{selectedhistory?.type}</Header>
+          <p>{selectedhistory?.description}</p>
+        </div>
       </Modal>
 
       <FullCalendar
@@ -93,7 +128,7 @@ const Calendar: FC = () => {
         dateClick={handleDateClick2}
         events={events}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-        initialView="timeGridWeek"
+        initialView="dayGridMonth"
         eventClick={handleEventClick}
       />
     </div>

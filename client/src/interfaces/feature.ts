@@ -9,7 +9,7 @@ export interface Feature {
   description?: string;
   percent?: string;
   id: string;
-  history: string[];
+  history: History[];
   date: string;
   [key: string]: any;
 }
@@ -17,6 +17,8 @@ export interface Feature {
 export interface History {
   description: string;
   type: HistoryType;
+  id: string;
+  date: string;
 }
 
 export interface NewHistory {

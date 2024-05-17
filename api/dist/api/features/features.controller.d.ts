@@ -25,7 +25,6 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { FeatureService } from "./features.service";
 import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
 import { Feature } from "src/schemas/feature.schema";
 export declare class FeatureController {
     private featureService;
@@ -33,13 +32,14 @@ export declare class FeatureController {
     create(createFeatureDto: CreateFeatureDto, req: Express.Request): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    createHistory(id: string, history: any): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
     findAll(query: any): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
         _id: import("mongoose").Types.ObjectId;
     }, never>[]>;
-    findOne(id: string): string;
-    update(id: string, updateFeatureDto: UpdateFeatureDto): string;
+    findOne(id: string): Promise<Omit<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
+    createHistory(id: string, history: any): Promise<import("mongoose").Document<unknown, {}, Feature> & Feature & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     remove(id: string): string;
 }

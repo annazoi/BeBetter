@@ -51,6 +51,21 @@ export class FeatureService {
     }
   }
 
+  async findOne(featureId: string) {
+    try {
+      const feature = (await this.featureModel.findById(featureId)).populate(
+        "userId",
+        "-password"
+      );
+      if (!feature) {
+        throw new Error("Feature not found");
+      }
+      return feature;
+    } catch (error: any) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
   async createHistory(featureId: string, history: any) {
     try {
       const feature = await this.featureModel.findById(featureId);
@@ -63,14 +78,6 @@ export class FeatureService {
     } catch (error: any) {
       throw new ForbiddenException(error.message);
     }
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} feature`;
-  }
-
-  update(id: number, updateFeatureDto: UpdateFeatureDto) {
-    return `This action updates a #${id} feature`;
   }
 
   remove(id: number) {

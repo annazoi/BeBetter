@@ -57,6 +57,18 @@ let FeatureService = class FeatureService {
             throw new common_1.ForbiddenException(error.message);
         }
     }
+    async findOne(featureId) {
+        try {
+            const feature = (await this.featureModel.findById(featureId)).populate("userId", "-password");
+            if (!feature) {
+                throw new mongoose_2.Error("Feature not found");
+            }
+            return feature;
+        }
+        catch (error) {
+            throw new common_1.ForbiddenException(error.message);
+        }
+    }
     async createHistory(featureId, history) {
         try {
             const feature = await this.featureModel.findById(featureId);
@@ -70,12 +82,6 @@ let FeatureService = class FeatureService {
         catch (error) {
             throw new common_1.ForbiddenException(error.message);
         }
-    }
-    findOne(id) {
-        return `This action returns a #${id} feature`;
-    }
-    update(id, updateFeatureDto) {
-        return `This action updates a #${id} feature`;
     }
     remove(id) {
         return `This action removes a #${id} feature`;

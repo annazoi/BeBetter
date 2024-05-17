@@ -35,12 +35,6 @@ export class FeatureController {
     return this.featureService.create(createFeatureDto, userId);
   }
 
-  @Post(":id/history")
-  @ApiOkResponse({ type: Feature })
-  async createHistory(@Param("id") id: string, @Body() history: any) {
-    return this.featureService.createHistory(id, history);
-  }
-
   @Get()
   @ApiOkResponse({ type: Feature })
   async findAll(@Query() query: any) {
@@ -48,13 +42,15 @@ export class FeatureController {
   }
 
   @Get(":id")
+  @ApiOkResponse({ type: Feature })
   findOne(@Param("id") id: string) {
-    return this.featureService.findOne(+id);
+    return this.featureService.findOne(id);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateFeatureDto: UpdateFeatureDto) {
-    return this.featureService.update(+id, updateFeatureDto);
+  @Post(":id/history")
+  @ApiOkResponse({ type: Feature })
+  async createHistory(@Param("id") id: string, @Body() history: any) {
+    return this.featureService.createHistory(id, history);
   }
 
   @Delete(":id")

@@ -34,6 +34,19 @@ export const getFeatures = async (
   }
 };
 
+export const getFeature = async (featureId: string) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/features/${featureId}`,
+      getAuthHeaders()
+    );
+    const formattedData = formatFeature(response.data);
+    return formattedData;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
 export const createHistory = async ({ featureId, history }: NewHistory) => {
   try {
     const response = await axios.post(
