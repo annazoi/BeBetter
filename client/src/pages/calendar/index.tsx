@@ -54,16 +54,12 @@ const Calendar: FC = () => {
     console.log("data", features);
   }, [features]);
 
-  const handleDateClick = (date: string) => {
-    // if (new Date(date) < new Date()) return;
-    setSelectedDate(date);
+  const handleDateClick = (arg: any) => {
+    // if (new Date(arg.dateStr) < new Date()) return;
+    setSelectedDate(arg.dateStr);
   };
 
-  const handleDateClick2 = (arg: any) => {
-    handleDateClick(arg.dateStr);
-  };
-
-  const toggleModal = () => {
+  const handleModal = () => {
     if (selectedDate) {
       setSelectedDate(undefined);
     }
@@ -71,7 +67,7 @@ const Calendar: FC = () => {
   };
 
   const handleEventClick = (arg: any) => {
-    toggleModal();
+    handleModal();
     const historyId = arg.event.id;
     let selectedFeature: Feature | null = null;
     let selectedHistory: History | null = null;
@@ -106,7 +102,7 @@ const Calendar: FC = () => {
         name={selectedFeature?.name}
         onOpen={isModalOpen}
         onClose={() => {
-          toggleModal();
+          handleModal();
           setSelectedFeature(null);
         }}
       >
@@ -125,7 +121,7 @@ const Calendar: FC = () => {
         }}
         slotDuration={"00:30:00"}
         selectable={true}
-        dateClick={handleDateClick2}
+        dateClick={handleDateClick}
         events={events}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
