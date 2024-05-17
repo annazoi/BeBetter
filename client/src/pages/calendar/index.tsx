@@ -33,6 +33,8 @@ const Calendar: FC = () => {
         };
       }) || [];
     setEvents(events);
+    console.log("events", events);
+    console.log("data", features);
   }, [features]);
 
   const handleDateClick = (date: string) => {

@@ -6,6 +6,9 @@ import {
   Form,
   Input,
   TextArea,
+  Card,
+  GridColumn,
+  Header,
 } from "semantic-ui-react";
 import { useMutation, useQuery } from "react-query";
 import {
@@ -13,85 +16,91 @@ import {
   createHistory,
   getFeatures,
 } from "../../services/feature";
-import { Feature, NewFeature } from "../../interfaces/feature";
+import { Feature, NewFeature, NewHistory } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 import Features from "../../components/Features";
 import { HistoryType } from "../../enums/historyType";
+import Modal from "../../components/ui/Modal";
+import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [updatedDescription, setUpdatedDescription] = useState<string>("");
+  const [selectedFeature, setSelectedFeature] = useState<Feature>();
+  const [openUpdatedModal, setOpenUpdatedModal] = useState<boolean>(false);
+  const [newFeature, setNewFeature] = useState<NewFeature>({
+    name: "",
+    description: "",
+  });
+  const [newHistory, setNewHistory] = useState<NewHistory>({
+    featureId: "",
+    history: {
+      description: updatedDescription,
+      type: "" as HistoryType,
+    },
+  });
 
-  const { data } = useQuery({
+  const { data: features, refetch } = useQuery({
     queryKey: ["features"],
     queryFn: () => getFeatures({ userId }),
   });
-  // useEffect(() => {
-  //   console.log("Data", data);
-  // }, [data]);
 
   const { mutate: createFeatureMutate, isLoading: createFeatureLoading } =
     useMutation({
-      mutationFn: ({ name, description }: NewFeature) =>
-        createFeature({
-          name,
-          description,
-        }),
+      mutationFn: (newFeature: NewFeature) => createFeature(newFeature),
     });
-
-  const { mutate: createHistoryMutate } = useMutation({
-    mutationFn: ({ featureId, history }: any) =>
-      createHistory(featureId, history),
-  });
 
   const handleNewFeature = () => {
-    if (name === "") {
+    if (!newFeature.name) {
       return;
     }
-    createFeatureMutate(
-      {
-        name: name,
-        description: description,
+    createFeatureMutate(newFeature, {
+      onSuccess: (data) => {
+        setNewFeature({
+          name: "",
+          description: "",
+        });
+        refetch();
+        console.log("Feature Added", data);
       },
-      {
-        onSuccess: (data) => {
-          setName("");
-          setDescription("");
-          console.log("Feature Added", data);
-        },
-      }
-    );
-  };
-  const handleNameChange = (e: any) => {
-    setName(e.target.value);
+    });
   };
 
-  const handleDescriptionChange = (e: any) => {
-    setDescription(e.target.value);
+  const handleNewFeatureChange = (e: any) => {
+    setNewFeature({
+      ...newFeature,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleHistory = (featureId: string, history: any) => {
-    createHistoryMutate({
+  const { mutate: createHistoryMutate } = useMutation({
+    mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
+  });
+
+  const handleNewHistory = () => {
+    createHistoryMutate(newHistory, {
+      onSuccess: (data) => {
+        console.log("History Added", data);
+        refetch();
+      },
+    });
+    setOpenUpdatedModal(false);
+  };
+
+  const handleUpdatedDescriptionChange = (e: any) => {
+    setUpdatedDescription(e.target.value);
+  };
+
+  const handleModal = (featureId: any, type: HistoryType) => {
+    setSelectedFeature(features?.find((feature) => feature.id === featureId));
+    setOpenUpdatedModal(true);
+    setNewHistory({
       featureId: featureId,
-      history: history,
+      history: {
+        description: updatedDescription,
+        type: type,
+      },
     });
-  };
-
-  const handleNegativeOption = (featureId: string) => {
-    handleHistory(featureId, {
-      description: "Negative",
-      type: HistoryType.NEGATIVE,
-    });
-    console.log("Negative Option");
-  };
-
-  const handlePositiveOption = (featureId: string) => {
-    handleHistory(featureId, {
-      description: "Positive",
-      type: HistoryType.POSITIVE,
-    });
-    console.log("Positive Option");
   };
 
   return (
@@ -125,18 +134,18 @@ const Home: FC = () => {
             </em>
             <Input
               placeholder="Enter a New Feature"
-              onChange={handleNameChange}
+              onChange={handleNewFeatureChange}
               name="name"
-              value={name}
+              value={newFeature.name}
             />
             <TextArea
               placeholder="Description"
               style={{
                 minHeight: 80,
               }}
-              onChange={handleDescriptionChange}
+              onChange={handleNewFeatureChange}
               name="description"
-              value={description}
+              value={newFeature.description}
             />
             <Button
               style={{
@@ -155,9 +164,14 @@ const Home: FC = () => {
 
       <div>
         <Features
-          data={data as Feature[]}
-          handleNegativeOption={handleNegativeOption}
-          handlePositiveOption={handlePositiveOption}
+          data={features}
+          handleModal={handleModal}
+          onOpen={openUpdatedModal}
+          onClose={() => setOpenUpdatedModal(false)}
+          onSave={() => handleNewHistory()}
+          onChange={handleUpdatedDescriptionChange}
+          desctiprionValue={updatedDescription}
+          selectedFeature={selectedFeature}
         />
       </div>
     </Grid>

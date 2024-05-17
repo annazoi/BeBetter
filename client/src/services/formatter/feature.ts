@@ -11,6 +11,7 @@ export const formatFeature = (data: any): Feature => {
     id: data._id,
     userId: formatUser(data.userId),
     history: data.history,
+    date: data.createdAt,
   };
 };
 
@@ -22,12 +23,8 @@ const handlePercent = (data: any) => {
   const positiveLength = data?.history.filter(
     (history: History) => history.type === HistoryType.POSITIVE
   ).length;
-  console.log("Positive Length", positiveLength);
 
   const result = (positiveLength / data.history.length) * 100;
-
   data.percent = result.toFixed(2);
-
-  // console.log("Data", data);
   return data;
 };

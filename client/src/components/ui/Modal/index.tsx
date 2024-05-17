@@ -13,11 +13,19 @@ interface ModalProps {
   image?: string;
   name?: string;
   onOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: any;
+  onSave?: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ onOpen, onClose, children, image, name }) => {
+const Modal: FC<ModalProps> = ({
+  onOpen,
+  onClose,
+  children,
+  image,
+  name,
+  onSave,
+}) => {
   return (
     <SemanticModal open={onOpen} onClose={onClose}>
       <ModalHeader>{name}</ModalHeader>
@@ -28,7 +36,9 @@ const Modal: FC<ModalProps> = ({ onOpen, onClose, children, image, name }) => {
       </ModalContent>
       <ModalActions>
         <Button onClick={onClose} content="Close"></Button>
-        {/* <Button color="olive">update</Button> */}
+        <Button color="olive" onClick={onSave}>
+          update
+        </Button>
       </ModalActions>
     </SemanticModal>
   );

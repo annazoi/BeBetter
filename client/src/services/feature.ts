@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Feature, NewFeature } from "../interfaces/feature";
+import { Feature, NewFeature, NewHistory } from "../interfaces/feature";
 import { API_URL } from "../constants/api";
 import { formatFeature } from "./formatter/feature";
 import { getAuthHeaders } from "../utils/headers";
@@ -34,7 +34,7 @@ export const getFeatures = async (
   }
 };
 
-export const createHistory = async (featureId: string, history: any) => {
+export const createHistory = async ({ featureId, history }: NewHistory) => {
   try {
     const response = await axios.post(
       `${API_URL}/features/${featureId}/history`,
