@@ -6,11 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-<<<<<<< HEAD
-    "build": "nest build -- public",
-=======
     "build": "nest build",
->>>>>>> develop
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
