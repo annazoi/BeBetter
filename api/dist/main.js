@@ -13,7 +13,7 @@ async function bootstrap() {
     }));
     const config = new swagger_1.DocumentBuilder()
         .setTitle("BeBetter API")
-        .setDescription("The BeBetter API description!")
+        .setDescription("The BeBetter API description")
         .setVersion("1.0")
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
