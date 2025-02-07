@@ -27,7 +27,7 @@ const Home: FC = () => {
     name: "",
     description: "",
   });
-  const [newHistory, setNewHistory] = useState<NewHistory>({
+  const [newHistory, setNewHistory] = useState<any>({
     featureId: "",
     history: {
       description: updatedDescription,

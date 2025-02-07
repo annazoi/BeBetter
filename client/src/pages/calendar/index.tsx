@@ -20,7 +20,7 @@ const Calendar: FC = () => {
   const [selectedFeature, setSelectedFeature] = useState<any | null>(null);
   const [selectedhistory, setSelectedHistory] = useState<History | null>(null);
 
-  const { data: features, refetch } = useQuery({
+  const { data: features } = useQuery({
     queryKey: ["features"],
     queryFn: () => getFeatures({ userId }),
     onSuccess: (data) => {
