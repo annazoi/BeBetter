@@ -1,4 +1,3 @@
-import { create } from "zustand";
 import { HistoryType } from "../../enums/historyType";
 import { Feature, History } from "../../interfaces/feature";
 import { formatUser } from "./user";

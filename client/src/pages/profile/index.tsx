@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const Profile: FC = () => {
   const [openSetting, setOpenSetting] = useState(false);
-  const { username, fullName, logOut } = authStore((store) => store);
+  const { fullName, logOut } = authStore((store) => store);
   const navigate = useNavigate();
 
   const handleLogout = () => {

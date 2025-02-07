@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import {
   Button,
   Grid,
@@ -6,9 +6,6 @@ import {
   Form,
   Input,
   TextArea,
-  Card,
-  GridColumn,
-  Header,
 } from "semantic-ui-react";
 import { useMutation, useQuery } from "react-query";
 import {
@@ -20,8 +17,6 @@ import { Feature, NewFeature, NewHistory } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 import Features from "../../components/Features";
 import { HistoryType } from "../../enums/historyType";
-import Modal from "../../components/ui/Modal";
-import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);

@@ -7,7 +7,6 @@ import {
   Menu,
   MenuItem,
   Sidebar,
-  SidebarPusher,
  
 } from "semantic-ui-react";
 import { authStore } from "../../store/authStore";

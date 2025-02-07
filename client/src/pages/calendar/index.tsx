@@ -1,24 +1,15 @@
 import FullCalendar from "@fullcalendar/react";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { authStore } from "../../store/authStore";
-import { getFeatures, getFeature, createFeature } from "../../services/feature";
+import { getFeatures } from "../../services/feature";
 import { historiesCalendarEvent } from "../../interfaces/components";
 import Modal from "../../components/ui/Modal";
-import {
-  Button,
-  Container,
-  Form,
-  Header,
-  Segment,
-  TextArea,
-} from "semantic-ui-react";
-import Input from "../../components/ui/Input";
-import { Feature, History, NewFeature } from "../../interfaces/feature";
-import { set } from "react-hook-form";
+import { Header } from "semantic-ui-react";
+import { Feature, History } from "../../interfaces/feature";
 
 const Calendar: FC = () => {
   const { userId } = authStore((state) => state);
@@ -87,14 +78,14 @@ const Calendar: FC = () => {
     console.log("selectedFeature", selectedFeature);
   };
 
-  const handleDateChange = () => {
-    refetch();
-  };
+  // const handleDateChange = () => {
+  //   refetch();
+  // };
 
-  const handleCancel = () => {
-    refetch();
-    setSelectedFeature(null);
-  };
+  // const handleCancel = () => {
+  //   refetch();
+  //   setSelectedFeature(null);
+  // };
 
   return (
     <div>

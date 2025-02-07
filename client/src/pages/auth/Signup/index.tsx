@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,6 @@ const Signup: FC = () => {
     reset,
     setValue,
     trigger,
-    register,
     // getValues,
     formState: { errors },
     // setValue,
