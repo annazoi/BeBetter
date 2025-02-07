@@ -5,6 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from "./api/auth/auth.module";
 import { FeatureModule } from "./api/features/features.module";
+import { AppController } from "./app.controller";
 
 @Module({
   imports: [
@@ -28,5 +29,6 @@ import { FeatureModule } from "./api/features/features.module";
       useClass: ThrottlerGuard,
     },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
