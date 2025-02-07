@@ -4,7 +4,6 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { MongooseModule } from "@nestjs/mongoose";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from "./api/auth/auth.module";
-import { UserModule } from "./api/users/users.module";
 import { FeatureModule } from "./api/features/features.module";
 
 @Module({
@@ -22,7 +21,6 @@ import { FeatureModule } from "./api/features/features.module";
     MongooseModule.forRoot(process.env.DB_CONNECTION),
     AuthModule,
     FeatureModule,
-    // UserModule,
   ],
   providers: [
     {

@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
@@ -12,7 +11,6 @@ import {
 } from "@nestjs/common";
 import { FeatureService } from "./features.service";
 import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { Feature } from "src/schemas/feature.schema";
 import { JwtGuard } from "../auth/guard";

@@ -4,7 +4,6 @@ import {
   Injectable,
 } from "@nestjs/common";
 import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Feature } from "src/schemas/feature.schema";
 import { Model, Error } from "mongoose";
