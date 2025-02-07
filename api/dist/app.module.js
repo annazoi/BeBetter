@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const core_1 = require("@nestjs/core");
 const auth_module_1 = require("./api/auth/auth.module");
 const features_module_1 = require("./api/features/features.module");
+const app_controller_1 = require("./app.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -40,6 +41,7 @@ exports.AppModule = AppModule = __decorate([
                 useClass: throttler_1.ThrottlerGuard,
             },
         ],
+        controllers: [app_controller_1.AppController],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
