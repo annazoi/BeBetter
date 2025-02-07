@@ -1,14 +1,12 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
   UseGuards,
   Query,
-  Req,
 } from "@nestjs/common";
 import { UserService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
