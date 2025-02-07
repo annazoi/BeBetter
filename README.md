@@ -1,8 +1,22 @@
-## Installation
+### ΒeBetter is a self-improvement web application built with React, Chakra UI, NestJS, and TypeScript. It helps users track their personal growth over time by allowing them to record key characteristics about themselves. At the end of each month, users can reflect on their progress, identifying areas where they've improved and where they can focus more attention.
 
-### 1. Clone the repository:
+### Features
 
-https://github.com/annazoi/BeBetter.git
+- 📝 Track Personal Traits: Log different characteristics about yourself to monitor personal growth.
+- 📊 Monthly Progress Reviews: Visual summaries at the end of each month to highlight improvements and areas for growth.
+- 🌟 Set Goals & Milestones: Define specific goals to stay motivated and measure success.
+
+### Technologies Used
+
+- Frontend: React, TypeScript, Chakra UI
+
+- Backend: Nestjs
+
+- DataBase:
+
+## Getting Started
+
+### 1. Clone the repository: `https://github.com/annazoi/BeBetter.git`
 
 ### 2. Navigate to the project directory
 
