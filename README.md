@@ -10,7 +10,7 @@
 
 - Frontend: React, TypeScript, Chakra UI
 - Backend: Nestjs
-- DataBase:
+- DataBase: MongoDB
 
 ## Getting Started
 
