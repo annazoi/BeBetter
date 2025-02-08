@@ -53,7 +53,7 @@ const Features: FC<FeaturesProps> = ({
             marginBottom: "15px",
           }}
         >
-          My Features
+          My Emotions
         </em>
         <Grid>
           <GridColumn>

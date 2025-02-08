@@ -125,10 +125,10 @@ const Home: FC = () => {
                 fontSize: "16px",
               }}
             >
-              You can Add a new Feature
+              You can Add a new Emotion
             </em>
             <Input
-              placeholder="Enter a New Feature"
+              placeholder="Enter a New Emotion"
               onChange={handleNewFeatureChange}
               name="name"
               value={newFeature.name}
@@ -149,7 +149,7 @@ const Home: FC = () => {
               color="olive"
               icon="plus"
               labelPosition="right"
-              content="Add Feature"
+              content="Add Emotion"
               onClick={handleNewFeature}
               loading={createFeatureLoading}
             ></Button>
