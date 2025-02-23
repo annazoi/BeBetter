@@ -17,6 +17,7 @@ interface ModalProps {
   children: any;
   onSave?: () => void;
   isLoading?: boolean;
+  color?: string;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -27,12 +28,19 @@ const Modal: FC<ModalProps> = ({
   name,
   onSave,
   isLoading,
+  color,
 }) => {
   return (
     <SemanticModal open={onOpen} onClose={onClose}>
       <ModalHeader>{name}</ModalHeader>
 
-      <ModalContent image>
+      <ModalContent
+        image
+        style={{
+          backgroundColor: color,
+          borderRadius: "20px",
+        }}
+      >
         {image && <Image src={image} size="small" wrapped />}
         <ModalDescription padded>{children}</ModalDescription>
       </ModalContent>

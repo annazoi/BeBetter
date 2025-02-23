@@ -6,10 +6,11 @@ export interface OptionItem {
 export interface historiesCalendarEvent {
   id: string;
   title: string;
+  type?: string;
   resourceId?: string;
   startEditable?: boolean;
   durationEditable?: boolean;
-  date: Date;
+  date?: Date;
   className?: string;
   start?: any;
   color?: string;
