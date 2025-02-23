@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import "./style.css";
 import {
   Button,
-  Divider,
+  // Divider,
   Form,
   Grid,
   Segment,

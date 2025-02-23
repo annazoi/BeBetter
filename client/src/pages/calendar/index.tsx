@@ -12,8 +12,8 @@ import { Button, Header, Icon } from "semantic-ui-react";
 import { Feature, History } from "../../interfaces/feature";
 import { HistoryType } from "../../enums/historyType";
 import "./style.css";
-import { date } from "yup";
-import { h } from "@fullcalendar/core/preact.js";
+// import { date } from "yup";
+// import { h } from "@fullcalendar/core/preact.js";
 
 const Calendar: FC = () => {
   const { userId } = authStore((state) => state);

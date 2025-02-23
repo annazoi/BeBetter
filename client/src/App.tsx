@@ -5,7 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 import Signup from "./pages/auth/Signup";
 import Signin from "./pages/auth/Signin";
 import NavigationBar from "./components/NavigationBar";
-import Profile from "./pages/profile";
+// import Profile from "./pages/profile";
 import Calendar from "./pages/calendar";
 import { authStore } from "./store/authStore";
 

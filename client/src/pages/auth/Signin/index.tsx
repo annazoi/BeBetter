@@ -1,7 +1,7 @@
 import { FC } from "react";
 import {
   Button,
-  Divider,
+  // Divider,
   Form,
   Grid,
   Segment,

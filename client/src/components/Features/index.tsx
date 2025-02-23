@@ -8,7 +8,6 @@ import {
   GridColumn,
   Form,
   TextArea,
-  Input,
 } from "semantic-ui-react";
 import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 import Modal from "../ui/Modal";
