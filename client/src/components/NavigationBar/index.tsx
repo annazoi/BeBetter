@@ -18,7 +18,7 @@ interface NavigationBarProps {
 }
 
 const NavigationBar = ({ children }: NavigationBarProps) => {
-  const { isLoggedIn } = authStore((state) => state);
+  const { isLoggedIn, logOut } = authStore((state) => state);
   const [isVisibleMenu, setIsVisibleMenu] = useState<Boolean>(false);
   const navigate = useNavigate();
 
@@ -28,11 +28,11 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       path: "/",
       icon: "home",
     },
-    {
-      name: "Profile",
-      path: "/profile",
-      icon: "user",
-    },
+    // {
+    //   name: "Profile",
+    //   path: "/profile",
+    //   icon: "user",
+    // },
     {
       name: "Calendar",
       path: "/calendar",
@@ -43,6 +43,11 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       path: "/goals",
       icon: "tasks",
     },
+    {
+      name: "Sign Out",
+      path: "/signin",
+      icon: "sign-out",
+    }
   ];
 
   const isLogOutLinks = [
@@ -57,6 +62,11 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       icon: "signup",
     },
   ];
+
+  const handleLogout = () => {
+    logOut();
+    navigate("/signin");
+  };
 
   return (
     <>
@@ -113,7 +123,7 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                       }}
                       content={link.name}
                       icon={link.icon}
-                      onClick={() => navigate(link.path)}
+                      onClick={link.name === "Sign Out" ? handleLogout : () => navigate(link.path)}
                     >
                     </Button>
                   </MenuItem>
