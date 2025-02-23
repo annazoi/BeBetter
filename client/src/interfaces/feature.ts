@@ -17,8 +17,8 @@ export interface Feature {
 export interface History {
   description: string;
   type: HistoryType;
-  id: string;
-  date: string;
+  id?: string;
+  date?: string;
 }
 
 export interface NewHistory {

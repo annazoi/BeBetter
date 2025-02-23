@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -8,33 +8,78 @@ import {
   GridColumn,
   Form,
   TextArea,
+  Input,
 } from "semantic-ui-react";
 import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
-import { Feature } from "../../interfaces/feature";
 import Modal from "../ui/Modal";
+import { createHistory } from "../../services/feature";
+import { Feature, NewHistory } from "../../interfaces/feature";
 import { HistoryType } from "../../enums/historyType";
+import { useMutation } from "react-query";
 
 interface FeaturesProps {
-  data: Feature[] | undefined;
-  handleModal: (id: string, type: HistoryType) => void;
-  onSave?: () => void;
-  onClose?: () => void;
-  onOpen?: any;
-  onChange?: any;
-  desctiprionValue?: string;
-  selectedFeature?: Feature;
+  features: Feature[] | undefined;
+  refetch?: any;
 }
 
-const Features: FC<FeaturesProps> = ({
-  data,
-  handleModal,
-  onSave,
-  onClose,
-  onOpen,
-  onChange,
-  desctiprionValue,
-  selectedFeature,
-}) => {
+const Features: FC<FeaturesProps> = ({ features, refetch }) => {
+  const [updatedDescription, setUpdatedDescription] = useState<string>("");
+  const [openUpdatedModal, setOpenUpdatedModal] = useState<boolean>(false);
+  const [selectedFeature, setSelectedFeature] = useState<Feature>();
+
+  const [newHistory, setNewHistory] = useState<NewHistory>({
+    featureId: "",
+    history: {
+      description: "" as string,
+      type: "" as HistoryType,
+    },
+  });
+
+  const { mutate: createHistoryMutate } = useMutation({
+    mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
+  });
+
+  useEffect(() => {
+    if (selectedFeature) {
+      setNewHistory((prev) => ({
+        ...prev,
+        history: {
+          ...prev.history,
+          description: updatedDescription,
+        },
+      }));
+    }
+  }, [updatedDescription, selectedFeature]);
+
+  const handleNewHistory = () => {
+    createHistoryMutate(newHistory, {
+      onSuccess: (data) => {
+        console.log("History Added", data);
+        refetch();
+      },
+    });
+    setUpdatedDescription("");
+    setOpenUpdatedModal(false);
+  };
+
+  const handleUpdatedDescriptionChange = (e: any) => {
+    setUpdatedDescription(e.target.value);
+  };
+
+  const handleModal = (featureId: any, type: HistoryType) => {
+    setSelectedFeature(features?.find((feature) => feature.id === featureId));
+    setOpenUpdatedModal(true);
+    setNewHistory({
+      featureId: featureId,
+      history: {
+        description: updatedDescription,
+        type: type,
+      },
+    });
+  };
+
+  console.log("selectedFeature", selectedFeature);
+
   return (
     <>
       <Segment
@@ -57,7 +102,7 @@ const Features: FC<FeaturesProps> = ({
         </em>
         <Grid>
           <GridColumn>
-            {data?.map((feature: Feature, index: number) => (
+            {features?.map((feature: Feature, index: number) => (
               <Card key={index} style={{ padding: "5px" }}>
                 <div
                   style={{
@@ -99,9 +144,9 @@ const Features: FC<FeaturesProps> = ({
       </Segment>
       <Modal
         name={selectedFeature?.name}
-        onOpen={onOpen}
-        onClose={onClose}
-        onSave={onSave}
+        onOpen={openUpdatedModal}
+        onClose={() => setOpenUpdatedModal(false)}
+        onSave={() => handleNewHistory()}
       >
         <div>
           <Form>
@@ -110,9 +155,9 @@ const Features: FC<FeaturesProps> = ({
               style={{
                 minHeight: 80,
               }}
-              onChange={onChange}
+              onChange={handleUpdatedDescriptionChange}
               name="description"
-              value={desctiprionValue}
+              value={updatedDescription}
             />
           </Form>
         </div>

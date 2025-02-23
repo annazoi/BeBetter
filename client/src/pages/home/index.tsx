@@ -8,31 +8,16 @@ import {
   TextArea,
 } from "semantic-ui-react";
 import { useMutation, useQuery } from "react-query";
-import {
-  createFeature,
-  createHistory,
-  getFeatures,
-} from "../../services/feature";
-import { Feature, NewFeature, NewHistory } from "../../interfaces/feature";
+import { createFeature, getFeatures } from "../../services/feature";
+import { NewFeature } from "../../interfaces/feature";
 import { authStore } from "../../store/authStore";
 import Features from "../../components/Features";
-import { HistoryType } from "../../enums/historyType";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);
-  const [updatedDescription, setUpdatedDescription] = useState<string>("");
-  const [selectedFeature, setSelectedFeature] = useState<Feature>();
-  const [openUpdatedModal, setOpenUpdatedModal] = useState<boolean>(false);
   const [newFeature, setNewFeature] = useState<NewFeature>({
     name: "",
     description: "",
-  });
-  const [newHistory, setNewHistory] = useState<any>({
-    featureId: "",
-    history: {
-      description: updatedDescription,
-      type: "" as HistoryType,
-    },
   });
 
   const { data: features, refetch } = useQuery({
@@ -65,36 +50,6 @@ const Home: FC = () => {
     setNewFeature({
       ...newFeature,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const { mutate: createHistoryMutate } = useMutation({
-    mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
-  });
-
-  const handleNewHistory = () => {
-    createHistoryMutate(newHistory, {
-      onSuccess: (data) => {
-        console.log("History Added", data);
-        refetch();
-      },
-    });
-    setOpenUpdatedModal(false);
-  };
-
-  const handleUpdatedDescriptionChange = (e: any) => {
-    setUpdatedDescription(e.target.value);
-  };
-
-  const handleModal = (featureId: any, type: HistoryType) => {
-    setSelectedFeature(features?.find((feature) => feature.id === featureId));
-    setOpenUpdatedModal(true);
-    setNewHistory({
-      featureId: featureId,
-      history: {
-        description: updatedDescription,
-        type: type,
-      },
     });
   };
 
@@ -158,16 +113,7 @@ const Home: FC = () => {
       </div>
 
       <div>
-        <Features
-          data={features}
-          handleModal={handleModal}
-          onOpen={openUpdatedModal}
-          onClose={() => setOpenUpdatedModal(false)}
-          onSave={() => handleNewHistory()}
-          onChange={handleUpdatedDescriptionChange}
-          desctiprionValue={updatedDescription}
-          selectedFeature={selectedFeature}
-        />
+        <Features features={features} refetch={refetch} />
       </div>
     </Grid>
   );
