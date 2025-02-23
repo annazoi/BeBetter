@@ -11,6 +11,7 @@ import {
   Segment,
   ButtonGroup,
   Image,
+  Message,
 } from "semantic-ui-react";
 import { SignupSchema } from "../../../validation-schemas/auth";
 import { useMutation } from "react-query";
@@ -35,7 +36,11 @@ const Signup: FC = () => {
     mode: "onBlur",
   });
 
-  const { mutate: signupMutate } = useMutation(signup);
+  const {
+    mutate: signupMutate,
+    isLoading: isLoadingSignup,
+    isError: isErrorSignup,
+  } = useMutation(signup);
 
   const handleChange = (e: any) => {
     e.persist();
@@ -126,11 +131,22 @@ const Signup: FC = () => {
                 color="olive"
                 icon="signup"
                 type="submit"
+                loading={isLoadingSignup}
               />
             </ButtonGroup>
           </Grid>
+          {isErrorSignup && (
+            <Message
+              icon="warning circle"
+              negative
+              header="Error"
+              content="Username already exists"
+              attached="bottom"
+              size="small"
+            />
+          )}
         </Form>
-        <Divider horizontal>Or connect with</Divider>
+        {/* <Divider horizontal>Or connect with</Divider>
         <div
           style={{
             display: "flex",
@@ -139,7 +155,7 @@ const Signup: FC = () => {
         >
           <Button icon="google" color="google plus" content="Google" />
           <Button icon="facebook" color="facebook" content="Facebook" />
-        </div>
+        </div> */}
       </Segment>
     </>
   );

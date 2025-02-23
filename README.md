@@ -1,4 +1,4 @@
-### ΒeBetter is a self-improvement web application built with React, Chakra UI, NestJS, and TypeScript. It helps users track their personal growth over time by allowing them to record key characteristics about themselves. At the end of each month, users can reflect on their progress, identifying areas where they've improved and where they can focus more attention.
+### ΒeBetter is a self-improvement web application built with React, Semantic UI, NestJS, and TypeScript. It helps users track their personal growth over time by allowing them to record key characteristics about themselves. At the end of each month, users can reflect on their progress, identifying areas where they've improved and where they can focus more attention.
 
 ### Features
 
@@ -8,7 +8,7 @@
 
 ### Technologies Used
 
-- Frontend: React, TypeScript, Chakra UI
+- Frontend: React, TypeScript, Semantic UI
 - Backend: Nestjs
 - DataBase: MongoDB
 

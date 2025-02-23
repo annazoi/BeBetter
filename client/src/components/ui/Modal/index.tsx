@@ -16,6 +16,7 @@ interface ModalProps {
   onClose?: () => void;
   children: any;
   onSave?: () => void;
+  isLoading?: boolean;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -25,6 +26,7 @@ const Modal: FC<ModalProps> = ({
   image,
   name,
   onSave,
+  isLoading,
 }) => {
   return (
     <SemanticModal open={onOpen} onClose={onClose}>
@@ -37,7 +39,7 @@ const Modal: FC<ModalProps> = ({
       <ModalActions>
         <Button onClick={onClose} content="Close"></Button>
         {onSave && (
-          <Button color="olive" onClick={onSave}>
+          <Button color="olive" onClick={onSave} loading={isLoading}>
             update
           </Button>
         )}

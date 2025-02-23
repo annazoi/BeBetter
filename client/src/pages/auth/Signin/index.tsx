@@ -7,6 +7,7 @@ import {
   Segment,
   ButtonGroup,
   Image,
+  Message,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -32,8 +33,11 @@ const Signin: FC = () => {
     mode: "onBlur",
   });
 
-  const { mutate: signinMutate, isLoading: isLoadingSignin } =
-    useMutation(signin);
+  const {
+    mutate: signinMutate,
+    isLoading: isLoadingSignin,
+    isError: isErrorSignin,
+  } = useMutation(signin);
 
   const handleChange = (e: any) => {
     e.persist();
@@ -115,12 +119,23 @@ const Signin: FC = () => {
                 color="olive"
                 icon="sign-in"
                 type="submit"
+                loading={isLoadingSignin}
               />
             </ButtonGroup>
           </Grid>
+          {isErrorSignin && (
+            <Message
+              icon="warning circle"
+              negative
+              header="Error"
+              content="Invalid username or password"
+              attached="bottom"
+              size="small"
+            />
+          )}
         </Form>
 
-        <Divider horizontal>Or connect with</Divider>
+        {/* <Divider horizontal>Or connect with</Divider>
         <div
           style={{
             display: "flex",
@@ -129,7 +144,7 @@ const Signin: FC = () => {
         >
           <Button icon="google" color="google plus" content="Google" />
           <Button icon="facebook" color="facebook" content="Facebook" />
-        </div>
+        </div> */}
       </Segment>
     </>
   );

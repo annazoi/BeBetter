@@ -35,9 +35,10 @@ const Features: FC<FeaturesProps> = ({ features, refetch }) => {
     },
   });
 
-  const { mutate: createHistoryMutate } = useMutation({
-    mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
-  });
+  const { mutate: createHistoryMutate, isLoading: isCreateHistoryLoading } =
+    useMutation({
+      mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
+    });
 
   useEffect(() => {
     if (selectedFeature) {
@@ -147,6 +148,7 @@ const Features: FC<FeaturesProps> = ({ features, refetch }) => {
         onOpen={openUpdatedModal}
         onClose={() => setOpenUpdatedModal(false)}
         onSave={() => handleNewHistory()}
+        isLoading={isCreateHistoryLoading}
       >
         <div>
           <Form>
