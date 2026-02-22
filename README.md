@@ -1,59 +1,110 @@
-### ΒeBetter is a self-improvement web application built with React, Semantic UI, NestJS, and TypeScript. It helps users track their personal growth over time by allowing them to record key characteristics about themselves. At the end of each month, users can reflect on their progress, identifying areas where they've improved and where they can focus more attention.
+# Habitry
 
-### Features
+**Habitry** is a modern, full-stack self-improvement platform designed to help users track their personal growth, build better habits, and reflect on their progress over time. Built with a focus on clean design and robust architecture, it provides a seamless experience for logging activities and monitoring milestones.
 
-- 📝 Track Personal Traits: Log different characteristics about yourself to monitor personal growth.
-- 📊 Monthly Progress Reviews: Visual summaries at the end of each month to highlight improvements and areas for growth.
-- 🌟 Set Goals & Milestones: Define specific goals to stay motivated and measure success.
+---
 
-### Technologies Used
+## Key Features
 
-- Frontend: React, TypeScript, Semantic UI
-- Backend: Nestjs
-- DataBase: MongoDB
+-   **Activity Tracking**: Log numeric or boolean-based activities to monitor your daily habits and personal growth.
+-   **Progress Visualization**: View your history and milestones through a clean, intuitive interface.
+-   **Calendar Integration**: Track your daily logs in a structured calendar view to see patterns over time.
+-   **Secure Authentication**: Robust JWT-based authentication system to keep your data private.
+-   **Responsive Design**: A premium SaaS-style aesthetic that works beautifully across devices.
+
+---
+
+## Tech Stack
+
+### Backend (API)
+-   **Framework**: [NestJS](https://nestjs.com/) (Node.js)
+-   **Language**: TypeScript
+-   **Database**: [MongoDB](https://www.mongodb.com/) with Mongoose
+-   **Authentication**: Passport.js & JWT
+-   **Validation**: Class-validator & DTOs
+
+### Frontend (App)
+-   **Framework**: [React](https://reactjs.org/) (Vite)
+-   **Language**: TypeScript
+-   **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+-   **Styling**: Semantic UI & Tailwind CSS
+-   **Data Fetching**: React Query (TanStack Query)
+
+---
 
 ## Getting Started
 
-### 1. Clone the repository: `https://github.com/annazoi/BeBetter.git`
+### Prerequisites
+-   Node.js (v18+)
+-   npm or yarn
+-   MongoDB instance (Local or Atlas)
 
-### 2. Navigate to the project directory
+### 1. Clone the Repository
+```bash
+git clone https://github.com/annazoi/BeBetter.git
+cd BeBetter
+```
 
-### 3. Install dependencies:
+### 2. Backend Setup (API)
+```bash
+cd api
+npm install
+```
+**Environment Variables (.env)**
+Create a `.env` file in the `api` root:
+```env
+DB_CONNECTION=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRATION_TIME=3600s
+# Optional Cloudinary Integration
+CLOUD_NAME=your_cloud_name
+API_KEY=your_api_key
+API_KEY_SECRET=your_api_key_secret
+```
+**Start the API**
+```bash
+npm run start:dev
+```
 
-### CLIENT
+### 3. Frontend Setup (App)
+```bash
+cd ../app
+npm install
+```
+**Environment Variables (.env)**
+Create a `.env` file in the `app` root:
+```env
+VITE_API_URL=http://localhost:3000
+```
+**Start the App**
+```bash
+npm run dev
+```
 
-- `npm install`
+---
 
-### Run
+## Project Structure
 
-- `npm run dev`
+```text
+BeBetter/
+├── api/            # NestJS Backend
+│   ├── src/        # Core API logic
+│   └── ...
+├── app/            # React Frontend
+│   ├── src/        # UI components, stores, and hooks
+│   └── ...
+└── README.md
+```
 
-### env
+---
 
-- VITE_API_URL = your_api_url
+## Contributing
 
-### API
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- `npm install`
+---
 
-### Run
+## License
 
-### 1. Nest Start:
+This project is licensed under the [UNLICENSED](LICENSE) license.
 
-- `npm start`
-
-### 2. Nest Start Watch:
-
-- `npm run start:dev`
-
-### env
-
-- DB_CONNECTION = your_db_connection
-- CLOUD_NAME = your_cloud_name_from_cloudinary
-- API_KEY = your_api_key
-- API_KEY_SECRET = your_api_key_secret
-- JWT_SECRET = your_jwt_secret
-- SERVER_KEY = your_server_key_from_firebase
-- JWT_EXPIRATION_TIME = your_jwt_expiration_time
-- UPLOAD_RATE_TTL = your_upload_rate_ttl
-- UPLOAD_RATE_LIMIT = your_upload_rate_limit
