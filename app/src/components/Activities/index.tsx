@@ -14,6 +14,7 @@ import {
 } from "semantic-ui-react";
 import Modal from "../ui/Modal";
 import { createHistory } from "../../services/activity";
+import { deleteActivity } from "../../services/activity";
 import { Activity, NewHistory } from "../../interfaces/activity";
 import { HistoryType } from "../../enums/historyType";
 import { useMutation } from "react-query";
@@ -28,6 +29,8 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
   const [openUpdatedModal, setOpenUpdatedModal] = useState<boolean>(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity>();
   const [numericValue, setNumericValue] = useState<string>("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
 
   const [newHistory, setNewHistory] = useState<NewHistory>({
     activityId: "",
@@ -41,6 +44,11 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
   const { mutate: createHistoryMutate, isLoading: isCreateHistoryLoading } =
     useMutation({
       mutationFn: (newHistory: NewHistory) => createHistory(newHistory),
+    });
+
+  const { mutate: deleteActivityMutate, isLoading: isDeleteActivityLoading } =
+    useMutation({
+      mutationFn: (activityId: string) => deleteActivity(activityId),
     });
 
   useEffect(() => {
@@ -90,6 +98,28 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
     });
   };
 
+  const handleDeleteClick = (activityId: string) => {
+    setActivityToDelete(activityId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (activityToDelete) {
+      deleteActivityMutate(activityToDelete, {
+        onSuccess: () => {
+          refetch();
+          setDeleteModalOpen(false);
+          setActivityToDelete(null);
+        },
+        onError: (err) => {
+          console.log(err);
+          setDeleteModalOpen(false);
+          setActivityToDelete(null);
+        },
+      });
+    }
+  };
+
   const getProgressColor = (percent: number): "red" | "yellow" | "green" => {
     if (percent < 30) return "red";
     if (percent < 80) return "yellow";
@@ -101,8 +131,8 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
       return (
         <div style={{ display: "flex", gap: "10px" }}>
           <Button
-            content={`Log ${activity.unit || 'Value'}`}
-            color="teal"
+            content="Progress"
+            primary
             onClick={() => handleModal(activity.id, HistoryType.NUMERIC)}
             fluid
           />
@@ -116,7 +146,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
           <Button
             icon="check"
             content="Done"
-            color="green"
+            primary
             onClick={() => handleModal(activity.id, HistoryType.BOOLEAN)}
             fluid
           />
@@ -135,7 +165,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
         <Button
           circular
           icon="plus"
-          color="green"
+          primary
           onClick={() => handleModal(activity.id, HistoryType.POSITIVE)}
         />
       </div>
@@ -167,11 +197,21 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
           }
 
           return (
-            <GridColumn key={index}>
-              <Card fluid>
-                <Card.Content>
-                  <Card.Header style={{ fontSize: "1.2rem", marginBottom: "5px" }}>
+            <GridColumn key={index} style={{ display: 'flex' }}>
+              <Card fluid style={{ display: 'flex', flexDirection: 'column', height: '100%', margin: 0 }}>
+                <Card.Content style={{ flex: '1 0 auto' }}>
+                  <Card.Header style={{ fontSize: "1.2rem", marginBottom: "5px", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {activity.name}
+                    <Button
+                      icon="trash alternate outline"
+                      basic
+                      color="red"
+                      size="mini"
+                      circular
+                      onClick={() => handleDeleteClick(activity.id)}
+                      loading={isDeleteActivityLoading}
+                      style={{ opacity: 0.7, padding: '5px' }}
+                    />
                   </Card.Header>
 
                   <Card.Meta>
@@ -180,23 +220,24 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
                     {activity.type === 'boolean' && `Habit Tracker`}
                   </Card.Meta>
 
-                  <Card.Description style={{ minHeight: "20px", marginTop: "10px", color: "var(--text-secondary)" }}>
+                  <Card.Description style={{ minHeight: "30px", marginTop: "10px", color: "var(--text-primary)" }}>
                     {activity.description || <span style={{ fontStyle: "italic" }}>No description provided.</span>}
                   </Card.Description>
 
                   {(activity.type === 'percentage' || activity.type === 'numeric') && (
                     <div style={{ marginTop: "15px", marginBottom: "5px" }}>
                       <Progress
-                        percent={progressPercent}
+                        percent={progressPercent.toFixed(0)}
                         color={getProgressColor(progressPercent)}
-                        size="tiny"
+                        size="small"
+                        progress
                         style={{ margin: 0 }}
                       />
                     </div>
                   )}
                 </Card.Content>
 
-                <Card.Content extra style={{ padding: "10px 15px", borderTop: "1px solid var(--border-color)" }}>
+                <Card.Content extra style={{ padding: "10px 15px", borderTop: "1px solid var(--border-color)", flex: '0 0 auto' }}>
                   {renderCardActions(activity)}
                 </Card.Content>
               </Card>
@@ -212,25 +253,79 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
         onSave={() => handleNewHistory()}
         isLoading={isCreateHistoryLoading}
       >
-        <div>
+        <div style={{ padding: '10px 5px' }}>
+          <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'rgba(25, 188, 181, 0.05)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Icon name="edit outline" color="teal" size="large" style={{ margin: 0 }} />
+            </div>
+            <div>
+              <Header as="h4" style={{ margin: 0 }}>Progress</Header>
+              <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                {selectedActivity?.type === 'numeric' ? `Add your progress in ${selectedActivity.unit}` : 'Add a note about your activity'}
+              </p>
+            </div>
+          </div>
+
           <Form>
             {selectedActivity?.type === 'numeric' && (
-              <Input
-                type="number"
-                placeholder={`Value (${selectedActivity.unit || ''})`}
-                value={numericValue}
-                onChange={handleNumericValueChange}
-                style={{ marginBottom: "10px", width: "100%" }}
-              />
+              <div style={{ marginBottom: "15px" }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  VALUE ({selectedActivity.unit?.toUpperCase() || ''})
+                </label>
+                <Input
+                  type="number"
+                  placeholder="0"
+                  fluid
+                  value={numericValue}
+                  onChange={handleNumericValueChange}
+                  autoFocus
+                />
+              </div>
             )}
-            <TextArea
-              placeholder="Description (Optional)"
-              style={{ minHeight: 80 }}
-              onChange={handleUpdatedDescriptionChange}
-              name="description"
-              value={updatedDescription}
-            />
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                DESCRIPTION
+              </label>
+              <TextArea
+                placeholder="How did it go? (Optional)"
+                style={{
+                  minHeight: 100,
+                  width: '100%',
+                  background: 'transparent',
+                  resize: 'none',
+                  padding: '12px',
+                  lineHeight: '1.5'
+                }}
+                onChange={handleUpdatedDescriptionChange}
+                name="description"
+                value={updatedDescription}
+              />
+            </div>
           </Form>
+        </div>
+      </Modal>
+
+      <Modal
+        name="Delete Activity"
+        onOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onSave={() => handleConfirmDelete()}
+        saveButtonText="delete"
+        saveButtonColor="red"
+        isLoading={isDeleteActivityLoading}
+      >
+        <div style={{ textAlign: 'center', padding: '10px' }}>
+          <Icon name="warning sign" size="huge" color="red" style={{ marginBottom: '15px' }} />
+          <Header as="h3">Are you sure you want to delete this activity?</Header>
+          <p style={{ color: 'var(--text-secondary)' }}>This action cannot be undone and all history will be lost.</p>
         </div>
       </Modal>
     </>

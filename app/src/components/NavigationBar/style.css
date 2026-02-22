@@ -3,3 +3,8 @@
     display: none;
   }
 }
+
+.brand-header:hover {
+  background: transparent !important;
+  cursor: default !important;
+}

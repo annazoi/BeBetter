@@ -24,5 +24,9 @@ export declare class ActivityService {
     } & {
         __v: number;
     }>;
-    remove(activityId: string): string;
+    remove(activityId: string): Promise<import("mongoose").Document<unknown, {}, Activity> & Activity & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }>;
 }

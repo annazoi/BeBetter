@@ -43,17 +43,18 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       {/* Top Navigation Bar */}
       <Menu borderless className="dashboard-navbar" style={{ margin: 0, padding: '10px 0' }}>
         <Container>
-          <Menu.Item header style={{ fontSize: "1.2rem", fontWeight: "bold", paddingLeft: 0 }}>
+          <Menu.Item header className="brand-header transparent-hover" style={{ fontSize: "1.2rem", fontWeight: "bold", paddingLeft: 0 }}>
             <Icon name="rocket" color="teal" size="large" />
             <span style={{ marginLeft: "10px", letterSpacing: "1px" }}>Habitry</span>
           </Menu.Item>
 
           {isLoggedIn ? (
             <>
-              <Menu.Menu position="left">
+              <Menu.Menu position="left" style={{ display: 'flex', gap: '10px' }} >
                 <Menu.Item
                   active={location.pathname === "/" || location.pathname === "/home"}
                   onClick={() => navigate("/")}
+                  style={{ borderRadius: '10px' }}
                 >
                   <Icon name="dashboard" />
                   Dashboard
@@ -61,23 +62,25 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                 <Menu.Item
                   active={location.pathname === "/calendar"}
                   onClick={() => navigate("/calendar")}
+                  style={{ borderRadius: '10px' }}
                 >
                   <Icon name="calendar outline" />
                   Calendar
                 </Menu.Item>
               </Menu.Menu>
 
-              <Menu.Menu position="right" style={{ alignItems: 'center', display: 'flex', gap: '10px' }}>
-                <Menu.Item onClick={toggleDarkMode}>
+              <Menu.Menu position="right" style={{ alignItems: 'center' }} >
+                <Menu.Item onClick={toggleDarkMode} className="transparent-hover">
                   <Icon name={isDarkMode ? "sun" : "moon"} size="large" style={{ margin: 0 }} />
                 </Menu.Item>
-                <Menu.Item style={{ padding: 0, height: 'fit-content' }}>
+                <Menu.Item className="transparent-hover">
                   <Button
                     basic
-                    color="red"
+                    // color="red"
                     content="Sign Out"
                     icon="sign-out"
                     onClick={handleLogout}
+                    className="transparent-hover"
                     style={{
                       background: 'transparent',
                     }}

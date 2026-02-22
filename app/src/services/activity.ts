@@ -13,7 +13,7 @@ export const createActivity = async (payload: NewActivity) => {
     );
     return response.data;
   } catch (error: any) {
-    throw error.response.data;
+    throw error.response?.data || error.message || error;
   }
 };
 
@@ -30,7 +30,7 @@ export const getActivities = async (
     });
     return formattedData;
   } catch (error: any) {
-    throw error.response.data;
+    throw error.response?.data || error.message || error;
   }
 };
 
@@ -43,7 +43,7 @@ export const getActivity = async (activityId: string) => {
     const formattedData = formatActivity(response.data);
     return formattedData;
   } catch (error: any) {
-    throw error.response.data;
+    throw error.response?.data || error.message || error;
   }
 };
 
@@ -57,6 +57,17 @@ export const createHistory = async ({ activityId, history }: NewHistory) => {
     console.log("Response", response.data);
     return response.data;
   } catch (error: any) {
-    throw error.response.data;
+    throw error.response?.data || error.message || error;
+  }
+};
+export const deleteActivity = async (activityId: string) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/activities/${activityId}`,
+      getAuthHeaders()
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || error.message || error;
   }
 };

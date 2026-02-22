@@ -24,5 +24,9 @@ export declare class ActivityController {
     } & {
         __v: number;
     }>;
-    remove(id: string): string;
+    remove(id: string): Promise<import("mongoose").Document<unknown, {}, Activity> & Activity & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }>;
 }
