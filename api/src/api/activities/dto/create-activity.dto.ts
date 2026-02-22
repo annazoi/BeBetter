@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { HistoryTypeEnums } from "src/enums/historyType";
 
 export class CreateActivityDto {
@@ -9,6 +9,19 @@ export class CreateActivityDto {
   @IsString()
   @IsOptional()
   description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(["percentage", "numeric", "boolean"])
+  type: string;
+
+  @IsNumber()
+  @IsOptional()
+  goalValue?: number;
+
+  @IsString()
+  @IsOptional()
+  unit?: string;
 
   @IsOptional()
   @IsArray()
@@ -23,4 +36,8 @@ export class CreateHistoryDto {
   @IsString()
   @IsNotEmpty()
   type: HistoryTypeEnums;
+
+  @IsNumber()
+  @IsOptional()
+  value?: number;
 }

@@ -11,6 +11,9 @@ export class History {
 
   @Prop({ type: String, enum: HistoryTypeEnums })
   type: HistoryTypeEnums;
+
+  @Prop({ type: Number, required: false })
+  value?: number;
 }
 export const HistorySchema = SchemaFactory.createForClass(History);
 
@@ -23,6 +26,15 @@ export class Activity {
 
   @Prop()
   description: string;
+
+  @Prop({ type: String, enum: ['percentage', 'numeric', 'boolean'], required: true })
+  type: string;
+
+  @Prop({ type: Number, required: false })
+  goalValue?: number;
+
+  @Prop({ type: String, required: false })
+  unit?: string;
 
   @Prop({ type: Types.ObjectId, ref: "User" })
   userId: Types.ObjectId;

@@ -1,8 +1,8 @@
 import FullCalendar from "@fullcalendar/react";
 import { FC, useEffect, useState } from "react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid/index.js";
+import timeGridPlugin from "@fullcalendar/timegrid/index.js";
+import interactionPlugin from "@fullcalendar/interaction/index.js";
 import { useQuery } from "react-query";
 import { authStore } from "../../store/authStore";
 import { getActivities } from "../../services/activity";

@@ -1,13 +1,15 @@
 import { HistoryType } from "../../enums/historyType";
 import { Activity, History } from "../../interfaces/activity";
 import { formatUser } from "./user";
-// import { formatDate } from "./date";
 
 export const formatActivity = (data: any): Activity => {
   handlePercent(data);
   return {
     name: data.name,
     description: data.description,
+    type: data.type,
+    goalValue: data.goalValue,
+    unit: data.unit,
     percent: data.percent,
     id: data._id,
     userId: formatUser(data.userId),
@@ -20,21 +22,35 @@ export const formatHistory = (data: any): History => {
   return {
     description: data.description,
     type: data.type,
+    value: data.value,
     id: data._id,
     date: data.createdAt,
   };
 };
 
 const handlePercent = (data: any) => {
-  if (data.history.length === 0) {
+  if (data.type !== "percentage") {
     data.percent = "0.00";
     return data;
   }
-  const positiveLength = data?.history.filter(
-    (history: History) => history.type === HistoryType.POSITIVE
+
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const monthlyHistory = data.history.filter((history: any) => {
+    const d = new Date(history.createdAt);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+
+  if (monthlyHistory.length === 0) {
+    data.percent = "0.00";
+    return data;
+  }
+  const positiveLength = monthlyHistory.filter(
+    (history: any) => history.type === HistoryType.POSITIVE
   ).length;
 
-  const result = (positiveLength / data.history.length) * 100;
+  const result = (positiveLength / monthlyHistory.length) * 100;
   data.percent = result.toFixed(2);
   return data;
 };

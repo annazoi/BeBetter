@@ -1,5 +1,5 @@
 import { OptionItem } from "../interfaces/components";
-import { HistoryType } from "./../enums/historyType";
+import { HistoryType } from "../enums/historyType";
 
 export const HISTORY_TYPES: OptionItem[] = [
   {
