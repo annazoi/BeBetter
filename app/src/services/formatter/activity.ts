@@ -12,8 +12,8 @@ export const formatActivity = (data: any): Activity => {
     unit: data.unit,
     percent: data.percent,
     id: data._id,
-    userId: formatUser(data.userId),
-    history: data.history.map((history: any) => formatHistory(history)),
+    userId: data.userId ? formatUser(data.userId) : ({} as any),
+    history: data.history ? data.history.map((history: any) => formatHistory(history)) : [],
     date: data.createdAt,
   };
 };

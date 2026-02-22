@@ -24,6 +24,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: String, enum: historyType_1.HistoryTypeEnums }),
     __metadata("design:type", String)
 ], History.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Number, required: false }),
+    __metadata("design:type", Number)
+], History.prototype, "value", void 0);
 exports.History = History = __decorate([
     (0, mongoose_1.Schema)({
         timestamps: true,
@@ -41,6 +45,18 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Activity.prototype, "description", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, enum: ['percentage', 'numeric', 'boolean'], required: true }),
+    __metadata("design:type", String)
+], Activity.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Number, required: false }),
+    __metadata("design:type", Number)
+], Activity.prototype, "goalValue", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: false }),
+    __metadata("design:type", String)
+], Activity.prototype, "unit", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "User" }),
     __metadata("design:type", mongoose_2.Types.ObjectId)

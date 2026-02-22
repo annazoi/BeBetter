@@ -3,6 +3,7 @@ import { HistoryTypeEnums } from "src/enums/historyType";
 export declare class History {
     description?: string;
     type: HistoryTypeEnums;
+    value?: number;
 }
 export declare const HistorySchema: import("mongoose").Schema<History, import("mongoose").Model<History, any, any, any, import("mongoose").Document<unknown, any, History> & History & {
     _id: Types.ObjectId;
@@ -16,6 +17,9 @@ export declare const HistorySchema: import("mongoose").Schema<History, import("m
 export declare class Activity {
     name: string;
     description: string;
+    type: string;
+    goalValue?: number;
+    unit?: string;
     userId: Types.ObjectId;
     history: History[];
 }

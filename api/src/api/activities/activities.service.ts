@@ -32,7 +32,10 @@ export class ActivityService {
       if (error instanceof Error.ValidationError) {
         throw new ForbiddenException(error.message);
       }
-      throw error.response.data;
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      throw new ForbiddenException(error.message || "An unexpected error occurred");
     }
   }
 
@@ -79,7 +82,15 @@ export class ActivityService {
     }
   }
 
-  remove(activityId: string) {
-    return `This action removes a #${activityId} activity`;
+  async remove(activityId: string) {
+    try {
+      const result = await this.activityModel.findByIdAndDelete(activityId);
+      if (!result) {
+        throw new Error("Activity not found");
+      }
+      return result;
+    } catch (error: any) {
+      throw new ForbiddenException(error.message);
+    }
   }
 }

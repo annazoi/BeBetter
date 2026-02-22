@@ -25,8 +25,9 @@ const Home: FC = () => {
   });
 
   const { data: activities, refetch } = useQuery({
-    queryKey: ["activities"],
+    queryKey: ["activities", userId],
     queryFn: () => getActivities({ userId }),
+    enabled: !!userId,
   });
 
   const { mutate: createActivityMutate, isLoading: createActivityLoading } =
@@ -63,8 +64,8 @@ const Home: FC = () => {
     });
   };
 
-  const handleDropdownChange = (_e: any, { value }: any) => {
-    setNewActivity({ ...newActivity, type: value });
+  const handleDropdownChange = (_e: any, data: any) => {
+    setNewActivity({ ...newActivity, type: data.value });
   };
 
   const typeOptions = [
@@ -92,21 +93,42 @@ const Home: FC = () => {
           onClose={() => setIsModalOpen(false)}
           onOpen={() => setIsModalOpen(true)}
           size="tiny"
+          className="saas-modal"
         >
-          <Header icon="rocket" content="Create a New Activity" />
-          <Modal.Content>
+          <Header>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: 'rgba(25, 188, 181, 0.05)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Icon name="rocket" color="teal" style={{ margin: 0 }} />
+              </div>
+              <div>
+                <div style={{ fontSize: '1.2rem', fontWeight: '700' }}>Create New Activity</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '400' }}>Define your next goal or habit</div>
+              </div>
+            </div>
+          </Header>
+          <Modal.Content style={{ padding: '20px' }}>
             <Form>
-              <Form.Field>
-                <label>Activity Name</label>
+              <Form.Field style={{ marginBottom: '20px' }}>
+                <label style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>Activity Name</label>
                 <Input
                   placeholder="e.g., Drink Water, Read 20 Pages"
                   onChange={handleNewActivityChange}
                   name="name"
                   value={newActivity.name}
+                  fluid
                 />
               </Form.Field>
-              <Form.Field>
-                <label>Tracking Type</label>
+
+              <Form.Field style={{ marginBottom: '20px' }}>
+                <label style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>Tracking Type</label>
                 <Dropdown
                   placeholder='Select Type'
                   fluid
@@ -118,34 +140,36 @@ const Home: FC = () => {
               </Form.Field>
 
               {newActivity.type === 'numeric' && (
-                <Form.Group widths="equal">
+                <Form.Group widths="equal" style={{ marginBottom: '20px' }}>
                   <Form.Field>
-                    <label>Goal Value</label>
+                    <label style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>Goal Value</label>
                     <Input
                       type="number"
-                      placeholder="e.g. 100"
+                      placeholder="100"
                       name="goalValue"
                       value={newActivity.goalValue || ""}
                       onChange={handleNewActivityChange}
+                      fluid
                     />
                   </Form.Field>
                   <Form.Field>
-                    <label>Unit/Metric</label>
+                    <label style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>Unit</label>
                     <Input
-                      placeholder="e.g. $, pages, km"
+                      placeholder="e.g. km, cups"
                       name="unit"
                       value={newActivity.unit || ""}
                       onChange={handleNewActivityChange}
+                      fluid
                     />
                   </Form.Field>
                 </Form.Group>
               )}
 
               <Form.Field>
-                <label>Description (Optional)</label>
+                <label style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>Description (Optional)</label>
                 <TextArea
-                  placeholder="Additional context or notes"
-                  style={{ minHeight: 80 }}
+                  placeholder="What is this activity about?"
+                  style={{ minHeight: 100, borderRadius: '8px', border: '1px solid var(--border-color)', background: 'transparent', resize: 'none' }}
                   onChange={handleNewActivityChange}
                   name="description"
                   value={newActivity.description}
@@ -153,12 +177,12 @@ const Home: FC = () => {
               </Form.Field>
             </Form>
           </Modal.Content>
-          <Modal.Actions>
-            <Button color="red" onClick={() => setIsModalOpen(false)}>
-              <Icon name="remove" /> Cancel
+          <Modal.Actions style={{ padding: '15px 20px', borderTop: '1px solid var(--border-color)' }}>
+            <Button basic color="red" onClick={() => setIsModalOpen(false)} style={{ borderRadius: '8px' }}>
+              Cancel
             </Button>
-            <Button color="green" onClick={handleNewActivity} loading={createActivityLoading}>
-              <Icon name="checkmark" /> Create Activity
+            <Button color="teal" onClick={handleNewActivity} loading={createActivityLoading} style={{ borderRadius: '8px', paddingLeft: '25px', paddingRight: '25px' }}>
+              Create Activity
             </Button>
           </Modal.Actions>
         </Modal>

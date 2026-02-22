@@ -5,5 +5,7 @@ var HistoryTypeEnums;
 (function (HistoryTypeEnums) {
     HistoryTypeEnums["POSITIVE"] = "POSITIVE";
     HistoryTypeEnums["NEGATIVE"] = "NEGATIVE";
+    HistoryTypeEnums["NUMERIC"] = "NUMERIC";
+    HistoryTypeEnums["BOOLEAN"] = "BOOLEAN";
 })(HistoryTypeEnums || (exports.HistoryTypeEnums = HistoryTypeEnums = {}));
 //# sourceMappingURL=historyType.js.map

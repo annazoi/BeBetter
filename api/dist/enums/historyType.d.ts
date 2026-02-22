@@ -1,4 +1,6 @@
 export declare enum HistoryTypeEnums {
     POSITIVE = "POSITIVE",
-    NEGATIVE = "NEGATIVE"
+    NEGATIVE = "NEGATIVE",
+    NUMERIC = "NUMERIC",
+    BOOLEAN = "BOOLEAN"
 }

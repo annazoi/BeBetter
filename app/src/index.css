@@ -4,14 +4,14 @@
   --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   /* Light Theme Colors */
-  --bg-color: #f4f6f8;
-  --surface-color: rgba(255, 255, 255, 0.85);
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --border-color: rgba(0, 0, 0, 0.08);
+  --bg-color: #f9fafb;
+  --surface-color: #ffffff;
+  --text-primary: #334155;
+  --text-secondary: #6b7280;
+  --border-color: rgba(0, 0, 0, 0.05);
 
-  --primary: #0b132b;
-  --primary-hover: #1c2541;
+  --primary: #12918b;
+  --primary-hover: #0f7a75;
   --success: #1dd3b0;
   --success-hover: #15b999;
   --danger: #ff4757;
@@ -25,9 +25,9 @@
 }
 
 [data-theme='dark'] {
-  /* Dark Theme Colors */
-  --bg-color: #0f172a;
-  --surface-color: rgba(30, 41, 59, 0.85);
+  /* Dark Theme Colors - Deep SaaS Navy */
+  --bg-color: #020617;
+  --surface-color: rgba(15, 23, 42, 0.95);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --border-color: rgba(255, 255, 255, 0.08);
@@ -39,8 +39,8 @@
   --danger: #ff4757;
   --danger-hover: #ff6b81;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -88,6 +88,16 @@ h6 {
   color: var(--text-primary) !important;
 }
 
+.ui.card>.content>.meta,
+.ui.cards>.card>.content>.meta {
+  color: var(--text-secondary) !important;
+}
+
+.ui.card>.content>.description,
+.ui.cards>.card>.content>.description {
+  color: var(--text-primary) !important;
+}
+
 .ui.card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
@@ -115,29 +125,41 @@ h6 {
   transform: scale(0.92) !important;
 }
 
-/* Specific Button Colors */
-.ui.teal.button {
+/* Specific Button Colors - Syncing to Brand Primary */
+.ui.primary.button,
+.ui.teal.button,
+.ui.olive.button,
+.ui.blue.button {
   background-color: var(--primary) !important;
   color: #fff !important;
 }
 
-.ui.teal.button:hover {
+.ui.primary.button:hover,
+.ui.teal.button:hover,
+.ui.olive.button:hover,
+.ui.blue.button:hover {
   background-color: var(--primary-hover) !important;
 }
 
-.ui.green.button {
+.ui.green.button,
+.ui.positive.button {
   background-color: var(--success) !important;
+  color: #fff !important;
 }
 
-.ui.green.button:hover {
+.ui.green.button:hover,
+.ui.positive.button:hover {
   background-color: var(--success-hover) !important;
 }
 
-.ui.red.button {
+.ui.red.button,
+.ui.negative.button {
   background-color: var(--danger) !important;
+  color: #fff !important;
 }
 
-.ui.red.button:hover {
+.ui.red.button:hover,
+.ui.negative.button:hover {
   background-color: var(--danger-hover) !important;
 }
 
@@ -150,6 +172,31 @@ h6 {
   align-items: center !important;
   justify-content: center !important;
   padding: 0 !important;
+}
+
+/* Basic Buttons in Dark Mode */
+[data-theme='dark'] .ui.basic.button.transparent-hover {
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 0 1px var(--border-color) inset !important;
+}
+
+[data-theme='dark'] .ui.basic.button.transparent-hover:hover {
+  box-shadow: 0 0 0 1px var(--text-primary) inset !important;
+}
+
+/* Ensure Red Basic buttons stay red in dark mode */
+.ui.red.basic.button,
+[data-theme='dark'] .ui.red.basic.button {
+  background: transparent !important;
+  color: var(--danger) !important;
+  box-shadow: 0 0 0 1px var(--danger) inset !important;
+}
+
+.ui.red.basic.button:hover,
+[data-theme='dark'] .ui.red.basic.button:hover {
+  background: rgba(255, 71, 87, 0.1) !important;
+  color: #ff5e6c !important;
+  box-shadow: 0 0 0 1px #ff5e6c inset !important;
 }
 
 /* Menu / Navbar */
@@ -175,6 +222,12 @@ h6 {
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
+.ui.menu .item.transparent-hover:hover,
+[data-theme='dark'] .ui.menu .item.transparent-hover:hover,
+.ui.button.transparent-hover:hover {
+  background: transparent !important;
+}
+
 /* Forms & Inputs */
 .ui.form .field>label,
 .ui.checkbox label,
@@ -193,6 +246,24 @@ h6 {
 
 .ui.input>i.icon {
   color: var(--text-secondary) !important;
+}
+
+/* Global Placeholder Styling */
+::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+.ui.dropdown>.default.text {
+  color: #94a3b8 !important;
+}
+
+[data-theme='dark'] ::placeholder {
+  color: #64748b !important;
+}
+
+[data-theme='dark'] .ui.dropdown>.default.text {
+  color: #64748b !important;
 }
 
 .ui.form input:focus,
@@ -215,11 +286,98 @@ h6 {
   backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-lg) !important;
   border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .ui.modal>.header,
-.ui.modal>.content,
+.ui.modal>.content {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+}
+
 .ui.modal>.actions {
   background: transparent !important;
   color: var(--text-primary) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+/* Dimmer / Backdrop */
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* === FullCalendar SaaS Overrides === */
+.fc {
+  --fc-border-color: var(--border-color);
+  --fc-daygrid-event-dot-width: 8px;
+  --fc-list-event-dot-width: 8px;
+  --fc-neutral-bg-color: rgba(0, 0, 0, 0.02);
+  --fc-today-bg-color: rgba(25, 188, 181, 0.1);
+  background: var(--surface-color) !important;
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.fc .fc-toolbar-title {
+  font-family: var(--font-family) !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number {
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+}
+
+.fc .fc-button-group {
+  gap: 8px;
+}
+
+.fc .fc-button-group>.fc-button {
+  border-radius: 8px !important;
+  border: 1px solid var(--primary) !important;
+  margin-left: 0 !important;
+}
+
+.fc .fc-button-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  text-transform: capitalize !important;
+  font-weight: 600 !important;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+.fc .fc-button-primary:disabled {
+  background-color: var(--border-color) !important;
+  border-color: var(--border-color) !important;
+  opacity: 0.5;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+  border-color: var(--border-color) !important;
+}
+
+.fc .fc-day-today {
+  background-color: var(--fc-today-bg-color) !important;
+}
+
+.fc .fc-daygrid-day-number {
+  font-weight: 600 !important;
+  padding: 8px !important;
+}
+
+[data-theme='dark'] .fc {
+  --fc-neutral-bg-color: rgba(255, 255, 255, 0.02);
 }

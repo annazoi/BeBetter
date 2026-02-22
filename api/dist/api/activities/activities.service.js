@@ -83,8 +83,17 @@ let ActivityService = class ActivityService {
             throw new common_1.ForbiddenException(error.message);
         }
     }
-    remove(activityId) {
-        return `This action removes a #${activityId} activity`;
+    async remove(activityId) {
+        try {
+            const result = await this.activityModel.findByIdAndDelete(activityId);
+            if (!result) {
+                throw new mongoose_2.Error("Activity not found");
+            }
+            return result;
+        }
+        catch (error) {
+            throw new common_1.ForbiddenException(error.message);
+        }
     }
 };
 exports.ActivityService = ActivityService;

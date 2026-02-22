@@ -18,6 +18,8 @@ interface ModalProps {
   onSave?: () => void;
   isLoading?: boolean;
   color?: string;
+  saveButtonText?: string;
+  saveButtonColor?: any;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -29,6 +31,8 @@ const Modal: FC<ModalProps> = ({
   onSave,
   isLoading,
   color,
+  saveButtonText = "update",
+  saveButtonColor = "olive",
 }) => {
   return (
     <SemanticModal open={onOpen} onClose={onClose}>
@@ -38,17 +42,16 @@ const Modal: FC<ModalProps> = ({
         image
         style={{
           backgroundColor: color,
-          borderRadius: "20px",
         }}
       >
         {image && <Image src={image} size="small" wrapped />}
-        <ModalDescription padded>{children}</ModalDescription>
+        <ModalDescription>{children}</ModalDescription>
       </ModalContent>
       <ModalActions>
         <Button onClick={onClose} content="Close"></Button>
         {onSave && (
-          <Button color="olive" onClick={onSave} loading={isLoading}>
-            update
+          <Button color={saveButtonColor} onClick={onSave} loading={isLoading}>
+            {saveButtonText}
           </Button>
         )}
       </ModalActions>

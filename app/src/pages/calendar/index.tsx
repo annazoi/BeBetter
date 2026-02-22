@@ -8,7 +8,7 @@ import { authStore } from "../../store/authStore";
 import { getActivities } from "../../services/activity";
 import { historiesCalendarEvent } from "../../interfaces/components";
 import Modal from "../../components/ui/Modal";
-import { Button, Header, Icon } from "semantic-ui-react";
+import { Header, Icon } from "semantic-ui-react";
 import { Activity, History } from "../../interfaces/activity";
 import { HistoryType } from "../../enums/historyType";
 import "./style.css";
@@ -105,8 +105,8 @@ const Calendar: FC = () => {
       <Modal
         color={
           selectedhistory?.type === HistoryType.NEGATIVE
-            ? "rgb(199, 171, 171)"
-            : "rgb(171, 199, 171)"
+            ? "rgba(255, 71, 87, 0.05)"
+            : "rgba(29, 211, 176, 0.05)"
         }
         name={selectedActivity?.name}
         onOpen={isModalOpen}
@@ -115,73 +115,55 @@ const Calendar: FC = () => {
           setSelectedActivity(null);
         }}
       >
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: 'center' }}>
           <Icon
             name={
               selectedhistory?.type === HistoryType.NEGATIVE
                 ? "arrow alternate circle down outline"
                 : "arrow alternate circle up outline"
             }
+            color={selectedhistory?.type === HistoryType.NEGATIVE ? 'red' : 'green'}
+            size="large"
           />
-          <p>{selectedhistory?.description}</p>
+          <p style={{ margin: 0, fontSize: '1.1rem' }}>{selectedhistory?.description}</p>
         </div>
       </Modal>
 
-      <Modal onOpen={isOpenDate} onClose={() => setIsOpenDate(false)}>
+      <Modal name={`Events for ${selectedDate}`} onOpen={isOpenDate} onClose={() => setIsOpenDate(false)}>
         {selectedDateEvents.length == 0 ? (
-          <div>
+          <div style={{ textAlign: 'center', padding: '30px' }}>
+            <Icon name="calendar alternate outline" size="huge" style={{ opacity: 0.2, marginBottom: '15px' }} />
             <Header as="h3">No events for this date</Header>
-            <div>{selectedDate}</div>
           </div>
         ) : (
-          <>
-            <Header as="h3">Events for this date</Header>
-            <div className="history-list">
-              {selectedDateEvents.map((event: any) => (
-                <Button
-                  key={event.id}
-                  onClick={() => handleEventClick({ event: { id: event.id } })}
-                  color={event.type === HistoryType.NEGATIVE ? "red" : "green"}
-                  style={{
-                    marginBottom: "10px",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
+          <div className="history-list">
+            {selectedDateEvents.map((event: any) => (
+              <button
+                key={event.id}
+                className="history-item-btn"
+                onClick={() => handleEventClick({ event: { id: event.id } })}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Icon
                     name={
                       event.type === HistoryType.NEGATIVE
                         ? "arrow alternate circle down outline"
                         : "arrow alternate circle up outline"
                     }
-                    style={{ color: "white" }}
+                    color={event.type === HistoryType.NEGATIVE ? 'red' : 'green'}
                   />
-                  <text
-                    style={{
-                      fontWeight: "bold",
-                      color: "black",
-                    }}
-                  >
-                    {event.title}
-                  </text>
-                  <text
-                    style={{
-                      marginLeft: "10px",
-                      fontSize: "10px",
-                      color: "darkolivegreen",
-                    }}
-                  >
-                    {event.date
-                      .toISOString()
-                      .split("T")[1]
-                      .split(".")[0]
-                      .slice(0, 5)}
-                  </text>
-                </Button>
-              ))}
-            </div>
-          </>
+                  <span style={{ fontWeight: "600" }}>{event.title}</span>
+                </div>
+                <span style={{ fontSize: "0.8rem", opacity: 0.6 }}>
+                  {event.date
+                    .toISOString()
+                    .split("T")[1]
+                    .split(".")[0]
+                    .slice(0, 5)}
+                </span>
+              </button>
+            ))}
+          </div>
         )}
       </Modal>
 
@@ -194,7 +176,6 @@ const Calendar: FC = () => {
         }}
         slotDuration={"00:30:00"}
         selectable={true}
-        // events={lessEvents}
         dateClick={handleDateClick}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
@@ -211,25 +192,32 @@ const Calendar: FC = () => {
           };
 
           const formattedInfoDate = formatToLocalDate(info.date);
-
           const matchingEvents = events.filter((event: any) => {
             const formattedEventDate = formatToLocalDate(event.date);
             return formattedEventDate === formattedInfoDate;
           });
 
           return (
-            <div>
-              <span style={{ fontWeight: "bold" }}>{info.dayNumberText}</span>
-              <br />
-              {matchingEvents.length > 0 ? (
-                <span style={{ fontSize: "10px", color: "blue" }}>
-                  {matchingEvents.length} Events 📅
-                </span>
-              ) : (
-                <span style={{ fontSize: "10px", color: "gray" }}>
-                  No Events
-                </span>
-              )}
+            <div style={{ padding: '4px' }}>
+              <span style={{ fontWeight: "700", fontSize: '1.1rem' }}>{info.dayNumberText}</span>
+              <div style={{ marginTop: '4px' }}>
+                {matchingEvents.length > 0 ? (
+                  <span style={{
+                    fontSize: "0.75rem",
+                    color: "var(--success)",
+                    background: 'rgba(29, 211, 176, 0.1)',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontWeight: '600'
+                  }}>
+                    {matchingEvents.length} {matchingEvents.length === 1 ? 'Event' : 'Events'}
+                  </span>
+                ) : (
+                  <span style={{ fontSize: "0.75rem", opacity: 0.3 }}>
+                    Empty
+                  </span>
+                )}
+              </div>
             </div>
           );
         }}
