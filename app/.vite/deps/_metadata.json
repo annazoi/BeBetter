@@ -1,8 +1,133 @@
 {
-  "hash": "6bd38a0f",
+  "hash": "86503ad8",
   "configHash": "e1959411",
-  "lockfileHash": "e3b0c442",
-  "browserHash": "8ec4779a",
-  "optimized": {},
-  "chunks": {}
+  "lockfileHash": "7f5d091c",
+  "browserHash": "b830bcf0",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "a55bbd33",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "c1734b4d",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e2d22842",
+      "needsInterop": true
+    },
+    "react-query": {
+      "src": "../../node_modules/react-query/es/index.js",
+      "file": "react-query.js",
+      "fileHash": "bff6c023",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "2a05c0be",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "4034a112",
+      "needsInterop": false
+    },
+    "zustand/middleware": {
+      "src": "../../node_modules/zustand/esm/middleware.mjs",
+      "file": "zustand_middleware.js",
+      "fileHash": "07bea661",
+      "needsInterop": false
+    },
+    "@hookform/resolvers/yup": {
+      "src": "../../node_modules/@hookform/resolvers/yup/dist/yup.mjs",
+      "file": "@hookform_resolvers_yup.js",
+      "fileHash": "dda806da",
+      "needsInterop": false
+    },
+    "react-hook-form": {
+      "src": "../../node_modules/react-hook-form/dist/index.esm.mjs",
+      "file": "react-hook-form.js",
+      "fileHash": "65a4d421",
+      "needsInterop": false
+    },
+    "semantic-ui-react": {
+      "src": "../../node_modules/semantic-ui-react/dist/es/index.js",
+      "file": "semantic-ui-react.js",
+      "fileHash": "8bf24b8a",
+      "needsInterop": false
+    },
+    "@fullcalendar/react": {
+      "src": "../../node_modules/@fullcalendar/react/dist/index.js",
+      "file": "@fullcalendar_react.js",
+      "fileHash": "c4352b43",
+      "needsInterop": false
+    },
+    "@fullcalendar/daygrid/index.js": {
+      "src": "../../node_modules/@fullcalendar/daygrid/index.js",
+      "file": "@fullcalendar_daygrid_index__js.js",
+      "fileHash": "8a28788b",
+      "needsInterop": false
+    },
+    "@fullcalendar/timegrid/index.js": {
+      "src": "../../node_modules/@fullcalendar/timegrid/index.js",
+      "file": "@fullcalendar_timegrid_index__js.js",
+      "fileHash": "cdc6981e",
+      "needsInterop": false
+    },
+    "@fullcalendar/interaction/index.js": {
+      "src": "../../node_modules/@fullcalendar/interaction/index.js",
+      "file": "@fullcalendar_interaction_index__js.js",
+      "fileHash": "dfefbd48",
+      "needsInterop": false
+    },
+    "yup": {
+      "src": "../../node_modules/yup/index.esm.js",
+      "file": "yup.js",
+      "fileHash": "3525d7e6",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "62e62ba6",
+      "needsInterop": false
+    },
+    "jose": {
+      "src": "../../node_modules/jose/dist/browser/index.js",
+      "file": "jose.js",
+      "fileHash": "1a1c2b32",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-EZCELEVN": {
+      "file": "chunk-EZCELEVN.js"
+    },
+    "chunk-MUHXKHEA": {
+      "file": "chunk-MUHXKHEA.js"
+    },
+    "chunk-4M3WDR7Q": {
+      "file": "chunk-4M3WDR7Q.js"
+    },
+    "chunk-TNTPHDQH": {
+      "file": "chunk-TNTPHDQH.js"
+    },
+    "chunk-DG6MR5YB": {
+      "file": "chunk-DG6MR5YB.js"
+    },
+    "chunk-32E4H3EV": {
+      "file": "chunk-32E4H3EV.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
 }
