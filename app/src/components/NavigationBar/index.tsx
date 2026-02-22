@@ -67,29 +67,31 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                 </Menu.Item>
               </Menu.Menu>
 
-              <Menu.Menu position="right">
+              <Menu.Menu position="right" style={{ alignItems: 'center', display: 'flex', gap: '10px' }}>
                 <Menu.Item onClick={toggleDarkMode}>
                   <Icon name={isDarkMode ? "sun" : "moon"} size="large" style={{ margin: 0 }} />
                 </Menu.Item>
-                <Menu.Item>
+                <Menu.Item style={{ padding: 0, height: 'fit-content' }}>
                   <Button
                     basic
                     color="red"
                     content="Sign Out"
                     icon="sign-out"
                     onClick={handleLogout}
-                    style={{ background: 'transparent' }}
+                    style={{
+                      background: 'transparent',
+                    }}
                   />
                 </Menu.Item>
               </Menu.Menu>
             </>
           ) : (
-            <Menu.Menu position="right">
+            <Menu.Menu position="right" style={{ alignItems: 'center', display: 'flex', gap: '10px' }}>
               <Menu.Item onClick={toggleDarkMode}>
                 <Icon name={isDarkMode ? "sun" : "moon"} size="large" style={{ margin: 0 }} />
               </Menu.Item>
-              <Menu.Item>
-                <Button color="teal" onClick={() => navigate("/signin")}>Sign In</Button>
+              <Menu.Item style={{ padding: 0, height: 'fit-content' }}>
+                <Button color="teal" onClick={() => navigate("/signin")} style={{ margin: 'auto' }}>Sign In</Button>
               </Menu.Item>
             </Menu.Menu>
           )}
@@ -97,12 +99,21 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       </Menu>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, padding: "40px 0" }}>
-        <Container>
-          {children}
-        </Container>
-      </div>
-    </div>
+      {isLoggedIn ? (
+        <div>
+          <Container style={{ marginTop: '40px' }}>
+            {children}
+          </Container>
+        </div>
+      ) : (
+        <div>
+          <Container>
+            {children}
+          </Container>
+        </div>
+      )}
+
+    </div >
   );
 };
 
