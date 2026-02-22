@@ -26,11 +26,11 @@ const LandingPage: FC = () => {
                                     <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium">
                                         New: 1% Better Every Day Philosophy
                                     </div>
-                                    <h1 className="text-6xl font-bold tracking-tight mb-4 neon-glow-teal">
+                                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 neon-glow-teal">
                                         1% better <br />
                                         <span className="text-teal-400">every day.</span>
                                     </h1>
-                                    <p className="text-xl text-slate-400 max-w-lg mb-8">
+                                    <p className="text-lg md:text-xl text-slate-400 max-w-lg mb-8">
                                         habitry is a data-driven personal growth engine. Track your progress with precision and gamify your commitment.
                                     </p>
                                     <div className="flex gap-4">
@@ -77,8 +77,8 @@ const LandingPage: FC = () => {
                         <p className="text-teal-400 uppercase tracking-[0.3em] text-[10px] font-bold mb-4">
                             The productivity standard
                         </p>
-                        <h2 className="text-3xl font-bold mb-2">Join 1,200+ developers optimizing their life.</h2>
-                        <p className="text-slate-500">Built with the stack that powers the modern web.</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-2">Join 1,200+ developers optimizing their life.</h2>
+                        <p className="text-slate-500 text-sm md:text-base">Built with the stack that powers the modern web.</p>
                     </div>
 
 
@@ -89,8 +89,8 @@ const LandingPage: FC = () => {
             <section className="py-12 ">
                 <Container>
                     <div className="text-center mb-8">
-                        <h2 className="text-4xl font-bold mb-4">Three Ways to Track</h2>
-                        <p className="text-slate-400 text-lg">Choose the logic that fits your goal.</p>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Three Ways to Track</h2>
+                        <p className="text-[var(--text-secondary)] text-base md:text-lg">Choose the logic that fits your goal.</p>
                     </div>
                     <Grid columns={3} stackable doubling centered>
                         <Grid.Row>
@@ -136,8 +136,8 @@ const LandingPage: FC = () => {
             <section className="py-8 mb-12">
                 <Container>
                     <div className="text-center mb-8">
-                        <h2 className="text-4xl font-bold mb-4">Engineered for Results</h2>
-                        <p className="text-[var(--text-secondary)] text-lg">Precision tools for the modern high-performer.</p>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Engineered for Results</h2>
+                        <p className="text-[var(--text-secondary)] text-base md:text-lg">Precision tools for the modern high-performer.</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[160px]">
                         {/* Bento Grid Item 1 */}
@@ -202,7 +202,7 @@ const LandingPage: FC = () => {
             {/* Footer / CTA Final */}
             <section className="py-6 bg-gradient-to-b from-transparent to-teal-950/[0.05] dark:to-teal-950/20">
                 <Container textAlign="center">
-                    <h2 className="text-5xl font-bold mb-8">Ready to evolve?</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-8">Ready to evolve?</h2>
                     <Button
                         primary
                         size="huge"

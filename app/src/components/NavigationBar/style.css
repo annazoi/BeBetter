@@ -1,10 +1,103 @@
-@media only screen and (min-width: 992px) {
-  .hide-menu {
+@media only screen and (max-width: 991px) {
+  .nav-content {
     display: none;
+    flex-direction: column;
+    width: 100%;
+    background: var(--surface-color);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+  }
+
+  .nav-content.show {
+    display: flex;
+  }
+
+  .nav-items-group,
+  .nav-actions-group {
+    flex-direction: column !important;
+    width: 100% !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: auto !important;
+    max-width: fit-content !important;
+  }
+
+  .nav-link-item,
+  .nav-actions-group>div {
+    width: 100% !important;
+    border-radius: 8px !important;
+  }
+
+  .dashboard-navbar.mobile-open {
+    background: var(--surface-color) !important;
+    backdrop-filter: blur(10px);
+  }
+
+
+
+  .dashboard-header h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .signin-btn {
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+
+  .brand-header i.icon {
+    padding-left: 20px;
+  }
+
+  .brand-header {
+    gap: 1rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .nav-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-items-group {
+    display: flex !important;
+    gap: 10px !important;
+  }
+
+  .nav-actions-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
   }
 }
 
 .brand-header:hover {
   background: transparent !important;
-  cursor: default !important;
+  cursor: pointer !important;
+}
+
+.transparent-hover:hover {
+  background: transparent !important;
+}
+
+@media screen and (max-width: 523px) {
+  .dashboard-header {
+    justify-content: center !important;
+    text-align: center !important;
+  }
 }

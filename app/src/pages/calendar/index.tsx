@@ -27,6 +27,13 @@ const Calendar: FC = () => {
   const [selectedDateEvents, setSelectedDateEvents] = useState<
     historiesCalendarEvent[]
   >([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const { data: activities } = useQuery({
     queryKey: ["activities"],
@@ -169,7 +176,11 @@ const Calendar: FC = () => {
 
       <FullCalendar
         allDaySlot={false}
-        headerToolbar={{
+        headerToolbar={isMobile ? {
+          left: "prev,next",
+          center: "title",
+          right: "today"
+        } : {
           left: "prev,next today",
           center: "title",
           right: "dayGridMonth,timeGridWeek",
@@ -177,8 +188,9 @@ const Calendar: FC = () => {
         slotDuration={"00:30:00"}
         selectable={true}
         dateClick={handleDateClick}
+        contentHeight={isMobile ? "auto" : 700}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-        initialView="dayGridMonth"
+        initialView={isMobile ? "dayGridMonth" : "dayGridMonth"}
         eventClick={handleEventClick}
         dayCellContent={(info) => {
           const formatToLocalDate = (date: Date) => {
@@ -198,23 +210,16 @@ const Calendar: FC = () => {
           });
 
           return (
-            <div style={{ padding: '4px' }}>
-              <span style={{ fontWeight: "700", fontSize: '1.1rem' }}>{info.dayNumberText}</span>
-              <div style={{ marginTop: '4px' }}>
+            <div className={`calendar-day-cell ${matchingEvents.length > 0 ? 'has-events' : ''}`}>
+              <span className="day-number">{info.dayNumberText}</span>
+              <div className="event-count-wrapper">
                 {matchingEvents.length > 0 ? (
-                  <span style={{
-                    fontSize: "0.75rem",
-                    color: "var(--success)",
-                    background: 'rgba(29, 211, 176, 0.1)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontWeight: '600'
-                  }}>
-                    {matchingEvents.length} {matchingEvents.length === 1 ? 'Event' : 'Events'}
+                  <span className="event-badge">
+                    {isMobile ? matchingEvents.length : `${matchingEvents.length} ${matchingEvents.length === 1 ? 'Event' : 'Events'}`}
                   </span>
                 ) : (
-                  <span style={{ fontSize: "0.75rem", opacity: 0.3 }}>
-                    Empty
+                  <span className="empty-day-state">
+                    {isMobile ? "" : "Empty"}
                   </span>
                 )}
               </div>

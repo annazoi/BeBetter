@@ -76,7 +76,17 @@ const Home: FC = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "30px",
+          gap: "20px",
+        }}
+        className="dashboard-header"
+      >
         <Header as="h1" style={{ margin: 0 }}>
           Dashboard
           <Header.Subheader>Track your habits, goals, and productivity</Header.Subheader>
