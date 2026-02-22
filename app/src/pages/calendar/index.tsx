@@ -119,8 +119,8 @@ const Calendar: FC = () => {
           <Icon
             name={
               selectedhistory?.type === HistoryType.NEGATIVE
-                ? "arrow alternate circle down outline"
-                : "arrow alternate circle up outline"
+                ? "arrow alternate circle down"
+                : "arrow alternate circle up"
             }
             color={selectedhistory?.type === HistoryType.NEGATIVE ? 'red' : 'green'}
             size="large"
@@ -132,7 +132,7 @@ const Calendar: FC = () => {
       <Modal name={`Events for ${selectedDate}`} onOpen={isOpenDate} onClose={() => setIsOpenDate(false)}>
         {selectedDateEvents.length == 0 ? (
           <div style={{ textAlign: 'center', padding: '30px' }}>
-            <Icon name="calendar alternate outline" size="huge" style={{ opacity: 0.2, marginBottom: '15px' }} />
+            <Icon name="calendar alternate" size="huge" style={{ opacity: 0.2, marginBottom: '15px' }} />
             <Header as="h3">No events for this date</Header>
           </div>
         ) : (
@@ -147,8 +147,8 @@ const Calendar: FC = () => {
                   <Icon
                     name={
                       event.type === HistoryType.NEGATIVE
-                        ? "arrow alternate circle down outline"
-                        : "arrow alternate circle up outline"
+                        ? "arrow alternate circle down"
+                        : "arrow alternate circle up"
                     }
                     color={event.type === HistoryType.NEGATIVE ? 'red' : 'green'}
                   />

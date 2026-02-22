@@ -41,7 +41,20 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Top Navigation Bar */}
-      <Menu borderless className="dashboard-navbar" style={{ margin: 0, padding: '10px 0' }}>
+      <Menu
+        borderless
+        className="dashboard-navbar"
+        style={{
+          margin: 0,
+          padding: '10px 0',
+          position: location.pathname === "/" && !isLoggedIn ? 'absolute' : 'relative',
+          width: '100%',
+          zIndex: 100,
+          background: location.pathname === "/" && !isLoggedIn ? 'transparent' : 'var(--surface-color)',
+          borderBottom: location.pathname === "/" && !isLoggedIn ? 'none' : '1px solid var(--border-color)',
+          boxShadow: location.pathname === "/" && !isLoggedIn ? 'none' : 'var(--shadow-sm)'
+        }}
+      >
         <Container>
           <Menu.Item header className="brand-header transparent-hover" style={{ fontSize: "1.2rem", fontWeight: "bold", paddingLeft: 0 }}>
             <Icon name="rocket" color="teal" size="large" />
@@ -64,7 +77,7 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
                   onClick={() => navigate("/calendar")}
                   style={{ borderRadius: '10px' }}
                 >
-                  <Icon name="calendar outline" />
+                  <Icon name="calendar" />
                   Calendar
                 </Menu.Item>
               </Menu.Menu>
@@ -109,10 +122,14 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
           </Container>
         </div>
       ) : (
-        <div>
-          <Container>
-            {children}
-          </Container>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {location.pathname === "/" ? (
+            children
+          ) : (
+            <Container style={{ marginTop: '40px' }}>
+              {children}
+            </Container>
+          )}
         </div>
       )}
 

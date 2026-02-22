@@ -176,7 +176,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
     return (
       <Segment placeholder style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}>
         <Header icon>
-          <Icon name="clipboard outline" style={{ color: "var(--text-secondary)" }} />
+          <Icon name="clipboard" style={{ color: "var(--text-secondary)" }} />
           No activities found
           <Header.Subheader>Create your first goal to start tracking productivity!</Header.Subheader>
         </Header>
@@ -203,7 +203,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
                   <Card.Header style={{ fontSize: "1.2rem", marginBottom: "5px", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {activity.name}
                     <Button
-                      icon="trash alternate outline"
+                      icon="trash alternate"
                       basic
                       color="red"
                       size="mini"
@@ -264,7 +264,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Icon name="edit outline" color="teal" size="large" style={{ margin: 0 }} />
+              <Icon name="edit" color="teal" size="large" style={{ margin: 0 }} />
             </div>
             <div>
               <Header as="h4" style={{ margin: 0 }}>Progress</Header>

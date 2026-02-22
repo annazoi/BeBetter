@@ -88,7 +88,7 @@ const Signup: FC = () => {
             placeholder="Choose a username"
             name="username"
             onBlur={handleChange}
-            icon="user outline"
+            icon="user"
             iconPosition="left"
             error={errors.username}
           />
@@ -97,7 +97,7 @@ const Signup: FC = () => {
             placeholder="Enter your full name"
             name="fullName"
             onBlur={handleChange}
-            icon="id card outline"
+            icon="id card"
             iconPosition="left"
             error={errors.fullName}
           />

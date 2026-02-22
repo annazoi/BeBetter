@@ -40,7 +40,10 @@ let ActivityService = class ActivityService {
             if (error instanceof mongoose_2.Error.ValidationError) {
                 throw new common_1.ForbiddenException(error.message);
             }
-            throw error.response.data;
+            if (error instanceof common_1.ConflictException) {
+                throw error;
+            }
+            throw new common_1.ForbiddenException(error.message || "An unexpected error occurred");
         }
     }
     async findAll(query) {

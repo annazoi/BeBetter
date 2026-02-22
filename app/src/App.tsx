@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
+import LandingPage from "./pages/landing";
 // import "./App.css";
 import "semantic-ui-css/semantic.min.css";
 import Signup from "./pages/auth/Signup";
@@ -27,7 +28,7 @@ function App() {
 
             {!isLoggedIn && (
               <>
-                <Route path="/" element={<Signin />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/signin" element={<Signin />} />
               </>
