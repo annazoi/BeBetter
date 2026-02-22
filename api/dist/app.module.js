@@ -13,7 +13,7 @@ const throttler_1 = require("@nestjs/throttler");
 const mongoose_1 = require("@nestjs/mongoose");
 const core_1 = require("@nestjs/core");
 const auth_module_1 = require("./api/auth/auth.module");
-const features_module_1 = require("./api/features/features.module");
+const activities_module_1 = require("./api/activities/activities.module");
 const app_controller_1 = require("./app.controller");
 let AppModule = class AppModule {
 };
@@ -33,7 +33,7 @@ exports.AppModule = AppModule = __decorate([
             ]),
             mongoose_1.MongooseModule.forRoot(process.env.DB_CONNECTION),
             auth_module_1.AuthModule,
-            features_module_1.FeatureModule,
+            activities_module_1.ActivityModule,
         ],
         providers: [
             {

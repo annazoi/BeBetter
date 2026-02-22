@@ -5,11 +5,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useQuery } from "react-query";
 import { authStore } from "../../store/authStore";
-import { getFeatures } from "../../services/feature";
+import { getActivities } from "../../services/activity";
 import { historiesCalendarEvent } from "../../interfaces/components";
 import Modal from "../../components/ui/Modal";
 import { Button, Header, Icon } from "semantic-ui-react";
-import { Feature, History } from "../../interfaces/feature";
+import { Activity, History } from "../../interfaces/activity";
 import { HistoryType } from "../../enums/historyType";
 import "./style.css";
 // import { date } from "yup";
@@ -21,22 +21,22 @@ const Calendar: FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState<historiesCalendarEvent[]>([]);
-  const [selectedFeature, setSelectedFeature] = useState<any | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<any | null>(null);
   const [selectedhistory, setSelectedHistory] = useState<History | null>(null);
   const [isOpenDate, setIsOpenDate] = useState<boolean>(false);
   const [selectedDateEvents, setSelectedDateEvents] = useState<
     historiesCalendarEvent[]
   >([]);
 
-  const { data: features } = useQuery({
-    queryKey: ["features"],
-    queryFn: () => getFeatures({ userId }),
+  const { data: activities } = useQuery({
+    queryKey: ["activities"],
+    queryFn: () => getActivities({ userId }),
   });
 
   useEffect(() => {
     const formattedEvents: historiesCalendarEvent[] =
-      features?.flatMap((feature) =>
-        feature.history.map((history: any) => {
+      activities?.flatMap((activity) =>
+        activity.history.map((history: any) => {
           const localDate = new Date(history.date); // This is in local time
           const utcDate = new Date(
             localDate.getUTCFullYear(),
@@ -48,7 +48,7 @@ const Calendar: FC = () => {
           ); // Convert to UTC
 
           return {
-            title: feature.name,
+            title: activity.name,
             id: history.id,
             date: utcDate,
             type: history.type,
@@ -57,7 +57,7 @@ const Calendar: FC = () => {
       ) || [];
 
     setEvents(formattedEvents);
-  }, [features]);
+  }, [activities]);
 
   useEffect(() => {
     if (selectedDate) {
@@ -84,20 +84,20 @@ const Calendar: FC = () => {
   const handleEventClick = (arg: any) => {
     handleModal();
     const historyId = arg.event.id;
-    let selectedFeature: Feature | null = null;
+    let selectedActivity: Activity | null = null;
     let selectedHistory: History | null = null;
 
-    features?.map((feature) => {
-      feature.history.find((history) => {
+    activities?.map((activity) => {
+      activity.history.find((history) => {
         if (history.id === historyId) {
           selectedHistory = history;
-          selectedFeature = feature;
+          selectedActivity = activity;
         }
       });
     });
 
     setSelectedHistory(selectedHistory);
-    setSelectedFeature(selectedFeature);
+    setSelectedActivity(selectedActivity);
   };
 
   return (
@@ -108,11 +108,11 @@ const Calendar: FC = () => {
             ? "rgb(199, 171, 171)"
             : "rgb(171, 199, 171)"
         }
-        name={selectedFeature?.name}
+        name={selectedActivity?.name}
         onOpen={isModalOpen}
         onClose={() => {
           handleModal();
-          setSelectedFeature(null);
+          setSelectedActivity(null);
         }}
       >
         <div style={{ display: "flex", gap: "10px" }}>

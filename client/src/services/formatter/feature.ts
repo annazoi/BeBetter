@@ -1,9 +1,9 @@
 import { HistoryType } from "../../enums/historyType";
-import { Feature, History } from "../../interfaces/feature";
+import { Activity, History } from "../../interfaces/activity";
 import { formatUser } from "./user";
 // import { formatDate } from "./date";
 
-export const formatFeature = (data: any): Feature => {
+export const formatActivity = (data: any): Activity => {
   handlePercent(data);
   return {
     name: data.name,

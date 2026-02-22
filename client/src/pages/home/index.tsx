@@ -8,47 +8,47 @@ import {
   TextArea,
 } from "semantic-ui-react";
 import { useMutation, useQuery } from "react-query";
-import { createFeature, getFeatures } from "../../services/feature";
-import { NewFeature } from "../../interfaces/feature";
+import { createActivity, getActivities } from "../../services/activity";
+import { NewActivity } from "../../interfaces/activity";
 import { authStore } from "../../store/authStore";
-import Features from "../../components/Features";
+import Activities from "../../components/Activities";
 
 const Home: FC = () => {
   const { userId } = authStore((state) => state);
-  const [newFeature, setNewFeature] = useState<NewFeature>({
+  const [newActivity, setNewActivity] = useState<NewActivity>({
     name: "",
     description: "",
   });
 
-  const { data: features, refetch } = useQuery({
-    queryKey: ["features"],
-    queryFn: () => getFeatures({ userId }),
+  const { data: activities, refetch } = useQuery({
+    queryKey: ["activities"],
+    queryFn: () => getActivities({ userId }),
   });
 
-  const { mutate: createFeatureMutate, isLoading: createFeatureLoading } =
+  const { mutate: createActivityMutate, isLoading: createActivityLoading } =
     useMutation({
-      mutationFn: (newFeature: NewFeature) => createFeature(newFeature),
+      mutationFn: (newActivity: NewActivity) => createActivity(newActivity),
     });
 
-  const handleNewFeature = () => {
-    if (!newFeature.name) {
+  const handleNewActivity = () => {
+    if (!newActivity.name) {
       return;
     }
-    createFeatureMutate(newFeature, {
+    createActivityMutate(newActivity, {
       onSuccess: (data) => {
-        setNewFeature({
+        setNewActivity({
           name: "",
           description: "",
         });
         refetch();
-        console.log("Feature Added", data);
+        console.log("Activity Added", data);
       },
     });
   };
 
-  const handleNewFeatureChange = (e: any) => {
-    setNewFeature({
-      ...newFeature,
+  const handleNewActivityChange = (e: any) => {
+    setNewActivity({
+      ...newActivity,
       [e.target.name]: e.target.value,
     });
   };
@@ -84,18 +84,18 @@ const Home: FC = () => {
             </em>
             <Input
               placeholder="Enter a New Emotion"
-              onChange={handleNewFeatureChange}
+              onChange={handleNewActivityChange}
               name="name"
-              value={newFeature.name}
+              value={newActivity.name}
             />
             <TextArea
               placeholder="Description"
               style={{
                 minHeight: 80,
               }}
-              onChange={handleNewFeatureChange}
+              onChange={handleNewActivityChange}
               name="description"
-              value={newFeature.description}
+              value={newActivity.description}
             />
             <Button
               style={{
@@ -105,15 +105,15 @@ const Home: FC = () => {
               icon="plus"
               labelPosition="right"
               content="Add Emotion"
-              onClick={handleNewFeature}
-              loading={createFeatureLoading}
+              onClick={handleNewActivity}
+              loading={createActivityLoading}
             ></Button>
           </Segment>
         </Form>
       </div>
 
       <div>
-        <Features features={features} refetch={refetch} />
+        <Activities activities={activities} refetch={refetch} />
       </div>
     </Grid>
   );
