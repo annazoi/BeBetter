@@ -1,5 +1,5 @@
 import FullCalendar from "@fullcalendar/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import dayGridPlugin from "@fullcalendar/daygrid/index.js";
 import timeGridPlugin from "@fullcalendar/timegrid/index.js";
 import interactionPlugin from "@fullcalendar/interaction/index.js";
@@ -8,31 +8,77 @@ import { authStore } from "../../store/authStore";
 import { getActivities } from "../../services/activity";
 import { historiesCalendarEvent } from "../../interfaces/components";
 import Modal from "../../components/ui/Modal";
-import { Header, Icon } from "semantic-ui-react";
 import { Activity, History } from "../../interfaces/activity";
 import { HistoryType } from "../../enums/historyType";
+import {
+  ArrowLeft,
+  CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  Hash,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import "./style.css";
-// import { date } from "yup";
-// import { h } from "@fullcalendar/core/preact.js";
+
+const formatToLocalDate = (date: Date) => {
+  return (
+    date.getFullYear() +
+    "-" +
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0")
+  );
+};
+
+const formatDisplayDate = (dateStr: string | null) => {
+  if (!dateStr) return "";
+  const date = new Date(`${dateStr}T12:00:00`);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+const formatEventTime = (date: Date) => {
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
+const getEventTypeMeta = (type?: string) => {
+  switch (type) {
+    case HistoryType.NEGATIVE:
+      return { label: "Missed", Icon: TrendingDown, tone: "negative" as const };
+    case HistoryType.POSITIVE:
+      return { label: "Success", Icon: TrendingUp, tone: "positive" as const };
+    case HistoryType.NUMERIC:
+      return { label: "Logged", Icon: Hash, tone: "numeric" as const };
+    case HistoryType.BOOLEAN:
+      return { label: "Completed", Icon: CheckCircle2, tone: "boolean" as const };
+    default:
+      return { label: "Entry", Icon: CheckCircle2, tone: "neutral" as const };
+  }
+};
 
 const Calendar: FC = () => {
   const { userId } = authStore((state) => state);
 
-  const [selectedDate, setSelectedDate] = useState<string>();
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalView, setModalView] = useState<"day-list" | "event-detail">("day-list");
   const [events, setEvents] = useState<historiesCalendarEvent[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<any | null>(null);
-  const [selectedhistory, setSelectedHistory] = useState<History | null>(null);
-  const [isOpenDate, setIsOpenDate] = useState<boolean>(false);
-  const [selectedDateEvents, setSelectedDateEvents] = useState<
-    historiesCalendarEvent[]
-  >([]);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [selectedHistory, setSelectedHistory] = useState<History | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const { data: activities } = useQuery({
@@ -44,7 +90,7 @@ const Calendar: FC = () => {
     const formattedEvents: historiesCalendarEvent[] =
       activities?.flatMap((activity) =>
         activity.history.map((history: any) => {
-          const localDate = new Date(history.date); // This is in local time
+          const localDate = new Date(history.date);
           const utcDate = new Date(
             localDate.getUTCFullYear(),
             localDate.getUTCMonth(),
@@ -52,13 +98,15 @@ const Calendar: FC = () => {
             localDate.getUTCHours(),
             localDate.getUTCMinutes(),
             localDate.getUTCSeconds()
-          ); // Convert to UTC
+          );
 
           return {
             title: activity.name,
             id: history.id,
             date: utcDate,
             type: history.type,
+            description: history.description,
+            value: history.value,
           };
         })
       ) || [];
@@ -66,161 +114,227 @@ const Calendar: FC = () => {
     setEvents(formattedEvents);
   }, [activities]);
 
-  useEffect(() => {
-    if (selectedDate) {
-      const filteredEvents = events.filter(
-        (event: any) => event.date.toISOString().split("T")[0] === selectedDate
-      );
-      setSelectedDateEvents(filteredEvents);
-    }
+  const selectedDateEvents = useMemo(() => {
+    if (!selectedDate) return [];
+    return events.filter(
+      (event) => event.date && formatToLocalDate(event.date) === selectedDate
+    );
   }, [selectedDate, events]);
 
-  const handleDateClick = (arg: any) => {
-    setIsOpenDate(true);
+  const handleDateClick = (arg: { dateStr: string }) => {
     setSelectedDate(arg.dateStr);
-    console.log("selectedDate", arg.dateStr);
+    setSelectedActivity(null);
+    setSelectedHistory(null);
+    setModalView("day-list");
+    setIsModalOpen(true);
   };
 
-  const handleModal = () => {
-    if (selectedDate) {
-      setSelectedDate(undefined);
+  const findEventContext = (historyId: string) => {
+    for (const item of activities ?? []) {
+      const match = item.history.find((entry) => entry.id === historyId);
+      if (match) {
+        return { activity: item, history: match };
+      }
     }
-    setIsModalOpen(!isModalOpen);
+    return { activity: null, history: null };
   };
 
-  const handleEventClick = (arg: any) => {
-    handleModal();
-    const historyId = arg.event.id;
-    let selectedActivity: Activity | null = null;
-    let selectedHistory: History | null = null;
+  const openEventDetail = (historyId: string) => {
+    const { activity, history } = findEventContext(historyId);
+    if (!activity || !history) return;
 
-    activities?.map((activity) => {
-      activity.history.find((history) => {
-        if (history.id === historyId) {
-          selectedHistory = history;
-          selectedActivity = activity;
-        }
-      });
-    });
-
-    setSelectedHistory(selectedHistory);
-    setSelectedActivity(selectedActivity);
+    setSelectedActivity(activity);
+    setSelectedHistory(history);
+    setModalView("event-detail");
+    setIsModalOpen(true);
   };
+
+  const backToDateList = () => {
+    setModalView("day-list");
+    setSelectedActivity(null);
+    setSelectedHistory(null);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalView("day-list");
+    setSelectedDate(null);
+    setSelectedActivity(null);
+    setSelectedHistory(null);
+  };
+
+  const handleCalendarEventClick = (arg: { event: { id: string } }) => {
+    const { activity, history } = findEventContext(arg.event.id);
+    if (!activity || !history?.date) return;
+
+    setSelectedDate(formatToLocalDate(new Date(history.date)));
+    setSelectedActivity(activity);
+    setSelectedHistory(history);
+    setModalView("event-detail");
+    setIsModalOpen(true);
+  };
+
+  const eventDetailMeta = getEventTypeMeta(selectedHistory?.type);
+  const EventDetailIcon = eventDetailMeta.Icon;
 
   return (
-    <div>
-      <Modal
-        color={
-          selectedhistory?.type === HistoryType.NEGATIVE
-            ? "rgba(255, 71, 87, 0.05)"
-            : "rgba(29, 211, 176, 0.05)"
-        }
-        name={selectedActivity?.name}
-        onOpen={isModalOpen}
-        onClose={() => {
-          handleModal();
-          setSelectedActivity(null);
-        }}
-      >
-        <div style={{ display: "flex", gap: "10px", alignItems: 'center' }}>
-          <Icon
-            name={
-              selectedhistory?.type === HistoryType.NEGATIVE
-                ? "arrow alternate circle down"
-                : "arrow alternate circle up"
-            }
-            color={selectedhistory?.type === HistoryType.NEGATIVE ? 'red' : 'green'}
-            size="large"
-          />
-          <p style={{ margin: 0, fontSize: '1.1rem' }}>{selectedhistory?.description}</p>
-        </div>
-      </Modal>
+    <div className="animate-fade-up">
+      <div className="calendar-page-header">
+        <h1 className="calendar-page-title">Calendar</h1>
+        <p className="calendar-page-subtitle">Review your habit history day by day</p>
+      </div>
 
-      <Modal name={`Events for ${selectedDate}`} onOpen={isOpenDate} onClose={() => setIsOpenDate(false)}>
-        {selectedDateEvents.length == 0 ? (
-          <div style={{ textAlign: 'center', padding: '30px' }}>
-            <Icon name="calendar alternate" size="huge" style={{ opacity: 0.2, marginBottom: '15px' }} />
-            <Header as="h3">No events for this date</Header>
-          </div>
-        ) : (
-          <div className="history-list">
-            {selectedDateEvents.map((event: any) => (
-              <button
-                key={event.id}
-                className="history-item-btn"
-                onClick={() => handleEventClick({ event: { id: event.id } })}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Icon
-                    name={
-                      event.type === HistoryType.NEGATIVE
-                        ? "arrow alternate circle down"
-                        : "arrow alternate circle up"
-                    }
-                    color={event.type === HistoryType.NEGATIVE ? 'red' : 'green'}
-                  />
-                  <span style={{ fontWeight: "600" }}>{event.title}</span>
+      <Modal
+        size="small"
+        onOpen={isModalOpen}
+        onClose={closeModal}
+        header={
+          modalView === "event-detail" ? (
+            <div className="calendar-event-detail-header">
+              {selectedDate && (
+                <button
+                  type="button"
+                  className="calendar-event-back"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    backToDateList();
+                  }}
+                >
+                  <ArrowLeft size={16} />
+                  Back to day
+                </button>
+              )}
+              <div className={`calendar-event-type-badge calendar-event-type-badge--${eventDetailMeta.tone}`}>
+                <EventDetailIcon size={14} strokeWidth={2.5} />
+                {eventDetailMeta.label}
+              </div>
+              <h2 className="calendar-event-detail-title font-display">{selectedActivity?.name}</h2>
+              {selectedHistory?.date && (
+                <p className="calendar-event-detail-meta">
+                  {formatDisplayDate(formatToLocalDate(new Date(selectedHistory.date)))}
+                  {" · "}
+                  {formatEventTime(new Date(selectedHistory.date))}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="calendar-day-header">
+              <div className="calendar-day-header__icon">
+                <CalendarDays size={20} strokeWidth={2} />
+              </div>
+              <div>
+                <p className="calendar-day-header__eyebrow">Daily log</p>
+                <h2 className="calendar-day-header__title font-display">
+                  {formatDisplayDate(selectedDate)}
+                </h2>
+                <p className="calendar-day-header__count">
+                  {selectedDateEvents.length}{" "}
+                  {selectedDateEvents.length === 1 ? "entry" : "entries"}
+                </p>
+              </div>
+            </div>
+          )
+        }
+      >
+        <div key={modalView} className="calendar-modal-panel">
+          {modalView === "event-detail" && selectedHistory ? (
+            <div className="calendar-event-detail-body">
+              {selectedHistory.type === HistoryType.NUMERIC && selectedHistory.value != null && (
+                <div className="calendar-event-stat">
+                  <span className="calendar-event-stat__label">Value logged</span>
+                  <span className="calendar-event-stat__value font-display">
+                    {selectedHistory.value}
+                    {selectedActivity?.unit ? ` ${selectedActivity.unit}` : ""}
+                  </span>
                 </div>
-                <span style={{ fontSize: "0.8rem", opacity: 0.6 }}>
-                  {event.date
-                    .toISOString()
-                    .split("T")[1]
-                    .split(".")[0]
-                    .slice(0, 5)}
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
+              )}
+
+              <div className="calendar-event-note">
+                <span className="calendar-event-note__label">Note</span>
+                <p className="calendar-event-note__text">
+                  {selectedHistory.description?.trim()
+                    ? selectedHistory.description
+                    : "No note was added for this entry."}
+                </p>
+              </div>
+            </div>
+          ) : selectedDateEvents.length === 0 ? (
+            <div className="calendar-empty-state">
+              <div className="calendar-empty-state__icon">
+                <CalendarDays size={28} strokeWidth={1.5} />
+              </div>
+              <h3 className="calendar-empty-state__title font-display">Nothing logged yet</h3>
+              <p className="calendar-empty-state__text">
+                No habit entries were recorded on this day.
+              </p>
+            </div>
+          ) : (
+            <div className="calendar-event-list">
+              {selectedDateEvents.map((event) => {
+                const meta = getEventTypeMeta(event.type);
+                const TypeIcon = meta.Icon;
+
+                return (
+                  <button
+                    key={event.id}
+                    type="button"
+                    className={`calendar-event-row calendar-event-row--${meta.tone}`}
+                    onClick={() => openEventDetail(event.id!)}
+                  >
+                    <div className={`calendar-event-row__icon calendar-event-row__icon--${meta.tone}`}>
+                      <TypeIcon size={18} strokeWidth={2.25} />
+                    </div>
+                    <div className="calendar-event-row__content">
+                      <span className="calendar-event-row__title">{event.title}</span>
+                      <span className="calendar-event-row__type">{meta.label}</span>
+                    </div>
+                    <div className="calendar-event-row__meta">
+                      {event.date && (
+                        <span className="calendar-event-row__time">{formatEventTime(event.date)}</span>
+                      )}
+                      <ChevronRight size={16} className="calendar-event-row__chevron" />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </Modal>
 
       <FullCalendar
         allDaySlot={false}
-        headerToolbar={isMobile ? {
-          left: "prev,next",
-          center: "title",
-          right: "today"
-        } : {
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek",
-        }}
+        headerToolbar={
+          isMobile
+            ? { left: "prev,next", center: "title", right: "today" }
+            : { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek" }
+        }
         slotDuration={"00:30:00"}
         selectable={true}
         dateClick={handleDateClick}
         contentHeight={isMobile ? "auto" : 700}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-        initialView={isMobile ? "dayGridMonth" : "dayGridMonth"}
-        eventClick={handleEventClick}
+        initialView="dayGridMonth"
+        eventClick={handleCalendarEventClick}
         dayCellContent={(info) => {
-          const formatToLocalDate = (date: Date) => {
-            return (
-              date.getFullYear() +
-              "-" +
-              String(date.getMonth() + 1).padStart(2, "0") +
-              "-" +
-              String(date.getDate()).padStart(2, "0")
-            );
-          };
-
           const formattedInfoDate = formatToLocalDate(info.date);
-          const matchingEvents = events.filter((event: any) => {
-            const formattedEventDate = formatToLocalDate(event.date);
-            return formattedEventDate === formattedInfoDate;
-          });
+          const matchingEvents = events.filter(
+            (event) => event.date && formatToLocalDate(event.date) === formattedInfoDate
+          );
 
           return (
-            <div className={`calendar-day-cell ${matchingEvents.length > 0 ? 'has-events' : ''}`}>
+            <div className={`calendar-day-cell ${matchingEvents.length > 0 ? "has-events" : ""}`}>
               <span className="day-number">{info.dayNumberText}</span>
               <div className="event-count-wrapper">
                 {matchingEvents.length > 0 ? (
                   <span className="event-badge">
-                    {isMobile ? matchingEvents.length : `${matchingEvents.length} ${matchingEvents.length === 1 ? 'Event' : 'Events'}`}
+                    {isMobile
+                      ? matchingEvents.length
+                      : `${matchingEvents.length} ${matchingEvents.length === 1 ? "Event" : "Events"}`}
                   </span>
                 ) : (
-                  <span className="empty-day-state">
-                    {isMobile ? "" : "Empty"}
-                  </span>
+                  <span className="empty-day-state">{isMobile ? "" : "Empty"}</span>
                 )}
               </div>
             </div>

@@ -1,0 +1,293 @@
+.habitry-select-root {
+  position: relative;
+  width: 100%;
+}
+
+.habitry-select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.habitry-select-trigger:hover {
+  border-color: var(--border-strong);
+}
+
+.habitry-select-trigger:focus-visible,
+.habitry-select-trigger--open {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.habitry-select-trigger__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.habitry-select-trigger__icon--primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.habitry-select-trigger__icon--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.habitry-select-trigger__icon--success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.habitry-select-trigger__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.habitry-select-trigger__label {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.habitry-select-trigger__description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.habitry-select-trigger__chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+
+.habitry-select-trigger--open .habitry-select-trigger__chevron {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+.habitry-select-menu {
+  position: fixed;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--surface-color);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top center;
+  pointer-events: none;
+}
+
+.habitry-select-menu[data-placement="top"] {
+  transform: translateY(-100%);
+  transform-origin: bottom center;
+}
+
+.habitry-select-menu--open,
+.habitry-select-menu--closing {
+  pointer-events: auto;
+}
+
+.habitry-select-menu--open:not(.habitry-select-menu--closing) {
+  animation: habitrySelectMenuIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.habitry-select-menu--closing {
+  animation: habitrySelectMenuOut 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.habitry-select-menu[data-placement="top"].habitry-select-menu--open:not(.habitry-select-menu--closing) {
+  animation-name: habitrySelectMenuInUp;
+}
+
+.habitry-select-menu[data-placement="top"].habitry-select-menu--closing {
+  animation-name: habitrySelectMenuOutUp;
+}
+
+.habitry-select-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.habitry-select-option:hover,
+.habitry-select-option--highlighted {
+  background: var(--bg-accent);
+  border-color: var(--border-color);
+}
+
+.habitry-select-option--selected {
+  background: var(--primary-soft);
+  border-color: rgba(61, 107, 84, 0.18);
+}
+
+.habitry-select-option__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.habitry-select-option__icon--primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.habitry-select-option__icon--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.habitry-select-option__icon--success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.habitry-select-option__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.habitry-select-option__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.habitry-select-option__description {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.habitry-select-option__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.habitry-select-menu--open:not(.habitry-select-menu--closing) .habitry-select-option {
+  animation: habitrySelectOptionIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.habitry-select-menu--open:not(.habitry-select-menu--closing) .habitry-select-option:nth-child(1) {
+  animation-delay: 0.03s;
+}
+
+.habitry-select-menu--open:not(.habitry-select-menu--closing) .habitry-select-option:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.habitry-select-menu--open:not(.habitry-select-menu--closing) .habitry-select-option:nth-child(3) {
+  animation-delay: 0.09s;
+}
+
+@keyframes habitrySelectMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes habitrySelectMenuOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+@keyframes habitrySelectMenuInUp {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-100% + 6px)) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100%) scale(1);
+  }
+}
+
+@keyframes habitrySelectMenuOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(-100%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(-100% + 4px)) scale(0.98);
+  }
+}
+
+@keyframes habitrySelectOptionIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

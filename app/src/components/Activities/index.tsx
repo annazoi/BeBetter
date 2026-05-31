@@ -10,7 +10,6 @@ import {
   Input,
   Progress,
   Icon,
-  Segment,
 } from "semantic-ui-react";
 import Modal from "../ui/Modal";
 import { createHistory } from "../../services/activity";
@@ -18,6 +17,7 @@ import { deleteActivity } from "../../services/activity";
 import { Activity, NewHistory } from "../../interfaces/activity";
 import { HistoryType } from "../../enums/historyType";
 import { useMutation } from "react-query";
+import { ClipboardList, Minus, Plus, Check, Trash2 } from "lucide-react";
 
 interface ActivitiesProps {
   activities: Activity[] | undefined;
@@ -129,58 +129,65 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
   const renderCardActions = (activity: Activity) => {
     if (activity.type === 'numeric') {
       return (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <Button
-            content="Progress"
-            primary
-            onClick={() => handleModal(activity.id, HistoryType.NUMERIC)}
-            fluid
-          />
-        </div>
+        <Button
+          content="Log Progress"
+          primary
+          onClick={() => handleModal(activity.id, HistoryType.NUMERIC)}
+          fluid
+          className="btn-primary"
+        />
       );
     }
 
     if (activity.type === 'boolean') {
       return (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <Button
-            icon="check"
-            content="Done"
-            primary
-            onClick={() => handleModal(activity.id, HistoryType.BOOLEAN)}
-            fluid
-          />
-        </div>
+        <Button
+          onClick={() => handleModal(activity.id, HistoryType.BOOLEAN)}
+          fluid
+          className="btn-primary"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+        >
+          <Check size={16} />
+          Mark Done
+        </Button>
       );
     }
 
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px" }}>
         <Button
           circular
-          icon="minus"
           color="red"
           onClick={() => handleModal(activity.id, HistoryType.NEGATIVE)}
-        />
+          aria-label="Negative"
+        >
+          <Minus size={18} />
+        </Button>
         <Button
           circular
-          icon="plus"
           primary
           onClick={() => handleModal(activity.id, HistoryType.POSITIVE)}
-        />
+          aria-label="Positive"
+        >
+          <Plus size={18} />
+        </Button>
       </div>
     );
   };
 
   if (!activities || activities.length === 0) {
     return (
-      <Segment placeholder style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}>
-        <Header icon>
-          <Icon name="clipboard" style={{ color: "var(--text-secondary)" }} />
-          No activities found
-          <Header.Subheader>Create your first goal to start tracking productivity!</Header.Subheader>
+      <div className="empty-state animate-fade-up">
+        <div className="empty-state-icon">
+          <ClipboardList size={28} strokeWidth={1.5} />
+        </div>
+        <Header as="h3" className="font-display" style={{ marginBottom: 8 }}>
+          No activities yet
         </Header>
-      </Segment>
+        <p style={{ color: 'var(--text-secondary)', margin: 0, maxWidth: 320, marginInline: 'auto' }}>
+          Create your first goal above to start tracking your progress.
+        </p>
+      </div>
     );
   }
 
@@ -198,34 +205,43 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
 
           return (
             <GridColumn key={index} style={{ display: 'flex' }}>
-              <Card fluid style={{ display: 'flex', flexDirection: 'column', height: '100%', margin: 0 }}>
-                <Card.Content style={{ flex: '1 0 auto' }}>
-                  <Card.Header style={{ fontSize: "1.2rem", marginBottom: "5px", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    {activity.name}
-                    <Button
-                      icon="trash alternate"
-                      basic
-                      color="red"
-                      size="mini"
-                      circular
+              <Card fluid style={{ display: 'flex', flexDirection: 'column', height: '100%', margin: 0, position: 'relative' }}>
+                <div className={`activity-card-accent ${activity.type}`} />
+                <Card.Content style={{ flex: '1 0 auto', paddingTop: '1.5em' }}>
+                  <Card.Header style={{ fontSize: "1.15rem", marginBottom: "8px", display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                    <span className="font-display">{activity.name}</span>
+                    <button
                       onClick={() => handleDeleteClick(activity.id)}
-                      loading={isDeleteActivityLoading}
-                      style={{ opacity: 0.7, padding: '5px' }}
-                    />
+                      disabled={isDeleteActivityLoading}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 4,
+                        color: 'var(--text-muted)',
+                        transition: 'color 0.2s ease',
+                        flexShrink: 0,
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--danger)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                      aria-label="Delete activity"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </Card.Header>
 
                   <Card.Meta>
                     {activity.type === 'percentage' && `${activity.percent}% Success Rate`}
                     {activity.type === 'numeric' && `Goal: ${activity.goalValue} ${activity.unit}`}
-                    {activity.type === 'boolean' && `Habit Tracker`}
+                    {activity.type === 'boolean' && `Daily Habit`}
                   </Card.Meta>
 
-                  <Card.Description style={{ minHeight: "30px", marginTop: "10px", color: "var(--text-primary)" }}>
-                    {activity.description || <span style={{ fontStyle: "italic" }}>No description provided.</span>}
+                  <Card.Description style={{ minHeight: "36px", marginTop: "12px" }}>
+                    {activity.description || <span style={{ fontStyle: "italic", opacity: 0.7 }}>No description provided.</span>}
                   </Card.Description>
 
                   {(activity.type === 'percentage' || activity.type === 'numeric') && (
-                    <div style={{ marginTop: "15px", marginBottom: "5px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       <Progress
                         percent={progressPercent.toFixed(0)}
                         color={getProgressColor(progressPercent)}
@@ -237,7 +253,7 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
                   )}
                 </Card.Content>
 
-                <Card.Content extra style={{ padding: "10px 15px", borderTop: "1px solid var(--border-color)", flex: '0 0 auto' }}>
+                <Card.Content extra style={{ padding: "14px 16px", borderTop: "1px solid var(--border-color)", flex: '0 0 auto', background: 'var(--bg-accent)' }}>
                   {renderCardActions(activity)}
                 </Card.Content>
               </Card>
@@ -252,34 +268,17 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
         onClose={() => setOpenUpdatedModal(false)}
         onSave={() => handleNewHistory()}
         isLoading={isCreateHistoryLoading}
+        saveButtonText="Save"
       >
-        <div style={{ padding: '10px 5px' }}>
-          <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: 'rgba(25, 188, 181, 0.05)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Icon name="edit" color="teal" size="large" style={{ margin: 0 }} />
-            </div>
-            <div>
-              <Header as="h4" style={{ margin: 0 }}>Progress</Header>
-              <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                {selectedActivity?.type === 'numeric' ? `Add your progress in ${selectedActivity.unit}` : 'Add a note about your activity'}
-              </p>
-            </div>
-          </div>
+        <div style={{ padding: '4px 0' }}>
+          <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+            {selectedActivity?.type === 'numeric' ? `Add your progress in ${selectedActivity.unit}` : 'Add a note about your activity'}
+          </p>
 
           <Form>
             {selectedActivity?.type === 'numeric' && (
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  VALUE ({selectedActivity.unit?.toUpperCase() || ''})
-                </label>
+              <div style={{ marginBottom: "16px" }}>
+                <label>Value ({selectedActivity.unit?.toUpperCase() || ''})</label>
                 <Input
                   type="number"
                   placeholder="0"
@@ -291,18 +290,18 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
               </div>
             )}
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                DESCRIPTION
-              </label>
+              <label>Description</label>
               <TextArea
                 placeholder="How did it go? (Optional)"
                 style={{
                   minHeight: 100,
                   width: '100%',
-                  background: 'transparent',
+                  background: 'var(--surface-elevated)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--border-color)',
                   resize: 'none',
                   padding: '12px',
-                  lineHeight: '1.5'
+                  lineHeight: '1.5',
                 }}
                 onChange={handleUpdatedDescriptionChange}
                 name="description"
@@ -318,14 +317,28 @@ const Activities: FC<ActivitiesProps> = ({ activities, refetch }) => {
         onOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onSave={() => handleConfirmDelete()}
-        saveButtonText="delete"
+        saveButtonText="Delete"
         saveButtonColor="red"
         isLoading={isDeleteActivityLoading}
       >
-        <div style={{ textAlign: 'center', padding: '10px' }}>
-          <Icon name="warning sign" size="huge" color="red" style={{ marginBottom: '15px' }} />
-          <Header as="h3">Are you sure you want to delete this activity?</Header>
-          <p style={{ color: 'var(--text-secondary)' }}>This action cannot be undone and all history will be lost.</p>
+        <div style={{ textAlign: 'center', padding: '8px 0' }}>
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: '50%',
+              background: 'var(--danger-soft)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
+              color: 'var(--danger)',
+            }}
+          >
+            <Icon name="warning sign" style={{ margin: 0, fontSize: '1.5rem' }} />
+          </div>
+          <Header as="h3" className="font-display" style={{ marginBottom: 8 }}>Delete this activity?</Header>
+          <p style={{ color: 'var(--text-secondary)', margin: 0 }}>This action cannot be undone and all history will be lost.</p>
         </div>
       </Modal>
     </>

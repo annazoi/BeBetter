@@ -7,6 +7,8 @@ export interface historiesCalendarEvent {
   id: string;
   title: string;
   type?: string;
+  description?: string;
+  value?: number;
   resourceId?: string;
   startEditable?: boolean;
   durationEditable?: boolean;

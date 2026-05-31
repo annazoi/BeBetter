@@ -1,12 +1,15 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Icon, Menu, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import { authStore } from "../../store/authStore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { LayoutDashboard, Calendar, Moon, Sun, LogOut, Menu as MenuIcon, X, Sprout } from "lucide-react";
 import "./style.css";
 
 interface NavigationBarProps {
   children: any;
 }
+
+const MOBILE_MENU_CLOSE_MS = 420;
 
 const NavigationBar = ({ children }: NavigationBarProps) => {
   const { isLoggedIn, logOut } = authStore((state) => state);
@@ -14,6 +17,37 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
   const location = useLocation();
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isMenuClosing, setIsMenuClosing] = useState<boolean>(false);
+  const prevMenuOpenRef = useRef(isMenuOpen);
+
+  const isMenuClosingAnim = !isMenuOpen && (isMenuClosing || prevMenuOpenRef.current);
+  const isMenuVisible = isMenuOpen || isMenuClosingAnim;
+  const isLanding = location.pathname === "/" && !isLoggedIn;
+  const isTransparent = isLanding && !isMenuVisible;
+
+  const openMenu = () => {
+    setIsMenuClosing(false);
+    setIsMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    if (!isMenuOpen || isMenuClosingAnim) return;
+    setIsMenuOpen(false);
+  };
+
+  useLayoutEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuClosing(false);
+    } else if (prevMenuOpenRef.current) {
+      setIsMenuClosing(true);
+    }
+    prevMenuOpenRef.current = isMenuOpen;
+  }, [isMenuOpen]);
+
+  const toggleMenu = () => {
+    if (isMenuOpen) closeMenu();
+    else openMenu();
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -22,6 +56,28 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
       document.documentElement.setAttribute("data-theme", "dark");
     }
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuVisible ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuVisible]);
+
+  useEffect(() => {
+    if (!isMenuClosing) return;
+    const timer = window.setTimeout(() => setIsMenuClosing(false), MOBILE_MENU_CLOSE_MS);
+    return () => clearTimeout(timer);
+  }, [isMenuClosing]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -39,111 +95,131 @@ const NavigationBar = ({ children }: NavigationBarProps) => {
     navigate("/signin");
   };
 
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return location.pathname === "/" || location.pathname === "/home";
+    }
+    return location.pathname === path;
+  };
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      {/* Top Navigation Bar */}
-      <Menu
-        borderless
-        className={`dashboard-navbar ${isMenuOpen ? 'mobile-open' : ''}`}
-        style={{
+    <div className="page-wrapper">
+      <header className={`site-header ${isMenuVisible ? "mobile-open" : ""} ${isMenuClosingAnim ? "site-header--closing" : ""} ${isTransparent ? "site-header--transparent" : ""}`}>
+        <div className="app-shell site-header__inner">
+          <button type="button" className="site-brand" onClick={() => navigate("/")}>
+            <div className="nav-brand-mark">
+              <Sprout size={18} strokeWidth={2.5} />
+            </div>
+            <span className="nav-brand">Habitry</span>
+          </button>
 
-          textAlign: "center",
-          margin: 0,
-          padding: '10px 0',
-          position: location.pathname === "/" && !isLoggedIn ? 'absolute' : 'relative',
-          width: '100%',
-          zIndex: 100,
-          background: location.pathname === "/" && !isLoggedIn && !isMenuOpen ? 'transparent' : 'var(--surface-color)',
-          borderBottom: (location.pathname === "/" && !isLoggedIn && !isMenuOpen) ? 'none' : '1px solid var(--border-color)',
-          boxShadow: (location.pathname === "/" && !isLoggedIn && !isMenuOpen) ? 'none' : 'var(--shadow-sm)',
-          transition: 'background 0.3s ease',
-        }}
-      >
-        <Container>
-          <Menu.Item header className="brand-header transparent-hover" style={{ fontSize: "1.2rem", fontWeight: "bold", paddingLeft: 0, paddingRight: "20px" }} onClick={() => navigate("/")}>
-            <Icon name="rocket" color="teal" size="large" />
-            <span style={{ marginLeft: "10px", letterSpacing: "1px" }}>Habitry</span>
-          </Menu.Item>
+          <button
+            type="button"
+            className={`site-header__toggle ${isMenuVisible ? "site-header__toggle--active" : ""}`}
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuVisible}
+          >
+            <span className={`site-header__toggle-icon ${isMenuVisible ? "site-header__toggle-icon--open" : ""}`}>
+              {isMenuVisible ? <X size={22} /> : <MenuIcon size={22} />}
+            </span>
+          </button>
 
-          {/* Mobile Toggle */}
-          <Menu.Menu position="right" className="mobile-only">
-            <Menu.Item onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <Icon name={isMenuOpen ? "close" : "bars"} size="large" />
-            </Menu.Item>
-          </Menu.Menu>
-
-          {/* Desktop Menu */}
-          <div className={`nav-content ${isMenuOpen ? 'show' : ''}`}>
-            {isLoggedIn ? (
-              <>
-                <Menu.Menu position="left" className="nav-items-group" >
-                  <Menu.Item
-                    active={location.pathname === "/" || location.pathname === "/home"}
-                    onClick={() => { navigate("/"); setIsMenuOpen(false); }}
-                    className="nav-link-item"
-                  >
-                    <Icon name="dashboard" />
-                    Dashboard
-                  </Menu.Item>
-                  <Menu.Item
-                    active={location.pathname === "/calendar"}
-                    onClick={() => { navigate("/calendar"); setIsMenuOpen(false); }}
-                    className="nav-link-item"
-                  >
-                    <Icon name="calendar" />
-                    Calendar
-                  </Menu.Item>
-                </Menu.Menu>
-
-                <Menu.Menu position="right" className="nav-actions-group" >
-                  <Menu.Item onClick={toggleDarkMode} className="transparent-hover">
-                    <Icon name={isDarkMode ? "sun" : "moon"} size="large" style={{ margin: 0 }} />
-                  </Menu.Item>
-                  <Menu.Item className="transparent-hover" style={{ padding: '0 10px' }}>
-                    <Button
-                      basic
-                      content="Sign Out"
-                      icon="sign-out"
-                      onClick={handleLogout}
-                      className="transparent-hover sign-out-btn"
-                    />
-                  </Menu.Item>
-                </Menu.Menu>
-              </>
-            ) : (
-              <Menu.Menu position="right" className="nav-actions-group">
-                <Menu.Item onClick={toggleDarkMode}>
-                  <Icon name={isDarkMode ? "sun" : "moon"} size="large" style={{ margin: 0 }} />
-                </Menu.Item>
-                <Menu.Item style={{ padding: 0, height: 'fit-content' }}>
-                  <Button color="teal" onClick={() => { navigate("/signin"); setIsMenuOpen(false); }} className="signin-btn">Sign In</Button>
-                </Menu.Item>
-              </Menu.Menu>
-            )}
-          </div>
-        </Container>
-      </Menu>
-
-      {/* Main Content Area */}
-      {isLoggedIn ? (
-        <div>
-          <Container style={{ marginTop: '40px' }}>
-            {children}
-          </Container>
-        </div>
-      ) : (
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {location.pathname === "/" ? (
-            children
-          ) : (
-            <Container style={{ marginTop: '40px' }}>
-              {children}
-            </Container>
+          {isMenuVisible && (
+            <button
+              type="button"
+              className={`site-nav-backdrop ${isMenuClosingAnim ? "site-nav-backdrop--closing" : ""}`}
+              onClick={closeMenu}
+              aria-label="Close menu"
+              tabIndex={-1}
+            />
           )}
-        </div>
-      )}
 
-    </div >
+          <nav
+            className={`site-nav ${isMenuVisible ? "site-nav--visible" : ""} ${isMenuOpen ? "site-nav--open" : ""} ${isMenuClosingAnim ? "site-nav--closing" : ""}`}
+          >
+            <div className="site-nav__panel">
+              {isLoggedIn ? (
+                <>
+                  <p className="site-nav__label">Navigate</p>
+                  <div className="site-nav__links">
+                    <button
+                      type="button"
+                      className={`site-nav__link ${isActive("/") ? "site-nav__link--active" : ""}`}
+                      onClick={() => { navigate("/"); closeMenu(); }}
+                    >
+                      <span className="site-nav__link-icon">
+                        <LayoutDashboard size={20} />
+                      </span>
+                      Dashboard
+                    </button>
+                    <button
+                      type="button"
+                      className={`site-nav__link ${isActive("/calendar") ? "site-nav__link--active" : ""}`}
+                      onClick={() => { navigate("/calendar"); closeMenu(); }}
+                    >
+                      <span className="site-nav__link-icon">
+                        <Calendar size={20} />
+                      </span>
+                      Calendar
+                    </button>
+                  </div>
+
+                  <div className="site-nav__actions">
+                    <button type="button" className="site-nav__icon-btn" onClick={toggleDarkMode} aria-label="Toggle theme">
+                      {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+                    <button type="button" className="site-nav__utility" onClick={toggleDarkMode} aria-label="Toggle theme">
+                      <span className="site-nav__utility-icon">
+                        {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                      </span>
+                      {isDarkMode ? "Light mode" : "Dark mode"}
+                    </button>
+                    <Button basic onClick={handleLogout} className="site-nav__signout">
+                      <LogOut size={15} />
+                      Sign Out
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="site-nav__label">Welcome</p>
+                  <p className="site-nav__tagline">Small steps, lasting change.</p>
+                  <div className="site-nav__actions site-nav__actions--guest">
+                    <button type="button" className="site-nav__icon-btn" onClick={toggleDarkMode} aria-label="Toggle theme">
+                      {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+                    <button type="button" className="site-nav__utility" onClick={toggleDarkMode} aria-label="Toggle theme">
+                      <span className="site-nav__utility-icon">
+                        {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                      </span>
+                      {isDarkMode ? "Light mode" : "Dark mode"}
+                    </button>
+                    <Button
+                      primary
+                      onClick={() => { navigate("/signin"); closeMenu(); }}
+                      className="btn-primary site-nav__signin"
+                    >
+                      Sign In
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      {isLoggedIn ? (
+        <main className="main-content main-content--logged-in">
+          <div className="app-shell">{children}</div>
+        </main>
+      ) : (
+        <main className="main-content main-content--auth">
+          {isLanding ? children : <div className="app-shell" style={{ marginTop: "40px" }}>{children}</div>}
+        </main>
+      )}
+    </div>
   );
 };
 

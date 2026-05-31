@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Form, Segment, Image, Message, Header, Divider } from 'semantic-ui-react';
+import { Button, Form, Message, Header } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,7 +8,7 @@ import Input from '../../../components/ui/Input';
 import { authStore } from '../../../store/authStore';
 import { signin } from '../../../services/auth';
 import { useMutation } from 'react-query';
-import logo from '../../../../public/logo.png';
+import { Sprout } from 'lucide-react';
 
 const Signin: FC = () => {
 	const { logIn } = authStore((store) => store);
@@ -48,25 +48,18 @@ const Signin: FC = () => {
 	};
 
 	return (
-		<div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-			<Segment
-				style={{
-					width: '100%',
-					maxWidth: '450px',
-					padding: '40px',
-					borderRadius: 'var(--radius-lg)',
-					boxShadow: 'var(--shadow-md)',
-					border: '1px solid var(--border-color)',
-				}}
-			>
-				<div style={{ textAlign: 'center', marginBottom: '30px' }}>
-					<Image src={logo} size="tiny" centered style={{ marginBottom: '15px' }} />
-					<Header as="h2" style={{ margin: 0, color: 'var(--text-primary)' }}>
+		<div className="auth-page">
+			<div className="auth-card animate-fade-up">
+				<div style={{ textAlign: 'center', marginBottom: '36px' }}>
+					<div className="nav-brand-mark" style={{ margin: '0 auto 20px', width: 48, height: 48, borderRadius: 14 }}>
+						<Sprout size={24} strokeWidth={2.5} />
+					</div>
+					<Header as="h2" className="font-display" style={{ margin: 0, fontSize: '1.75rem' }}>
 						Welcome back
-						<Header.Subheader style={{ marginTop: '5px' }}>
-							Sign in to Habitry to continue your journey
-						</Header.Subheader>
 					</Header>
+					<p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+						Sign in to continue your journey
+					</p>
 				</div>
 
 				<Form onSubmit={handleSubmit(onSubmit)} size="large">
@@ -91,13 +84,14 @@ const Signin: FC = () => {
 					/>
 
 					<Button
-						color="teal"
+						primary
 						fluid
 						size="large"
 						type="submit"
 						loading={isLoadingSignin}
 						content="Sign In"
-						style={{ marginTop: '20px', padding: '14px' }}
+						className="btn-primary"
+						style={{ marginTop: '24px', padding: '15px' }}
 					/>
 
 					{isErrorSignin && (
@@ -112,22 +106,28 @@ const Signin: FC = () => {
 					)}
 				</Form>
 
-				<Divider style={{ margin: '25px 0' }} />
-
-				<div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
+				<div
+					style={{
+						marginTop: '28px',
+						paddingTop: '24px',
+						borderTop: '1px solid var(--border-color)',
+						textAlign: 'center',
+						color: 'var(--text-secondary)',
+						fontSize: '0.95rem',
+					}}
+				>
 					Don't have an account?{' '}
-					<a
-						href="#"
-						onClick={(e) => {
-							e.preventDefault();
-							navigate('/signup');
-						}}
-						style={{ color: 'var(--primary)', fontWeight: '500', cursor: 'pointer' }}
+					<span
+						className="auth-link"
+						onClick={() => navigate('/signup')}
+						role="button"
+						tabIndex={0}
+						onKeyDown={(e) => e.key === 'Enter' && navigate('/signup')}
 					>
 						Create an account
-					</a>
+					</span>
 				</div>
-			</Segment>
+			</div>
 		</div>
 	);
 };

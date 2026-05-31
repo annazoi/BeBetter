@@ -1,0 +1,309 @@
+.habitry-modal-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  pointer-events: none;
+}
+
+.habitry-modal-portal--open,
+.habitry-modal-portal--closing {
+  pointer-events: auto;
+}
+
+.habitry-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background: var(--scrim);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal-backdrop {
+  animation: modalBackdropIn 0.35s ease both;
+}
+
+.habitry-modal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: min(88vh, 760px);
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.habitry-modal--mini {
+  max-width: 360px;
+}
+
+.habitry-modal--tiny {
+  max-width: 440px;
+}
+
+.habitry-modal--small {
+  max-width: 520px;
+}
+
+.habitry-modal--default {
+  max-width: 560px;
+}
+
+.habitry-modal--large {
+  max-width: 720px;
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal {
+  animation: modalPanelIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.habitry-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.habitry-modal__close:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal__close {
+  animation: modalFieldIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.habitry-modal__header {
+  flex-shrink: 0;
+  padding: 22px 52px 0 24px;
+}
+
+.habitry-modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal__header {
+  animation: modalFieldIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+
+.habitry-modal__content {
+  flex: 1 0 auto;
+  min-height: 0;
+  overflow: visible;
+  padding: 20px 24px;
+  color: var(--text-primary);
+}
+
+.habitry-modal__image {
+  margin-bottom: 16px;
+}
+
+.habitry-modal__image img {
+  display: block;
+  max-width: 120px;
+  border-radius: var(--radius-sm);
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .calendar-empty-state {
+  animation: modalItemIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.habitry-modal__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--bg-accent);
+  border-top: 1px solid var(--border-color);
+}
+
+.habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal__actions {
+  animation: modalActionsIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.habitry-modal-portal--closing .habitry-modal-backdrop,
+.habitry-modal-portal--closing .habitry-modal {
+  animation-fill-mode: forwards;
+}
+
+.habitry-modal-portal--closing .habitry-modal-backdrop {
+  animation: modalBackdropOut 0.36s ease forwards;
+  pointer-events: none;
+}
+
+.habitry-modal-portal--closing .habitry-modal {
+  animation: modalPanelOut 0.36s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes modalFieldIn {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalBackdropOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalPanelOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+}
+
+@keyframes modalItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalItemOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes modalActionsIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalActionsOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.habitry-modal .ui.selection.dropdown.active {
+  position: relative;
+  z-index: 20;
+}
+
+
+@media only screen and (max-width: 480px) {
+  .habitry-modal-portal {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .habitry-modal {
+    max-height: 92vh;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+  }
+
+  .habitry-modal-portal--open:not(.habitry-modal-portal--closing) .habitry-modal {
+    animation: modalPanelInMobile 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .habitry-modal-portal--closing .habitry-modal {
+    animation: modalPanelOutMobile 0.34s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+}
+
+@keyframes modalPanelInMobile {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalPanelOutMobile {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
